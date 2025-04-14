@@ -6,27 +6,27 @@
   <title>TMR | T-CHECK</title>
   <style>
     :root {
-        --primary": #003366,
-        --primary-light": #00509e,
-        --primary-dark": #001f4d,
-        --secondary": #5ac8fa,
-        --secondary-light": #a3e4f7,
-        --secondary-dark": #0077b6,
-        --bg": #f4f6f8,
-        --card-bg": #ffffff,
-        --text-color": #ffffff,
-        --accent-1": #00bfff,
-        --accent-2": #e0f7fa,
-        --accent-3": #dde2e8,
-        --hover-bg": #001f4d,
-        --hover-text": #ffffff,
-        --section-bg": #ffffff,
-        --section-border": #ccc,
-        --mini-card-bg": #e6f0fa,
-        --mini-card-border": #b0c4de,
-        --mini-card-hover": #cce6ff,
-        --button-bg": #003366,
-        --button-hover-bg": #00509e
+--primary: #003366;
+--primary-light: #00509e;
+--primary-dark: #001f4d;
+--secondary: #5ac8fa;
+--secondary-light: #a3e4f7;
+--secondary-dark: #0077b6;
+--bg: #f4f6f8;
+--card-bg: #ffffff;
+--text-color: #1a1a1a; /* ✅ Now visible on light backgrounds */
+--accent-1: #00bfff;
+--accent-2: #e0f7fa;
+--accent-3: #dde2e8;
+--hover-bg: #001f4d;
+--hover-text: #ffffff;
+--section-bg: #ffffff;
+--section-border: #ccc;
+--mini-card-bg: #e6f0fa;
+--mini-card-border: #b0c4de;
+--mini-card-hover: #cce6ff;
+--button-bg: #003366;
+--button-hover-bg: #00509e;
 
     }
 
@@ -111,8 +111,8 @@
   </style>
 </head>
 <body>
-  <select id="themeSelect">
-    <option value="default">Default</option>
+  <select id="themeSelect" style="display: none;">
+    <option value="default">TMR</option>
     <option value="tmr">TMR Theme</option>
   </select>
 
@@ -161,6 +161,7 @@
         "--mini-card-hover": "#cce6ff",
         "--button-bg": "#003366",
         "--button-hover-bg": "#00509e"
+
       },
       tmr: {
         "--primary": "#003366",

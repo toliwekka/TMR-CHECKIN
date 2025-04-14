@@ -1,0 +1,546 @@
+
+    body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: var(--bg);
+        color: var(--text-color);
+        padding: 2rem 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        position: relative;
+    }
+
+    .theme-switcher {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .form-select {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        border: none;
+        background: var(--card-bg);
+        color: var(--text-color);
+        font-weight: 600;
+        box-shadow: var(--shadow);
+    }
+
+    .survey-container {
+        max-width: 800px;
+        width: 100%;
+        background: var(--card-bg);
+        border-radius: 20px;
+        backdrop-filter: blur(20px);
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .flip-badge {
+        width: 60px;
+        height: 60px;
+        background: var(--primary);
+        color: white;
+        border-radius: 50%;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        margin: 0 auto 1.5rem;
+        box-shadow: var(--shadow);
+        animation: popIn 0.4s ease-in-out;
+    }
+
+    .survey-card {
+        background: rgba(255, 255, 255, 0.25);
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
+    }
+
+    .question-intro {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--primary-dark);
+        margin-bottom: 0.25rem;
+    }
+
+    .question-context {
+        font-size: 0.95rem;
+        opacity: 0.7;
+        margin-bottom: 1rem;
+    }
+
+    .question-text {
+        font-size: 0.5rem;
+        font-weight: bold;
+        color: var(--text-color);
+    }
+
+    .option-card {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 1.5rem 1rem;
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .option {
+        padding: 0.7rem 1.5rem;
+        background: var(--primary-light);
+        color: var(--option-text-color, #ffffff); /* Fallback to white */
+        border: none;
+        border-radius: 30px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for more visual lift */
+    }
+
+    .option:hover {
+        background: var(--primary-dark);
+        color: var(--option-hover-text-color, #fff);
+    }
+
+    .next-button {
+        display: block;
+        margin: 2rem auto 0;
+        background: var(--primary);
+        color: white;
+        padding: 0.9rem 2rem;
+        border: none;
+        border-radius: 30px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+
+    .next-button:hover {
+        transform: scale(1.05);
+    }
+
+    @keyframes popIn {
+        from {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .option.selected {
+        background: var(--primary-dark);
+        color: #fff;
+        transform: scale(1.05);
+    }
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .page-wrapper {
+        flex: 1;
+    }
+
+    .sticky-footer {
+        background: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        text-align: center;
+        padding: 1rem 0;
+        font-size: 0.9rem;
+        backdrop-filter: blur(10px);
+        width: 100%;
+    }
+
+    .sticky-footer a {
+        color: #ffd3a5;
+        text-decoration: none;
+        margin: 0 0.5rem;
+    }
+
+    .sticky-footer a:hover {
+        text-decoration: underline;
+    }
+
+    .continue-button {
+        margin: 2rem auto 0;
+        padding: 0.8rem 2rem;
+        background: var(--primary);
+        color: white;
+        font-weight: 600;
+        font-size: 1rem;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        display: block;
+        text-align: center;
+    }
+
+    .continue-button:hover {
+        background: var(--button-hover-bg);
+    }
+
+    .option-card {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .option {
+        background: var(--primary-light);
+        color: var(--option-text-color, #fff);
+        border: none;
+        border-radius: 30px;
+        font-weight: 600;
+        padding: 0.7rem 1.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        transition: background 0.2s ease-in-out;
+        max-width: 100%;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    /* Automatically make longer options full width */
+    .option.long-option {
+        flex: 1 1 100%;
+    }
+
+    /* Optional: better layout for small screens */
+    @media (max-width: 576px) {
+        .option {
+            flex: 1 1 100%;
+        }
+    }
+
+    .option-cards-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        width: 100%;
+    }
+
+    .option-card-group {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .card-1 .option {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .card-2 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+    }
+
+    .card-3 .option {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .option {
+        padding: 0.7rem 1.5rem;
+        background: var(--primary-dark);
+        color: var(--option-text-color, #fff);
+        border: none;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    .option:hover {
+        background: var(--primary-dark);
+    }
+
+    .hero-description {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #fff;
+        background-color: var(--primary-dark, #5a0c0c);
+        padding: 1.2rem 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        max-width: 100vw;
+        margin: 2rem auto;
+        text-align: center;
+        line-height: 1.6;
+        letter-spacing: 0.4px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        background: var(--primary, #930d0e);
+        color: #fff;
+        border: none;
+        padding: 10px 18px;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        z-index: 10000;
+    }
+
+    .option.selected {
+        background-color: var(--primary-dark);
+        color: #fff;
+    }
+
+    .option.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+.survey-container {
+    max-width: 800px;
+    width: 100%;
+    background: var(--card-bg);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add multiple layers of shadow */
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth scale and shadow transition */
+    animation: popIn 0.6s ease-in-out; /* Pop-in effect */
+}
+
+.survey-container:hover {
+    transform: scale(1.05); /* Slightly enlarge when hovered */
+    box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.2), 0px 6px 12px rgba(0, 0, 0, 0.1); /* Deepen shadow on hover */
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.survey-container {
+    max-width: 800px;
+    width: 100%;
+    background: var(--highlight-bg); /* New background color */
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth scale and shadow transition */
+    animation: popIn 0.6s ease-in-out; /* Pop-in effect */
+}
+
+.survey-container:hover {
+    transform: scale(1.05); /* Slightly enlarge when hovered */
+    box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.2), 0px 6px 12px rgba(0, 0, 0, 0.1); /* Deepen shadow on hover */
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.question-intro {
+    font-size: 2rem; /* Larger font size for more emphasis */
+    font-weight: 700; /* Bold weight for clear prominence */
+    color: var(--highlight-text-color); /* Emphasized color for question intro */
+    margin-bottom: 0.5rem; /* Increased space for better separation */
+    text-transform: uppercase; /* Uppercase text for added impact */
+    letter-spacing: 1px; /* Spacing between letters for readability */
+}
+
+.question-context {
+    font-size: 1.1rem; /* Slightly larger text for better clarity */
+    font-weight: 500; /* Medium weight to maintain readability */
+    color: var(--highlight-context-color); /* New color for context */
+    opacity: 0.85; /* Slightly stronger opacity */
+    margin-bottom: 1rem;
+    line-height: 1.6; /* Improved readability with more spacing between lines */
+}
+
+.question-text {
+    font-size: 1.8rem; /* Slightly larger font for main question text */
+    font-weight: 600; /* Semi-bold weight for better visibility */
+    color: var(--highlight-text-color); /* Contrasting text color */
+    margin-bottom: 1.5rem; /* Increased space between questions and answers */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25); /* Stronger shadow for lifted effect */
+    line-height: 1.6; /* Improved readability */
+}
+
+
+/* Survey Container Styling */
+.survey-container {
+    position: fixed;  /* Fix the container to the top */
+    width: 100%; /* Ensure it spans the width */
+    padding: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .survey-container {
+        padding: 1.5rem;
+        margin-top: 0;  /* Ensure no margin on the top */
+    }
+}
+
+@media (max-width: 480px) {
+    .survey-container {
+        padding: 1rem;
+        margin-top: 0;  /* Ensure no margin on the top */
+    }
+
+    .flip-badge {
+        font-size: 1.2rem;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* General Styling */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;  /* Prevent horizontal scrolling */
+    padding-top: 80px;  /* Add space at the top to accommodate the fixed survey container */
+}
+
+/* Survey Container Styling */
+.survey-container {
+    width: 100%; /* Ensure it spans the width */
+    padding: 1.5rem;
+    z-index: 1000;  /* Keep it on top of other content */
+}
+
+/* Content Below Survey Container */
+.main-content {
+    margin-top: 120px;  /* Add space to the top of the main content to prevent it from being hidden behind the fixed container */
+}
+
+/* Footer Styling */
+footer {
+    width: 100%;
+    padding: 1rem;
+    background-color: #333;  /* Example background color */
+    color: #fff;
+    text-align: center;
+    position: relative;
+    margin-top: 20px;  /* Space between footer and content */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .survey-container {
+        padding: 1.5rem;
+    }
+
+    .main-content {
+        margin-top: 140px;  /* Increase margin if needed for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .survey-container {
+        padding: 1rem;
+    }
+
+    .main-content {
+        margin-top: 160px;  /* Further adjustment for smaller screens */
+    }
+}

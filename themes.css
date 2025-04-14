@@ -1,0 +1,45 @@
+:root {
+    --primary: #003366;
+    --primary-light: #00509e;
+    --primary-dark: #001f4d;
+
+    --secondary: #5ac8fa;
+    --secondary-light: #a3e4f7;
+    --secondary-dark: #0077b6;
+
+    --bg: #f4f6f8;
+
+    /* ✅ Card Background Variants */
+    --card-bg-light: #f0f4f8; /* Subtle bluish gray for light cards */
+    --card-bg-dark: #1e2a38; /* Charcoal for dark mode cards */
+    --card-bg-muted: #eaf1f9; /* Pale blue-gray - gentle UI touch */
+    --card-bg: var(--card-bg-light); /* Main card background - matches with light variant */
+
+    --text-color: #1a1a1a; /* ✅ Visible on light backgrounds */
+    --text-color-light: #1a1a1a;
+    --text-color-dark: #ffffff;
+
+    --accent-1: #00bfff;
+    --accent-2: #e0f7fa;
+    --accent-3: #dde2e8;
+
+    --hover-bg: #001f4d;
+    --hover-text: #ffffff;
+
+    --section-bg: #ffffff;
+    --section-border: #ccc;
+
+    --mini-card-bg: #e6f0fa;
+    --mini-card-border: #b0c4de;
+    --mini-card-hover: #cce6ff;
+
+    --button-bg: #003366;
+    --button-hover-bg: #00509e;
+
+
+    --highlight-bg: #5a0c0c; /* Dark red or bold color for background */
+    --highlight-text-color: #ffffff; /* White for strong contrast */
+    --highlight-context-color: #f0e5e5; /* Soft pale color for the context text */
+
+
+}
