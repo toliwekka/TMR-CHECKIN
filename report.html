@@ -2,7 +2,8 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>Your T|Check Well-being Report</title>
+  <title>TMR International | T-Check Portal Report</title>
+  <link rel="icon" type="image/png" href="logo.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -260,7 +261,7 @@ body {
                 <div id="barChartApex"></div>
             </div>
 
-            <div class="card masonry-item">
+            <div disabled class="card masonry-item">
                 <div class="chart-title">🧠📊 Your Emotional & Functional Balance</div>
                 <canvas id="donutChart"></canvas>
             </div>
@@ -282,23 +283,23 @@ body {
             const maxA = 70;
             const maxB = 240;
 
-            const heroMessages = [
-                "🧠 Your emotional gauge reveals how you've been feeling deep down—emotionally, socially, and cognitively.",
-                "💡 A higher score in Part A often reflects inner resilience, calm, and mental clarity.",
-                "🎯 Your functional score captures how you’re managing daily life, routines, responsibilities, and support systems.",
-                "⚖️ Balance across emotional and functional areas is key to overall well-being.",
-                "📈 Bar charts offer a clear comparison between emotional and functional states—side by side.",
-                "🍩 Donut visuals provide a quick glance at where you stand and where you can grow.",
-                "📊 Each chart is a mirror—reflecting not just scores, but trends and possibilities.",
-                "🧭 Think of these results as a compass, not a destination. They're here to guide you, not define you.",
-                "🌱 Scores shift as life shifts. These insights are a moment-in-time snapshot to help you realign.",
-                "🛠️ Use the feedback to build better habits, deeper connections, and healthier boundaries.",
-                "📌 Remember: no score can capture your full complexity—it simply opens the door to deeper reflection.",
-                "🫂 You are not your numbers. You're a story in motion—this is just one meaningful chapter.",
-                "🌈 Wellness is a spectrum. Wherever you land, there’s a path forward.",
-                "🔥 High scores show you're thriving. Lower scores signal where you may need support or change.",
-                "💬 Each insight is an invitation to check in with yourself and your environment.",
-            ];
+const heroMessages = [
+    "🧠 Your emotional gauge reveals a deeper understanding of how you've been feeling—emotionally, socially, and cognitively. It paints a picture of your current state and guides your journey toward better mental wellness.",
+    "💡 A higher score in Part A often indicates greater inner resilience, calm, and mental clarity. It shows your ability to navigate life's challenges with strength and a sense of peace.",
+    "🎯 Your functional score reflects how well you're managing daily life, routines, responsibilities, and support systems. It’s a snapshot of your ability to thrive in your everyday environment, from work to relationships.",
+    "⚖️ Balance across emotional and functional areas is the key to overall well-being. When both aspects are in harmony, you’re more likely to feel grounded, resilient, and capable of handling life’s ups and downs.",
+    "📈 Bar charts offer a clear visual comparison of your emotional and functional states—side by side. This allows you to easily see areas where you're excelling and others that may need more attention.",
+    "🍩 Donut visuals provide a quick and intuitive glance at where you stand emotionally and functionally. This visual representation highlights areas of strength and opportunity for growth.",
+    "📊 Each chart is a mirror of your current state. It not only shows your scores but also reflects the trends and patterns in your emotional and functional life, helping you identify what’s working and what needs adjustment.",
+    "🧭 Think of these results as a compass, not a final destination. They’re here to guide your growth journey, helping you make informed decisions rather than defining who you are.",
+    "🌱 Scores shift as life changes. These insights capture a moment in time and offer a snapshot of where you currently are, helping you realign your path as you evolve.",
+    "🛠️ Use the feedback to build better habits, forge deeper connections, and create healthier boundaries. This is not just about numbers; it's about action that supports your mental well-being.",
+    "📌 Remember: no score can capture your full complexity. The numbers are simply a tool to open the door to deeper reflection and greater self-awareness, offering insight into areas where you can grow.",
+    "🫂 You are not your scores. Your journey is unfolding in real-time, and this is just one chapter. Your mental health story is dynamic and always evolving.",
+    "🌈 Wellness is a spectrum. Wherever you fall on that spectrum today, know that there’s always room for growth. Every score is an opportunity for improvement and a deeper connection with yourself.",
+    "🔥 High scores show you're thriving in certain areas. Lower scores highlight where you may need additional support or a shift in your approach. Both are equally important in the journey toward mental well-being.",
+    "💬 Each insight you receive is an invitation to pause and reflect on your thoughts, emotions, and environment. It’s an opportunity to check in with yourself, adjust as needed, and keep moving forward."
+];
 
             // Rotate messages
             let heroIndex = 0;

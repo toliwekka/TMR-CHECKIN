@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TMR | T-CHECK</title>
+  <title>TMR International | T-Check Portal</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+
   <style>
     :root {
 --primary: #003366;
@@ -123,7 +125,7 @@
   </header>
 
   <script>
-    const letters = ['T', 'M', 'R', 'T', '-', 'C', 'H', 'E', 'C', 'K'];
+    const letters = ['T', 'M', 'R', 'C', 'H', 'E','K'];
     const createLetter = () => {
       const letter = document.createElement('div');
       letter.classList.add('falling-letter');
@@ -136,7 +138,7 @@
         document.body.removeChild(letter);
       }, 10000);
     };
-    setInterval(createLetter, 200);
+    setInterval(createLetter, 2000);
 
     const themes = {
       default: {

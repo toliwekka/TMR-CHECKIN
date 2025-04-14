@@ -3,7 +3,8 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>T|Check Survey</title>
+  <title>TMR International | T-Check Portal</title>
+  <link rel="icon" type="image/png" href="logo.png" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
         <!-- Font Awesome -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
@@ -49,6 +50,256 @@
                 }
             }
         </style>
+
+
+
+        <style>
+            /* General Styling */
+            body {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                overflow-x: hidden; /* Prevent horizontal scrolling */
+                font-family: 'Poppins', sans-serif;
+            }
+
+            /* Survey Container Styling */
+            .survey-container {
+                padding: 1.5rem;
+                margin-top: 40px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .survey-container {
+                    padding: 1rem;
+                    margin-top: 30px;
+                }
+
+                .flip-badge {
+                    font-size: 1.5rem;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .survey-container {
+                    padding: 1rem;
+                    margin-top: 20px;
+                }
+
+                .flip-badge {
+                    font-size: 1.2rem;
+                    width: 30px;
+                    height: 30px;
+                    line-height: 30px;
+                }
+            }
+
+            /* Ensure buttons are flexible */
+            .continue-button {
+                width: 100%;
+                padding: 1rem;
+                font-size: 1.1rem;
+                border: none;
+                cursor: pointer;
+                margin-top: 1rem;
+            }
+
+            /* Make the theme switcher mobile-friendly */
+            .theme-switcher select {
+                width: 100%;
+                padding: 0.8rem;
+                font-size: 1rem;
+            }
+
+            /* Flip badge */
+            .flip-badge {
+                font-size: 2rem;
+                background: #007bff;
+                color: white;
+                border-radius: 50%;
+                display: inline-block;
+                width: 50px;
+                height: 50px;
+                text-align: center;
+                line-height: 50px;
+            }
+
+            /* Survey Card */
+            .survey-card {
+                margin-bottom: 2rem;
+            }
+
+            .survey-card h3 {
+                font-size: 1.3rem;
+            }
+
+            /* Responsive Buttons */
+            .chk-accordion {
+                width: 100%;
+                text-align: center;
+                background: #27ef96;
+                padding: 1.5rem;
+                cursor: pointer;
+                border-radius: 14px;
+                margin-top: 1rem;
+                box-shadow: 0 8px 16px rgba(155, 89, 182, 0.15);
+                transition: background-color 0.3s ease;
+            }
+
+            .chk-accordion:hover {
+                background-color: #d6fff1;
+            }
+
+            .chk-accordion .chk-icon {
+                font-size: 2.2rem;
+                color: #7a478d;
+                margin-bottom: 0.75rem;
+            }
+
+            .chk-accordion .chk-title {
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: #311d53;
+            }
+
+            .chk-accordion .chk-description {
+                font-size: 0.95rem;
+                color: #5d3d73;
+            }
+
+            /* Additional Styling for Mobile View */
+            .chk-accordion.serene-theme {
+                padding: 1rem;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Base container styling */
+.survey-container {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    font-size: 1vw; /* Text size adjusts based on viewport width */
+    border-radius: 8px;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 1200px) {
+    .survey-container {
+        font-size: 2.5vw; /* Adjust text size slightly larger for larger screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .survey-container {
+        font-size: 3vw; /* Adjust text size slightly larger for medium screens */
+        padding: 15px; /* Adjust padding for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .survey-container {
+        font-size: 4vw; /* Increase text size for mobile */
+        padding: 10px; /* Reduce padding */
+    }
+}
+
+/* Optional: Make sure text size doesn't become too small or large */
+.survey-container h1,
+.survey-container p {
+    font-size: calc(1rem + 2vw); /* Uses both rem and vw for flexible font size */
+}
+
+/* Optional: Add a scrollable container */
+.survey-container {
+    max-height: 90vh; /* Limits height to 90% of the viewport height */
+    overflow-y: auto; /* Adds scrolling if content exceeds the max height */
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Base container styling */
+.survey-container {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    font-size: 1rem; /* Set a solid base font size */
+    line-height: 1.6;
+    border-radius: 8px;
+    margin: 0 auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+/* Headers and paragraph scaling smoothly */
+.survey-container h1 {
+    font-size: clamp(1.5rem, 2vw + 1rem, 2.75rem); /* Responsive between 1.5rem and 2.75rem */
+}
+
+.survey-container p {
+    font-size: clamp(1rem, 1.25vw + 0.5rem, 1.25rem); /* Responsive but controlled */
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .survey-container {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .survey-container {
+        padding: 12px;
+    }
+}
+
+
+        </style>
+
+
+
     </head>
     <body>
         <!-- Main content area -->
@@ -200,12 +451,12 @@
                 { id: 9, section: "Meaning and Purpose", pastcoupledays: "", text: "I have a sense of direction and purpose in life.", answerType: "Agreement" },
                 { id: 10, section: "Character and Caring", pastcoupledays: "", text: "I always act to promote good in all circumstances, even in difficult and challenging situations.", answerType: "TrueOfMe" },
                 { id: 11, section: "Character and Caring", pastcoupledays: "", text: "I’m always able to give up some happiness now for greater happiness later.", answerType: "TrueOfMe" },
-                { id: 12, section: "Character and Caring", pastcoupledays: "", text: "How often do you show someone in your community that you love or care for them?", answerType: "Frequency" },
+                { id: 12, section: "Character and Caring", pastcoupledays: "", text: "How often do you show someone in your community that you love or care for them?", answerType: "FrequencyNeg" },
                 { id: 13, section: "Relationships", pastcoupledays: "", text: "I am content with my friendships and relationships.", answerType: "Agreement" },
                 { id: 14, section: "Relationships", pastcoupledays: "", text: "My relationships are as satisfying as I would want them to be.", answerType: "Agreement" },
                 { id: 15, section: "Relationships", pastcoupledays: "", text: "How often do you feel lonely?", answerType: "Loneliness" },
                 { id: 16, section: "Community and Social Support", pastcoupledays: "", text: "How would you describe your sense of belonging to your local community?", answerType: "Community" },
-                { id: 17, section: "Community and Social Support", pastcoupledays: "", text: "If you were in trouble, do you have relatives or friends you can count on to help you whenever you need them, or not?", answerType: "Frequency" },
+                { id: 17, section: "Community and Social Support", pastcoupledays: "", text: "If you were in trouble, do you have relatives or friends you can count on to help you whenever you need them, or not?", answerType: "FrequencyNeg" },
                 { id: 18, section: "Community and Social Support", pastcoupledays: "", text: "Are you satisfied or dissatisfied with the city or area where you live?", answerType: "Satisfaction" },
                 { id: 19, section: "Financial Evaluation and Stability", pastcoupledays: "", text: "How often do you worry about being able to meet normal monthly living expenses?", answerType: "WorryAboutLivingExpenses" },
                 { id: 20, section: "Financial Evaluation and Stability", pastcoupledays: "", text: "How often do you worry about safety, food, or housing?", answerType: "WorrySafety" },
@@ -218,8 +469,8 @@
                     answerType: "Worst-Best",
                 },
                 { id: 22, section: "Affect", pastcoupledays: "", text: "In general, how happy or unhappy do you usually feel?", answerType: "Happiness" },
-                { id: 23, section: "Affect", pastcoupledays: "", text: "During the past two weeks, how often have you experienced positive emotions such as joy, affection, or hope?", answerType: "Frequency" },
-                { id: 24, section: "Affect", pastcoupledays: "", text: "During the past two weeks, how often have you experienced negative emotions such as sadness, worry, or despair?", answerType: "Frequency" },
+                { id: 23, section: "Affect", pastcoupledays: "", text: "During the past two weeks, how often have you experienced positive emotions such as joy, affection, or hope?", answerType: "FrequencyPos" },
+                { id: 24, section: "Affect", pastcoupledays: "", text: "During the past two weeks, how often have you experienced negative emotions such as sadness, worry, or despair?", answerType: "FrequencyNeg" },
             ];
 
             const answerSetsII = {
@@ -235,7 +486,8 @@
                 Worthwhile: ["0 = Not at All Worthwhile", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Completely Worthwhile"],
                 Agreement: ["0 = Strongly Disagree", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Strongly Agree"],
                 TrueOfMe: ["0 = Not True of Me", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Completely True of Me"],
-                Frequency: ["0 = Never", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = All of the Time"],
+                FrequencyNeg: ["0 = Never", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = All of the Time"],
+                FrequencyPos: ["0 = All of the Time", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Never"],
                 Happiness: ["0 = Extremely Unhappy", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Extremely Happy"],
                 MentalWellBeing: ["0 = Not at All", "Rarely", "Some of the Time", "Often", "All the Time"],
                 Community: ["0 = Very Weak", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Extremely Strong"],
