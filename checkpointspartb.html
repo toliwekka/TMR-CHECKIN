@@ -296,6 +296,109 @@
 }
 
 
+#chkpt.survey-container {
+  overflow-y: scroll;     /* Always show vertical scrollbar */
+  overflow-x: scroll;     /* Always show horizontal scrollbar */
+  box-sizing: border-box;
+  padding: 1rem;
+  margin: 0 auto;
+  transition: none !important;
+}
+
+
+/* Webkit (Chrome, Safari) */
+#chkpt.survey-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+#chkpt.survey-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+#chkpt.survey-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  min-height: 100vh;
+  overflow-y: auto; /* Allow scrolling */
+}
+
+
+
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Page wrapper for additional structure if needed */
+.page-wrapper {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Main survey container */
+#chkpt.survey-container {
+    width: 800px;
+    max-width: 100%;
+    height: auto;
+    max-height: 90vh; /* Keeps it from overflowing vertically */
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 1rem;
+    margin: 0 auto;
+
+    /* Disable all transitions */
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* Optional scrollbars */
+#chkpt.survey-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+#chkpt.survey-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+#chkpt.survey-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Responsive tweaks (no layout change, just spacing adjustments) */
+@media (max-width: 768px) {
+    .survey-container {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .survey-container {
+        padding: 0.75rem;
+    }
+}
+
+
         </style>
 
 
@@ -303,6 +406,7 @@
     </head>
     <body>
         <!-- Main content area -->
+        <div class="page-wrapper">
        
             <!-- Theme switcher -->
             <div class="theme-switcher">
@@ -408,6 +512,7 @@
                     margin-top: 0.3rem;
                 }
             </style>
+        </div>
         </div>
 
 

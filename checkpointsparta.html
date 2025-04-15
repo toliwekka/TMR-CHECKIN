@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TMR International | T-Check Portal</title>
-  <link rel="icon" type="image/png" href="logo.png" />
+        <title>TMR International | T-Check Portal</title>
+        <link rel="icon" type="image/png" href="logo.png" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="themes.css" />
         <link rel="stylesheet" href="chkstyles.css" />
@@ -85,10 +85,177 @@
                     padding: 0.7rem 1.5rem;
                 }
             }
+
+            #chkpt.survey-container {
+                overflow-y: scroll; /* Always show vertical scrollbar */
+                overflow-x: scroll; /* Always show horizontal scrollbar */
+                box-sizing: border-box;
+                padding: 1rem;
+                margin: 0 auto;
+                transition: none !important;
+            }
+
+            /* Webkit (Chrome, Safari) */
+            #chkpt.survey-container::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+
+            #chkpt.survey-container::-webkit-scrollbar-thumb {
+                background-color: rgba(0, 0, 0, 0.3);
+                border-radius: 4px;
+            }
+
+            #chkpt.survey-container::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            /* Responsive tweaks */
+            @media (max-width: 768px) {
+                .survey-container {
+                    padding: 16px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .survey-container {
+                    padding: 12px;
+                }
+            }
+
+            #chkpt.survey-container {
+                overflow-y: scroll; /* Always show vertical scrollbar */
+                overflow-x: scroll; /* Always show horizontal scrollbar */
+                box-sizing: border-box;
+                padding: 1rem;
+                margin: 0 auto;
+                transition: none !important;
+            }
+
+            /* Webkit (Chrome, Safari) */
+            #chkpt.survey-container::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+
+            #chkpt.survey-container::-webkit-scrollbar-thumb {
+                background-color: rgba(0, 0, 0, 0.3);
+                border-radius: 4px;
+            }
+
+            #chkpt.survey-container::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto; /* Allow scrolling */
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Page wrapper for additional structure if needed */
+.page-wrapper {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Main survey container */
+#chkpt.survey-container {
+    width: 800px;
+    max-width: 100%;
+    height: auto;
+    max-height: 90vh; /* Keeps it from overflowing vertically */
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 1rem;
+    margin: 0 auto;
+
+    /* Disable all transitions */
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* Optional scrollbars */
+#chkpt.survey-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+#chkpt.survey-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+#chkpt.survey-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Responsive tweaks (no layout change, just spacing adjustments) */
+@media (max-width: 768px) {
+    .survey-container {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .survey-container {
+        padding: 0.75rem;
+    }
+}
+
+
+
+
         </style>
     </head>
     <body>
         <!-- Main content area -->
+        <div class="page-wrapper">
             <!-- Theme switcher -->
             <div class="theme-switcher">
                 <select id="themeSelect" class="form-select">
@@ -104,43 +271,43 @@
                 </select>
             </div>
 
-        <div id="chkpt" class="survey-container">
-            <h1 class="text-center mb-4" style="color: var(--primary); font-weight: 700;">
-                Begin Your T|Check Self-Discovery Journey
-            </h1>
+            <div id="chkpt" class="survey-container">
+                <h1 class="text-center mb-4" style="color: var(--primary); font-weight: 700;">
+                    Begin Your T|Check Self-Discovery Journey
+                </h1>
 
-            <div class="flip-badge" id="questionBadge">1</div>
+                <div class="flip-badge" id="questionBadge">1</div>
 
-            <div class="survey-card">
-                <h3 class="question-intro" id="questionSection">Section A</h3>
-                <p class="question-context" id="questionMeta">During the past 14 days</p>
-                <p class="question-text" id="questionText">I’ve been feeling optimistic about the future.</p>
+                <div class="survey-card">
+                    <h3 class="question-intro" id="questionSection">Section A</h3>
+                    <p class="question-context" id="questionMeta">During the past 14 days</p>
+                    <p class="question-text" id="questionText">I’ve been feeling optimistic about the future.</p>
+                </div>
+
+                <div class="option-card" id="optionsContainer">
+                    <!-- Options injected -->
+                </div>
+                <button
+                    id="continueBtn"
+                    class="continue-button"
+                    style="
+                        display: none;
+                        margin-top: 2rem;
+                        padding: 0.8rem 2rem;
+                        font-weight: 600;
+                        font-size: 1rem;
+                        border: none;
+                        border-radius: 30px;
+                        background-color: var(--button-bg);
+                        color: white;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;
+                    "
+                >
+                    Continue
+                </button>
             </div>
-
-            <div class="option-card" id="optionsContainer">
-                <!-- Options injected -->
-            </div>
-            <button
-                id="continueBtn"
-                class="continue-button"
-                style="
-                    display: none;
-                    margin-top: 2rem;
-                    padding: 0.8rem 2rem;
-                    font-weight: 600;
-                    font-size: 1rem;
-                    border: none;
-                    border-radius: 30px;
-                    background-color: var(--button-bg);
-                    color: white;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                "
-            >
-                Continue
-            </button>
         </div>
-
 
         <script src="themes.js"></script>
 
