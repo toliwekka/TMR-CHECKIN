@@ -1,135 +1,783 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TMR Admin Portal</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f1f7fd;
-    }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TMR Admin Portal</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+        <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-    .sidebar {
-      height: 100vh;
-      background-color: #003366;
-      color: #fff;
-      padding: 2rem 1rem;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 250px;
-      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
-    }
+        <style>
+            body {
+                font-family: "Poppins", sans-serif;
+                background-color: #f1f7fd;
+            }
+            .sidebar {
+                height: 100vh;
+                background-color: #003366;
+                color: #fff;
+                padding: 2rem 1rem;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 250px;
+                box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+            }
+            .sidebar h2 {
+                font-size: 1.75rem;
+                margin-bottom: 2rem;
+            }
+            .sidebar a {
+                display: block;
+                color: #fff;
+                padding: 10px;
+                text-decoration: none;
+                margin-bottom: 10px;
+                border-radius: 6px;
+                transition: 0.3s;
+            }
+            .sidebar a:hover,
+            .sidebar a.active {
+                background-color: #00b0ff;
+            }
+            .main {
+                margin-left: 250px;
+                padding: 2rem;
+            }
+            .tab-content {
+                background: white;
+                padding: 2rem;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+            .nav-pills .nav-link.active {
+                background-color: #003366;
+            }
+            #map {
+                width: 100%;
+                height: 600px;
+                border-radius: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="sidebar">
+            <h2>TMR Admin</h2>
+            <a href="#dashboard" class="nav-link active" data-bs-toggle="pill">Dashboard</a>
+            <a href="#schools" class="nav-link" data-bs-toggle="pill">Schools</a>
+            <a href="#staff" class="nav-link" data-bs-toggle="pill">TMR Hospital Personnel</a>
+            <a href="#analytics" class="nav-link" data-bs-toggle="pill">Wellness Analytics</a>
+            <a href="#reports" class="nav-link" data-bs-toggle="pill">Reports</a>
+            <a href="#settings" class="nav-link" data-bs-toggle="pill">Settings</a>
+        </div>
 
-    .sidebar h2 {
-      font-size: 1.75rem;
-      margin-bottom: 2rem;
-    }
+        <div class="main">
+            <div class="tab-content" id="tabContent">
+<div class="tab-pane fade show active" id="dashboard">
+  <h3 class="text-3xl font-bold text-gray-800 mb-6">📊 Dashboard Overview</h3>
+  <p class="text-lg text-gray-600 mb-6">Explore the map centered on TMR International with nearby schools. Interactive markers provide quick insights into each school's profile.</p>
+  <div id="map" class="w-full h-96 rounded-lg shadow-lg border border-gray-200 mb-6"></div>
+</div>
 
-    .sidebar a {
-      display: block;
-      color: #fff;
-      padding: 10px;
-      text-decoration: none;
-      margin-bottom: 10px;
-      border-radius: 6px;
-      transition: 0.3s;
-    }
+<div class="tab-pane fade" id="schools">
+  <h1 class="text-3xl font-bold mb-6 text-gray-800">🏫 Partner School Profiles</h1>
+  <p class="text-lg text-gray-600 mb-6">Explore detailed data about our partner schools, including enrollment stats, contact information, wellness metrics, and valuable feedback loops. Each school profile includes interactive visualizations for better insights.</p>
 
-    .sidebar a:hover,
-    .sidebar a.active {
-      background-color: #00b0ff;
-    }
+  <div id="schoolContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
 
-    .main {
-      margin-left: 250px;
-      padding: 2rem;
-    }
-
-    .tab-content {
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-
-    .nav-pills .nav-link.active {
-      background-color: #003366;
-    }
-  </style>
-</head>
-<body>
-  <div class="sidebar">
-    <h2>TMR Admin</h2>
-    <a href="#dashboard" class="nav-link active" data-bs-toggle="pill">Dashboard</a>
-    <a href="#schools" class="nav-link" data-bs-toggle="pill">Schools</a>
-    <a href="#staff" class="nav-link" data-bs-toggle="pill">TMR Hospital Personnel</a>
-    <a href="#analytics" class="nav-link" data-bs-toggle="pill">Wellness Analytics</a>
-    <a href="#reports" class="nav-link" data-bs-toggle="pill">Reports</a>
-    <a href="#settings" class="nav-link" data-bs-toggle="pill">Settings</a>
-  </div>
-
-  <div class="main">
-    <div class="tab-content" id="tabContent">
-      <div class="tab-pane fade show active" id="dashboard">
-        <h3>📊 Dashboard Overview</h3>
-        <p>Welcome to your centralized admin portal. Use the tabs to navigate between different segments of the TMR system.</p>
-      </div>
-
-      <div class="tab-pane fade" id="schools">
-        <h3>🏫 School Profiles</h3>
-        <p>View detailed data about partner schools, their enrollment, contact persons, wellness metrics, and feedback loops.</p>
-        <!-- Add Bootstrap-styled table or card data here -->
-      </div>
-
-      <div class="tab-pane fade" id="staff">
-        <h3>👨‍⚕️ TMR Hospital Personnel</h3>
-        <p>Manage staff profiles, assign roles, and monitor performance and well-being across departments.</p>
-        <!-- Bootstrap table or card layout with staff info -->
-      </div>
-
-      <div class="tab-pane fade" id="analytics">
-        <h3>📈 Wellness Analytics</h3>
-        <p>Access mental wellness trends across institutions, generate heatmaps, and filter by demographics or regions.</p>
-        <!-- Chart.js or other visual components -->
-      </div>
-
-      <div class="tab-pane fade" id="reports">
-        <h3>📝 Reports</h3>
-        <p>Generate and download customizable PDF or Excel reports for any metric across timeframes.</p>
-        <!-- Options for filters and export -->
-      </div>
-
-      <div class="tab-pane fade" id="settings">
-        <h3>⚙️ Settings</h3>
-        <p>Configure roles, manage permissions, set notifications, and system-wide preferences.</p>
-        <!-- Forms or switches for settings -->
-      </div>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Activate tab switch manually (since we’re using custom links)
-    const navLinks = document.querySelectorAll('.sidebar a');
-    const tabPanes = document.querySelectorAll('.tab-pane');
+    const schoolData = [
+      {
+        name: "Bethany High School Naalya",
+        type: "Secondary School",
+        enrollment: 550,
+        staff: 48,
+        location: "Naalya, Kampala",
+        lat: 0.36917,
+        lng: 32.6375,
+        contact: "Mrs. Joy Katongole",
+        phone: "+256 701 234567",
+        email: "bethany@school.ug",
+        liaison: "Dr. Anita Mugisha",
+        metrics: {
+          overall: 73,
+          categories: [72, 68, 80, 75, 65],
+        },
+        feedback: {
+          last: "March 10, 2025",
+          comment: "Requested more workshops on anxiety management.",
+          next: "May 5, 2025",
+        },
+      },
+      {
+        name: "Vienna College Namugongo",
+        type: "International High School",
+        enrollment: 620,
+        staff: 52,
+        location: "Namugongo, Wakiso",
+        lat: 0.37722,
+        lng: 32.64556,
+        contact: "Mr. Joseph Nsubuga",
+        phone: "+256 772 111222",
+        email: "vienna@school.ug",
+        liaison: "Dr. Moses Wekka",
+        metrics: {
+          overall: 81,
+          categories: [82, 76, 84, 79, 83],
+        },
+        feedback: {
+          last: "Feb 20, 2025",
+          comment: "Impressive SEL implementation across classes.",
+          next: "April 18, 2025",
+        },
+      },
+      {
+        name: "Naalya Secondary School - Namugongo",
+        type: "High School",
+        enrollment: 510,
+        staff: 44,
+        location: "Namugongo, Kampala",
+        lat: 0.36869,
+        lng: 32.6403,
+        contact: "Mrs. Irene Namakula",
+        phone: "+256 789 654321",
+        email: "naalya@school.ug",
+        liaison: "Ms. Linda K",
+        metrics: {
+          overall: 67,
+          categories: [60, 62, 70, 66, 65],
+        },
+        feedback: {
+          last: "Jan 5, 2025",
+          comment: "Need more staff wellness interventions.",
+          next: "April 20, 2025",
+        },
+      },
+    ];
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        navLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
+    const container = document.getElementById("schoolContainer");
 
-        tabPanes.forEach(pane => pane.classList.remove('show', 'active'));
-        const target = document.querySelector(link.getAttribute('href'));
-        if (target) {
-          target.classList.add('show', 'active');
-        }
-      });
+    schoolData.forEach((school, index) => {
+      const id = `chart-${index}`;
+      const card = document.createElement("div");
+      card.className = "bg-white rounded-2xl shadow-xl p-6 transition-transform transform hover:scale-105 hover:shadow-2xl";
+
+      card.innerHTML = `
+        <div class="bg-blue-50 rounded-lg p-4 mb-4">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">${school.name}</h3>
+          <p class="text-sm text-gray-600 mb-1"><strong>Type:</strong> ${school.type}</p>
+          <p class="text-sm text-gray-600 mb-1"><strong>Enrollment:</strong> ${school.enrollment} students</p>
+          <p class="text-sm text-gray-600 mb-1"><strong>Staff:</strong> ${school.staff}</p>
+          <p class="text-sm text-gray-600 mb-3"><strong>Location:</strong> ${school.location}</p>
+        </div>
+
+        <div class="mb-2">
+          <h4 class="text-sm font-semibold text-gray-700">Contact:</h4>
+          <p class="text-sm text-gray-600">${school.contact}</p>
+          <p class="text-sm text-gray-600">📞 ${school.phone} | ✉️ ${school.email}</p>
+        </div>
+
+        <div class="mb-2">
+          <h4 class="text-sm font-semibold text-gray-700">TMR Liaison:</h4>
+          <p class="text-sm text-gray-600">${school.liaison}</p>
+        </div>
+
+        <hr class="my-3">
+
+        <div class="mb-3">
+          <h4 class="text-sm font-semibold text-gray-700">Wellness Metrics</h4>
+          <ul class="text-sm text-gray-600 space-y-1">
+            <li><strong>Overall Wellness Score:</strong> ${school.metrics.overall}%</li>
+            <li><strong>Categories:</strong> Emotional, Social, Academic, Resilience, Stress Mgmt</li>
+          </ul>
+        </div>
+
+        <div id="${id}" class="w-full h-52 mb-4"></div>
+
+        <div class="mb-3">
+          <h4 class="text-sm font-semibold text-gray-700">Feedback & Engagement</h4>
+          <p class="text-sm text-gray-600">Last session: ${school.feedback.last}</p>
+          <p class="text-sm text-gray-600">${school.feedback.comment}</p>
+          <p class="text-sm text-gray-600">Next check-in: ${school.feedback.next}</p>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mt-4">
+          <button class="bg-blue-600 text-white text-sm px-4 py-2 rounded-full hover:bg-blue-700 transition duration-200">View Full Report</button>
+          <button class="bg-green-500 text-white text-sm px-4 py-2 rounded-full hover:bg-green-600 transition duration-200">Schedule Follow-Up</button>
+          <button class="bg-gray-300 text-gray-800 text-sm px-4 py-2 rounded-full hover:bg-gray-400 transition duration-200">Download PDF</button>
+        </div>
+      `;
+
+      container.appendChild(card);
+
+      Plotly.newPlot(
+        id,
+        [
+          {
+            type: "scatterpolar",
+            r: school.metrics.categories,
+            theta: ["Emotional", "Social", "Academic", "Resilience", "Stress Mgmt"],
+            fill: "toself",
+            fillcolor: "rgba(59, 130, 246, 0.3)",
+            line: {
+              color: "#3b82f6",
+            },
+          },
+        ],
+        {
+          polar: {
+            radialaxis: {
+              visible: true,
+              range: [0, 100],
+              tickfont: { size: 10 },
+            },
+          },
+          margin: { t: 20, b: 0, l: 0, r: 0 },
+          height: 220,
+          paper_bgcolor: "transparent",
+          font: { color: "#374151" },
+        },
+        { displayModeBar: false }
+      );
     });
+
   </script>
-</body>
+</div>
+
+                <div class="tab-pane fade" id="staff">
+                    <div class="bg-white p-8 rounded-2xl shadow-2xl mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center space-x-2">
+                            <span class="text-blue-600">👨‍⚕️</span>
+                            <span>TMR Hospital Personnel</span>
+                        </h3>
+                        <p class="text-gray-600 mb-6">Manage staff profiles, assign roles, monitor performance, and well-being across departments.</p>
+
+                        <!-- Profile Section -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <!-- Profile Card 1 -->
+                            <div class="bg-gradient-to-r from-blue-600 to-blue-500 text-white p-6 rounded-xl shadow-lg hover:scale-105 transform transition duration-300 ease-in-out">
+                                <h4 class="text-lg font-semibold mb-2">Dr. John Doe</h4>
+                                <div class="flex items-center space-x-2">
+                                    <span class="bg-white text-blue-600 rounded-full px-3 py-1 text-xs">Cardiologist</span>
+                                    <span class="bg-white text-green-600 rounded-full px-3 py-1 text-xs">Cardiology</span>
+                                </div>
+                                <div class="my-4">
+                                    <p class="text-sm">Performance: <strong>90%</strong></p>
+                                    <p class="text-sm">Well-being: <strong class="text-green-400">Good</strong></p>
+                                </div>
+                                <div class="flex justify-between items-center mt-4">
+                                    <button class="bg-white text-blue-600 text-sm py-2 px-4 rounded-full">View Profile</button>
+                                    <button class="bg-green-500 text-white text-sm py-2 px-4 rounded-full">Assign New Role</button>
+                                </div>
+                            </div>
+
+                            <!-- Profile Card 2 -->
+                            <div class="bg-gradient-to-r from-teal-600 to-teal-500 text-white p-6 rounded-xl shadow-lg hover:scale-105 transform transition duration-300 ease-in-out">
+                                <h4 class="text-lg font-semibold mb-2">Nurse Jane Smith</h4>
+                                <div class="flex items-center space-x-2">
+                                    <span class="bg-white text-teal-600 rounded-full px-3 py-1 text-xs">Nurse</span>
+                                    <span class="bg-white text-yellow-600 rounded-full px-3 py-1 text-xs">ICU</span>
+                                </div>
+                                <div class="my-4">
+                                    <p class="text-sm">Performance: <strong>85%</strong></p>
+                                    <p class="text-sm">Well-being: <strong class="text-yellow-400">Fair</strong></p>
+                                </div>
+                                <div class="flex justify-between items-center mt-4">
+                                    <button class="bg-white text-teal-600 text-sm py-2 px-4 rounded-full">View Profile</button>
+                                    <button class="bg-green-500 text-white text-sm py-2 px-4 rounded-full">Assign New Role</button>
+                                </div>
+                            </div>
+
+                            <!-- Profile Card 3 -->
+                            <div class="bg-gradient-to-r from-purple-600 to-purple-500 text-white p-6 rounded-xl shadow-lg hover:scale-105 transform transition duration-300 ease-in-out">
+                                <h4 class="text-lg font-semibold mb-2">Admin Assistant Mike L.</h4>
+                                <div class="flex items-center space-x-2">
+                                    <span class="bg-white text-purple-600 rounded-full px-3 py-1 text-xs">Admin Assistant</span>
+                                    <span class="bg-white text-orange-600 rounded-full px-3 py-1 text-xs">Administration</span>
+                                </div>
+                                <div class="my-4">
+                                    <p class="text-sm">Performance: <strong>80%</strong></p>
+                                    <p class="text-sm">Well-being: <strong class="text-green-400">Excellent</strong></p>
+                                </div>
+                                <div class="flex justify-between items-center mt-4">
+                                    <button class="bg-white text-purple-600 text-sm py-2 px-4 rounded-full">View Profile</button>
+                                    <button class="bg-green-500 text-white text-sm py-2 px-4 rounded-full">Assign New Role</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Performance and Well-being Charts -->
+                        <div class="mt-12">
+                            <h4 class="text-xl font-semibold text-gray-800 mb-4">Staff Performance and Well-being Overview</h4>
+                            <div id="performanceChart" class="w-full h-64 bg-gradient-to-r from-blue-200 to-blue-100 rounded-xl shadow-lg mb-8"></div>
+                            <p class="text-sm text-gray-600 mb-4">
+                                Monitor the overall performance trends of staff and track their well-being status over time. This visual feedback helps you make informed decisions about staffing and role assignments.
+                            </p>
+
+                            <!-- Button to generate report -->
+                            <div class="flex justify-center mt-6">
+                                <button class="bg-yellow-500 text-white text-lg px-6 py-3 rounded-full shadow-xl hover:bg-yellow-400 transition duration-300 ease-in-out">Generate Performance Report</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        // Example data for the performance chart
+                        const performanceData = {
+                            x: ["Dr. John Doe", "Nurse Jane Smith", "Admin Assistant Mike L."],
+                            y: [90, 85, 80],
+                            type: "bar",
+                            marker: {
+                                color: ["#3b82f6", "#10b981", "#f59e0b"],
+                            },
+                        };
+
+                        // Plotly chart initialization
+                        Plotly.newPlot("performanceChart", [performanceData], {
+                            title: "Staff Performance Overview",
+                            xaxis: { title: "Personnel" },
+                            yaxis: { title: "Performance (%)", range: [0, 100] },
+                            paper_bgcolor: "transparent",
+                            plot_bgcolor: "transparent",
+                        });
+                    </script>
+                </div>
+
+                <div class="tab-pane fade" id="analytics">
+                    <h3>📈 Wellness Analytics</h3>
+                    <p>Access mental wellness trends across institutions, generate heatmaps, and filter by demographics or regions.</p>
+                </div>
+
+                <div class="tab-pane fade" id="reports">
+                    <h3>📝 Reports</h3>
+                    <p>Generate and download customizable PDF or Excel reports for any metric across timeframes.</p>
+                </div>
+
+                <div class="tab-pane fade" id="settings">
+                    <h3>⚙️ Settings</h3>
+                    <p>Configure roles, manage permissions, set notifications, and system-wide preferences.</p>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f7f6;
+  margin: 0;
+  padding: 0;
+}
+
+.settings-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #003366;
+  margin-bottom: 30px;
+}
+
+section {
+  margin-bottom: 30px;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: #003366;
+  margin-bottom: 15px;
+}
+
+h4 {
+  font-size: 1.2rem;
+  color: #003366;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #003366;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #002a53;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+table th {
+  background-color: #003366;
+  color: white;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+input[type="text"], select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.log-search {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.permissions-toggle, .notification-type, .appearance-settings, .language-settings, .security-settings {
+  margin-bottom: 20px;
+}
+
+.permissions-toggle label, .notification-type label, .appearance-settings label, .language-settings label {
+  font-size: 1rem;
+}
+
+.permissions-toggle input, .notification-type input, .appearance-settings input, .language-settings input {
+  width: auto;
+  margin-left: 10px;
+}
+
+</style>
+
+  <div class="settings-container">
+    <h2>⚙️ Settings</h2>
+    
+    <!-- Role Management Section -->
+    <section id="roles-permissions">
+      <h3>Manage Roles</h3>
+      <button class="btn-add-role">Add New Role</button>
+      <table class="role-table">
+        <thead>
+          <tr>
+            <th>Role Name</th>
+            <th>Permissions</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Admin</td>
+            <td>Full Access</td>
+            <td>
+              <button class="btn-edit">Edit</button>
+              <button class="btn-delete">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Staff</td>
+            <td>Limited Access</td>
+            <td>
+              <button class="btn-edit">Edit</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Permissions Section -->
+    <section id="permissions">
+      <h3>Assign Permissions</h3>
+      <div class="permissions-toggle">
+        <label>View Content</label>
+        <input type="checkbox" checked>
+      </div>
+      <div class="permissions-toggle">
+        <label>Edit Content</label>
+        <input type="checkbox">
+      </div>
+      <div class="permissions-toggle">
+        <label>Delete Content</label>
+        <input type="checkbox">
+      </div>
+      <div class="permissions-toggle">
+        <label>Access Settings</label>
+        <input type="checkbox" disabled>
+      </div>
+      <button class="btn-save">Save Changes</button>
+    </section>
+
+    <!-- Notification Settings Section -->
+    <section id="notifications-settings">
+      <h3>Notification Settings</h3>
+      <div class="notification-type">
+        <label>Email Alerts</label>
+        <input type="checkbox" checked>
+      </div>
+      <div class="notification-type">
+        <label>SMS Alerts</label>
+        <input type="checkbox">
+      </div>
+      <div class="notification-type">
+        <label>Push Notifications</label>
+        <input type="checkbox" checked>
+      </div>
+      <h4>Notification Frequency</h4>
+      <label for="frequency">Frequency</label>
+      <select id="frequency">
+        <option value="immediate">Immediate</option>
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+      </select>
+      <button class="btn-save">Save Notifications Preferences</button>
+    </section>
+
+    <!-- System Preferences Section -->
+    <section id="system-preferences">
+      <h3>System Preferences</h3>
+
+      <!-- Appearance Settings -->
+      <div class="appearance-settings">
+        <label for="dark-mode">Dark Mode</label>
+        <input type="checkbox" id="dark-mode" checked>
+      </div>
+
+      <!-- Language Settings -->
+      <div class="language-settings">
+        <label for="language">Language</label>
+        <select id="language">
+          <option value="english">English</option>
+          <option value="french">French</option>
+          <option value="spanish">Spanish</option>
+        </select>
+      </div>
+
+      <!-- Security Settings -->
+      <div class="security-settings">
+        <h4>Security Settings</h4>
+        <label for="2fa">Enable Two-Factor Authentication</label>
+        <input type="checkbox" id="2fa" checked>
+        
+        <h4>Password Policy</h4>
+        <input type="text" placeholder="Enter password policy details" />
+      </div>
+
+      <!-- Save Preferences -->
+      <button class="btn-save">Save System Preferences</button>
+    </section>
+
+    <!-- Audit Logs Section -->
+    <section id="activity-logs">
+      <h3>Activity & Audit Logs</h3>
+      <input type="text" placeholder="Search by user or date" class="log-search">
+      <table class="log-table">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>User</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2025-04-16 12:00 PM</td>
+            <td>Admin</td>
+            <td>Changed Role Permissions</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+<script>
+// Toggling Dark Mode
+document.getElementById('dark-mode').addEventListener('change', function () {
+  if (this.checked) {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+});
+
+// Saving Changes for Roles & Permissions
+document.querySelectorAll('.btn-save').forEach(button => {
+  button.addEventListener('click', () => {
+    alert("Settings have been saved successfully!");
+  });
+});
+
+// Toggle notifications options
+const notificationInputs = document.querySelectorAll('#notifications-settings input[type="checkbox"]');
+notificationInputs.forEach(input => {
+  input.addEventListener('change', (event) => {
+    if (event.target.checked) {
+      console.log(`${event.target.previousElementSibling.innerText} Enabled`);
+    } else {
+      console.log(`${event.target.previousElementSibling.innerText} Disabled`);
+    }
+  });
+});
+
+// Handling the activity logs search filter
+const logSearch = document.querySelector('.log-search');
+logSearch.addEventListener('input', function () {
+  console.log("Search query: ", this.value);
+});
+
+// Role permissions edit and delete actions (simplified for demo)
+document.querySelectorAll('.btn-edit').forEach(button => {
+  button.addEventListener('click', () => {
+    alert("Edit role functionality coming soon!");
+  });
+});
+
+document.querySelectorAll('.btn-delete').forEach(button => {
+  button.addEventListener('click', () => {
+    alert("Delete role functionality coming soon!");
+  });
+});
+
+</script>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const navLinks = document.querySelectorAll(".sidebar a");
+            const tabPanes = document.querySelectorAll(".tab-pane");
+            navLinks.forEach((link) => {
+                link.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    navLinks.forEach((l) => l.classList.remove("active"));
+                    link.classList.add("active");
+                    tabPanes.forEach((pane) => pane.classList.remove("show", "active"));
+                    const target = document.querySelector(link.getAttribute("href"));
+                    if (target) target.classList.add("show", "active");
+                });
+            });
+
+            function initMap() {
+                const tmr = { lat: 0.36771, lng: 32.63716 }; // TMR International Hospital
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    center: tmr,
+                    zoom: 15,
+                });
+
+                const tmrMarker = new google.maps.Marker({
+                    position: tmr,
+                    map,
+                    title: "TMR International Hospital",
+                    icon: "http://maps.google.com/mapfiles/ms/icons/hospitals.png",
+                });
+
+                const locations = [
+                    {
+                        name: "Bethany High School Naalya",
+                        lat: 0.36917,
+                        lng: 32.6375,
+                        status: "Focuses on mental health education with active peer support groups and access to counseling.",
+                    },
+                    {
+                        name: "St. Peter's Secondary School – Naalya",
+                        lat: 0.36648,
+                        lng: 32.64026,
+                        status: "Provides emotional resilience training and a student mental wellness club.",
+                    },
+                    {
+                        name: "Hillside Nursery and Primary School – Naalya",
+                        lat: 0.368,
+                        lng: 32.637,
+                        status: "Incorporates social-emotional learning (SEL) and mindfulness sessions for young learners.",
+                    },
+                    {
+                        name: "Vienna College Namugongo",
+                        lat: 0.37722,
+                        lng: 32.64556,
+                        status: "Mental health is a priority with access to psychologists and stress management workshops.",
+                    },
+                    {
+                        name: "Naalya Secondary School, Namugongo Campus",
+                        lat: 0.36869,
+                        lng: 32.6403,
+                        status: "Hosts regular mental health awareness events and peer support programs.",
+                    },
+                    {
+                        name: "St. Michael High School – Mukono (Sonde)",
+                        lat: 0.395,
+                        lng: 32.68667,
+                        status: "Provides counseling and mentorship focused on reducing student anxiety and burnout.",
+                    },
+                ];
+
+                const infoWindow = new google.maps.InfoWindow();
+
+                function openInfoWindow(map, marker, loc) {
+                    const contentId = `chart-${Math.random().toString(36).substr(2, 9)}`;
+
+                    const content = `
+        <div style="max-width: 320px;">
+          <h5 style="margin-bottom: 6px;">${loc.name}</h5>
+          <div style="font-size: 13px; background: #f6f6f6; padding: 8px; border-left: 4px solid #34a853; border-radius: 4px; margin-bottom: 10px;">
+            ${loc.status}
+          </div>
+          <div id="${contentId}" style="width: 100%; height: 220px;"></div>
+        </div>
+      `;
+
+                    infoWindow.setContent(content);
+                    infoWindow.open(map, marker);
+
+                    google.maps.event.addListenerOnce(infoWindow, "domready", function () {
+                        const x = ["Jan", "Feb", "Mar", "Apr", "May"];
+                        const y = Array.from({ length: 5 }, () => Math.floor(Math.random() * 30 + 10));
+
+                        const trace = {
+                            x,
+                            y,
+                            type: "bar",
+                            marker: { color: "#4285F4" },
+                        };
+
+                        const layout = {
+                            title: "Support Requests",
+                            margin: { t: 30, b: 30, l: 30, r: 10 },
+                            font: { size: 10 },
+                            height: 220,
+                        };
+
+                        Plotly.newPlot(contentId, [trace], layout, { displayModeBar: false });
+                    });
+                }
+
+                locations.forEach((loc) => {
+                    const marker = new google.maps.Marker({
+                        position: { lat: loc.lat, lng: loc.lng },
+                        map,
+                        title: loc.name,
+                    });
+
+                    marker.addListener("click", () => {
+                        openInfoWindow(map, marker, loc);
+                    });
+                });
+            }
+        </script>
+
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2vms9LGqfIyUe8dBkgge92omq8Bje72M&callback=initMap"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
 </html>
