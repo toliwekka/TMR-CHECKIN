@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TMR ConnectedCare | Schools Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --tmr-primary: #003366;
+      --tmr-accent: #66ccff;
+      --tmr-bg: #f0f8ff;
+      --card-bg: #ffffff;
+      --glass: rgba(255, 255, 255, 0.7);
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      --button-bg: #66ccff;
+      --button-hover-bg: #3399cc;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--tmr-bg);
+      color: var(--tmr-primary);
+      margin: 0;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--tmr-primary), #005999);
+      color: white;
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .school-select {
+      font-size: 1rem;
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      border: none;
+      outline: none;
+      background-color: white;
+      color: var(--tmr-primary);
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .dashboard {
+      column-count: 3;
+      column-gap: 2rem;
+      padding: 2rem;
+    }
+
+    .card {
+      background: var(--glass);
+      box-shadow: var(--shadow);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      break-inside: avoid-column;
+    }
+
+    .card h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    canvas {
+      max-width: 100%;
+      height: auto;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--tmr-primary);
+      color: white;
+      font-size: 0.9rem;
+    }
+
+    .check-button-container {
+      display: flex;
+      justify-content: center;
+      margin: 2.5rem 0;
+    }
+
+    .check-button {
+      background: linear-gradient(135deg, var(--button-bg), #33bbff);
+      color: white;
+      border: none;
+      padding: 1.2rem 4rem;
+      border-radius: 60px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .check-button:hover {
+      background: var(--button-hover-bg);
+      transform: scale(1.05);
+    }
+
+    .check-button:focus {
+      outline: none;
+    }
+
+    @media (max-width: 1200px) {
+      .dashboard {
+        column-count: 2;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard {
+        column-count: 1;
+      }
+
+      header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+
+    .container {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--tmr-primary);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="dashboardTitle">Naalya High School | TMR ConnectedCare</h1>
+    <select class="school-select" id="schoolSelector" onchange="updateSchool()">
+      <option value="Naalya High School">Naalya High School</option>
+      <option value="Greenwood International">Greenwood International</option>
+      <option value="St. Joseph Naalya">St. Joseph Naalya</option>
+      <option value="Kira College">Kira College</option>
+    </select>
+  </header>
+
+  <div class="container">
+    <div class="section-title">Launch Student Check-In Tool</div>
+    <div class="check-button-container">
+      <button class="check-button" onclick="window.location.href='intro.html'">Access T|Check</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section-title">Overview Charts & Insights</div>
+    <main class="dashboard">
+      <div class="card"><h2>Well-being Overview</h2><canvas id="wellbeingChart"></canvas></div>
+      <div class="card"><h2>Support Requests</h2><canvas id="supportChart"></canvas></div>
+      <div class="card"><h2>At-Risk Trends</h2><canvas id="riskChart"></canvas></div>
+      <div class="card"><h2>Active Interventions</h2><canvas id="interventionChart"></canvas></div>
+      <div class="card"><h2>Attendance Overview</h2><canvas id="attendanceChart"></canvas></div>
+    </main>
+  </div>
+
+  <footer>
+    &copy; 2025 TMR ConnectedCare | Powered by Toli Wekka. Designed for Transformation.
+  </footer>
+
+  <script>
+    const currentSchoolData = {
+      'Naalya High School': {
+        wellbeing: [52, 34, 14],
+        support: [40, 18, 6],
+        risk: [8, 12, 15, 14],
+        intervention: [15, 20, 5],
+        attendance: [95, 3, 2]
+      },
+      'Greenwood International': {
+        wellbeing: [60, 25, 15],
+        support: [30, 22, 8],
+        risk: [5, 10, 12, 13],
+        intervention: [10, 25, 8],
+        attendance: [92, 5, 3]
+      },
+      'St. Joseph Naalya': {
+        wellbeing: [45, 40, 15],
+        support: [35, 15, 7],
+        risk: [10, 14, 13, 11],
+        intervention: [18, 15, 7],
+        attendance: [89, 6, 5]
+      },
+      'Kira College': {
+        wellbeing: [50, 35, 15],
+        support: [28, 20, 10],
+        risk: [7, 13, 14, 12],
+        intervention: [20, 18, 7],
+        attendance: [93, 4, 3]
+      }
+    };
+
+    const wellbeingChart = new Chart(document.getElementById('wellbeingChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Flourishing', 'Managing', 'At Risk'],
+        datasets: [{ data: currentSchoolData['Naalya High School'].wellbeing, backgroundColor: ['#4caf50', '#ffca28', '#f44336'] }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    const supportChart = new Chart(document.getElementById('supportChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Counseling', 'Peer Support', 'Referral'],
+        datasets: [{ data: currentSchoolData['Naalya High School'].support, backgroundColor: '#66ccff' }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } } }
+    });
+
+    const riskChart = new Chart(document.getElementById('riskChart'), {
+      type: 'line',
+      data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        datasets: [{ data: currentSchoolData['Naalya High School'].risk, borderColor: '#f44336', fill: false, tension: 0.4 }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    const interventionChart = new Chart(document.getElementById('interventionChart'), {
+      type: 'pie',
+      data: {
+        labels: ['Ongoing', 'Completed', 'Pending'],
+        datasets: [{ data: currentSchoolData['Naalya High School'].intervention, backgroundColor: ['#2196f3', '#4caf50', '#ff9800'] }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    const attendanceChart = new Chart(document.getElementById('attendanceChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Present', 'Absent', 'Excused'],
+        datasets: [{ data: currentSchoolData['Naalya High School'].attendance, backgroundColor: ['#4caf50', '#ffca28', '#f44336'] }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    function updateSchool() {
+      const selected = document.getElementById("schoolSelector").value;
+      const data = currentSchoolData[selected];
+
+      // Update Header
+      document.getElementById("dashboardTitle").textContent = `${selected} | TMR ConnectedCare`;
+
+      wellbeingChart.data.datasets[0].data = data.wellbeing;
+      supportChart.data.datasets[0].data = data.support;
+      riskChart.data.datasets[0].data = data.risk;
+      interventionChart.data.datasets[0].data = data.intervention;
+      attendanceChart.data.datasets[0].data = data.attendance;
+
+      wellbeingChart.update();
+      supportChart.update();
+      riskChart.update();
+      interventionChart.update();
+      attendanceChart.update();
+    }
+  </script>
+</body>
+</html>

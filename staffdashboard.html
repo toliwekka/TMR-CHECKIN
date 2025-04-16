@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TMR Staff Well-being Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --tmr-blue: #003366;
+      --tmr-light: #eaf3fc;
+      --tmr-accent: #0099ff;
+      --tmr-muted: #f4f9ff;
+      --tmr-card-bg: #ffffff;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--tmr-muted);
+      color: var(--tmr-blue);
+    }
+
+    header {
+      background: var(--tmr-light);
+      padding: 1.5rem 2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+
+    .btn {
+      padding: 10px 24px;
+      background-color: var(--tmr-accent);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #007acc;
+    }
+
+    .main-container {
+      column-count: 3;
+      column-gap: 20px;
+      padding: 2rem;
+    }
+
+    @media (max-width: 1024px) {
+      .main-container {
+        column-count: 2;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        column-count: 1;
+      }
+    }
+
+    .card {
+      background: var(--tmr-card-bg);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+      margin-bottom: 20px;
+      padding: 2rem;
+      display: inline-block;
+      width: 100%;
+      break-inside: avoid;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+    }
+
+    .card h2 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: var(--tmr-blue);
+    }
+
+    .card p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 300px !important;
+    }
+
+    #loginModal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    #loginBox {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      width: 300px;
+      text-align: center;
+    }
+
+    #loginBox input {
+      padding: 10px;
+      margin-bottom: 1rem;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div id="loginModal">
+    <div id="loginBox">
+      <h2>Login</h2>
+      <input type="text" placeholder="Username" id="username" /><br>
+      <input type="password" placeholder="Password" id="password" /><br>
+      <button class="btn" onclick="login()">Login</button>
+    </div>
+  </div>
+
+  <header>
+    <h1>TMR Staff Well-being Portal</h1>
+    <button class="btn">Log Out</button>
+  </header>
+
+  <div class="main-container">
+    <div class="card">
+      <h2>📈 Mood Over Time</h2>
+      <canvas id="moodChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>📊 Weekly Check-in Summary</h2>
+      <canvas id="checkinChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>🧠 Access T|Check</h2>
+      <p>Start your personalized mental wellness check. It's anonymous, insightful, and takes just 2 minutes.</p>
+      <button class="btn"  onclick="location.href='intro.html'">Begin T|Check</button>
+    </div>
+
+    <div class="card">
+      <h2>🗓️ Book a Session</h2>
+      <p>Connect with one of our wellness professionals. You can remain anonymous if you prefer.</p>
+      <button class="btn">Book Now</button>
+    </div>
+
+    <div class="card">
+      <h2>📚 Wellness Resources</h2>
+      <p>Access articles, videos, podcasts, and tips focused on stress, focus, resilience, and mental strength.</p>
+      <button class="btn">View Resources</button>
+    </div>
+
+    <div class="card">
+      <h2>🤝 Need Immediate Support?</h2>
+      <p>Reach out to the TMR support team for urgent help or questions regarding wellness care services.</p>
+      <button class="btn">Contact Support</button>
+    </div>
+  </div>
+
+  <script>
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateMoodData() {
+      return Array.from({length: 7}, () => randomInt(40, 90));
+    }
+
+    function generateCheckinData() {
+      return Array.from({length: 5}, () => randomInt(40, 100));
+    }
+
+    function renderCharts() {
+      new Chart(document.getElementById("moodChart"), {
+        type: "line",
+        data: {
+          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          datasets: [{
+            label: "Mood Score",
+            data: generateMoodData(),
+            borderColor: "#007acc",
+            backgroundColor: "rgba(0, 153, 255, 0.2)",
+            tension: 0.4,
+            fill: true,
+            pointRadius: 4,
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: { y: { min: 0, max: 100 } }
+        }
+      });
+
+      new Chart(document.getElementById("checkinChart"), {
+        type: "bar",
+        data: {
+          labels: ["Stress", "Energy", "Sleep", "Focus", "Mood"],
+          datasets: [{
+            label: "Weekly Avg",
+            data: generateCheckinData(),
+            backgroundColor: [
+              "#ff6384",
+              "#36a2eb",
+              "#ffce56",
+              "#4bc0c0",
+              "#9966ff"
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: { y: { min: 0, max: 100 } }
+        }
+      });
+    }
+
+    function login() {
+      document.getElementById("loginModal").style.display = "none";
+      renderCharts();
+    }
+
+    window.onload = () => {
+      // Keep dashboard hidden until login for added realism
+    }
+  </script>
+</body>
+</html>

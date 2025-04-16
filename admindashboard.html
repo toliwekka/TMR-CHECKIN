@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TMR Admin Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f1f7fd;
+    }
+
+    .sidebar {
+      height: 100vh;
+      background-color: #003366;
+      color: #fff;
+      padding: 2rem 1rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar h2 {
+      font-size: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #fff;
+      padding: 10px;
+      text-decoration: none;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #00b0ff;
+    }
+
+    .main {
+      margin-left: 250px;
+      padding: 2rem;
+    }
+
+    .tab-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-pills .nav-link.active {
+      background-color: #003366;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>TMR Admin</h2>
+    <a href="#dashboard" class="nav-link active" data-bs-toggle="pill">Dashboard</a>
+    <a href="#schools" class="nav-link" data-bs-toggle="pill">Schools</a>
+    <a href="#staff" class="nav-link" data-bs-toggle="pill">TMR Hospital Personnel</a>
+    <a href="#analytics" class="nav-link" data-bs-toggle="pill">Wellness Analytics</a>
+    <a href="#reports" class="nav-link" data-bs-toggle="pill">Reports</a>
+    <a href="#settings" class="nav-link" data-bs-toggle="pill">Settings</a>
+  </div>
+
+  <div class="main">
+    <div class="tab-content" id="tabContent">
+      <div class="tab-pane fade show active" id="dashboard">
+        <h3>📊 Dashboard Overview</h3>
+        <p>Welcome to your centralized admin portal. Use the tabs to navigate between different segments of the TMR system.</p>
+      </div>
+
+      <div class="tab-pane fade" id="schools">
+        <h3>🏫 School Profiles</h3>
+        <p>View detailed data about partner schools, their enrollment, contact persons, wellness metrics, and feedback loops.</p>
+        <!-- Add Bootstrap-styled table or card data here -->
+      </div>
+
+      <div class="tab-pane fade" id="staff">
+        <h3>👨‍⚕️ TMR Hospital Personnel</h3>
+        <p>Manage staff profiles, assign roles, and monitor performance and well-being across departments.</p>
+        <!-- Bootstrap table or card layout with staff info -->
+      </div>
+
+      <div class="tab-pane fade" id="analytics">
+        <h3>📈 Wellness Analytics</h3>
+        <p>Access mental wellness trends across institutions, generate heatmaps, and filter by demographics or regions.</p>
+        <!-- Chart.js or other visual components -->
+      </div>
+
+      <div class="tab-pane fade" id="reports">
+        <h3>📝 Reports</h3>
+        <p>Generate and download customizable PDF or Excel reports for any metric across timeframes.</p>
+        <!-- Options for filters and export -->
+      </div>
+
+      <div class="tab-pane fade" id="settings">
+        <h3>⚙️ Settings</h3>
+        <p>Configure roles, manage permissions, set notifications, and system-wide preferences.</p>
+        <!-- Forms or switches for settings -->
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Activate tab switch manually (since we’re using custom links)
+    const navLinks = document.querySelectorAll('.sidebar a');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+
+        tabPanes.forEach(pane => pane.classList.remove('show', 'active'));
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          target.classList.add('show', 'active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
