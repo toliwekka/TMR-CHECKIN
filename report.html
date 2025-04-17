@@ -357,8 +357,33 @@ const heroMessages = [
                     updateTextContent(AScore, BScore, percA, percB);
                     plotGauges(percA, percB);
                     renderAllCharts(percA, percB);
+                    sendLocalStorageToSheets();
                 }
             }
+
+
+
+
+function sendLocalStorageToSheets() {
+  const formData = {};
+
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    formData[key] = localStorage.getItem(key);
+  }
+
+  fetch("https://script.google.com/macros/s/AKfycbxeKdTXAzGSFP3CfxgkH9Rm7Rb5_9MK0GJ1ATA8mUG60aEhDdQ1elSq5obLDTef43_2/exec", {
+    method: "POST",
+    body: JSON.stringify(formData),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(res => res.text())
+  .then(msg => console.log("Response from server:", msg))
+  .catch(err => console.error("Failed to send data:", err));
+}
+
 
             function updateScores(AScore, BScore) {
                 const scoreAElement = document.getElementById("scoreA");
@@ -760,6 +785,9 @@ const heroMessages = [
                     if (themeSelect) themeSelect.value = event.data.theme;
                 }
             });
+
+
+
         </script>
     </body>
 </html>

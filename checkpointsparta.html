@@ -515,6 +515,54 @@ body {
                     if (themeSelect) themeSelect.value = event.data.theme;
                 }
             });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const inputs = document.querySelectorAll("input, textarea, select");
+
+  inputs.forEach((input) => {
+    const key = `form_${input.id || input.name}`;
+
+    // Restore previous value from localStorage
+    const savedValue = localStorage.getItem(key);
+    if (savedValue !== null) {
+      if (input.type === "checkbox") {
+        input.checked = savedValue === "true";
+      } else {
+        input.value = savedValue;
+      }
+    }
+
+    // Save value on 'input', 'change', and 'blur' — supports both manual and programmatic fills
+    const saveToLocal = () => {
+      const value = input.type === "checkbox" ? input.checked : input.value.trim();
+      localStorage.setItem(key, value);
+    };
+
+    input.addEventListener("input", saveToLocal);
+    input.addEventListener("change", saveToLocal);
+    input.addEventListener("blur", saveToLocal);
+  });
+
+  // MutationObserver for detecting value changes (e.g., by autocomplete APIs)
+  const observer = new MutationObserver(() => {
+    inputs.forEach((input) => {
+      const key = `form_${input.id || input.name}`;
+      const value = input.type === "checkbox" ? input.checked : input.value.trim();
+      localStorage.setItem(key, value);
+    });
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    characterData: true,
+  });
+});
+
+
+
         </script>
     </body>
 </html>

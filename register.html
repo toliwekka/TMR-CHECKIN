@@ -578,7 +578,7 @@
             <!-- Theme switcher -->
             <div class="theme-switcher">
                 <select id="themeSelect" class="form-select">
-                    <option value="default" selected> <img src="ogo.png" alt="TMR Fresh Logo" style="width: 20px; vertical-align: middle; margin-right: 8px; display: inline-block;" /> TMR </option>
+                    <option value="default" selected> <img src="logo.png" alt="TMR Fresh Logo" style="width: 20px; vertical-align: middle; margin-right: 8px; display: inline-block;" /> TMR </option>
                     <option value="fieryRed">🔥 Fiery Red</option>
                     <option value="blushRose">🌸 Blush Rose</option>
                     <option value="midnightDark">🌚 Midnight Dark</option>
@@ -2535,29 +2535,49 @@
                                         }
                                     });
 
-                                    document.addEventListener("DOMContentLoaded", () => {
-                                        const inputs = document.querySelectorAll("input, textarea, select");
+document.addEventListener("DOMContentLoaded", () => {
+  const inputs = document.querySelectorAll("input, textarea, select");
 
-                                        inputs.forEach((input) => {
-                                            const key = `form_${input.id || input.name}`;
+  inputs.forEach((input) => {
+    const key = `form_${input.id || input.name}`;
 
-                                            // Restore previous value from localStorage (optional)
-                                            const savedValue = localStorage.getItem(key);
-                                            if (savedValue !== null) {
-                                                input.value = savedValue;
-                                            }
+    // Restore previous value from localStorage
+    const savedValue = localStorage.getItem(key);
+    if (savedValue !== null) {
+      if (input.type === "checkbox") {
+        input.checked = savedValue === "true";
+      } else {
+        input.value = savedValue;
+      }
+    }
 
-                                            // Save value to localStorage when input changes
-                                            input.addEventListener("input", () => {
-                                                localStorage.setItem(key, input.value.trim());
-                                            });
+    // Save value on 'input', 'change', and 'blur' — supports both manual and programmatic fills
+    const saveToLocal = () => {
+      const value = input.type === "checkbox" ? input.checked : input.value.trim();
+      localStorage.setItem(key, value);
+    };
 
-                                            // Optionally update on blur too
-                                            input.addEventListener("blur", () => {
-                                                localStorage.setItem(key, input.value.trim());
-                                            });
-                                        });
-                                    });
+    input.addEventListener("input", saveToLocal);
+    input.addEventListener("change", saveToLocal);
+    input.addEventListener("blur", saveToLocal);
+  });
+
+  // MutationObserver for detecting value changes (e.g., by autocomplete APIs)
+  const observer = new MutationObserver(() => {
+    inputs.forEach((input) => {
+      const key = `form_${input.id || input.name}`;
+      const value = input.type === "checkbox" ? input.checked : input.value.trim();
+      localStorage.setItem(key, value);
+    });
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    characterData: true,
+  });
+});
                                 </script>
 
                                 <script>
