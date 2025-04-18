@@ -2,8 +2,8 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-  <title>TMR International | T-Check Portal Report</title>
-  <link rel="icon" type="image/png" href="logo.png" />
+  <title>TMR International | T-Check Portal</title>
+  <link rel="icon" type="image/png" href="./logo.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -380,18 +380,17 @@ function sendLocalStorageToSheets() {
   // Optionally include a timestamp
   formData.timestamp = new Date().toISOString();
 
-  // Send data using no-cors mode (avoids CORS issues with Google Apps Script)
+  // Send data to Google Apps Script Web App
   fetch("https://script.google.com/macros/s/AKfycbwfTPxrBxp41x8p5klprPyAzP0VfU1iZqy5YJv_4PP0Up_t9sWqJRHMTqyAdm8lHc6s/exec", {
     method: "POST",
-    mode: "no-cors", // <-- Important to bypass CORS restriction
-    body: JSON.stringify(formData),
     headers: {
       "Content-Type": "application/json"
-    }
+    },
+    body: JSON.stringify(formData)
   })
-  .then(() => {
-    // Since we can't get a response in no-cors mode, assume success
-    alert("✅ Data sent to Google Sheets! Check your sheet to confirm.");
+  .then(response => response.text())
+  .then(responseText => {
+    alert("✅ Data sent to Google Sheets: " + responseText);
     // Optionally clear stored data
     // localStorage.clear();
   })
