@@ -365,45 +365,44 @@ const heroMessages = [
 
 
 function sendLocalStorageToSheets() {
-  // Initialize an object to hold the form data
   const formData = {};
 
-  // Iterate through all keys in localStorage
+  // Collect localStorage data that starts with 'form_'
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-
-    // Check if the key corresponds to a form field (e.g., starts with 'form_')
     if (key.startsWith("form_")) {
-      // Remove the 'form_' prefix to get the actual field name
       const fieldName = key.replace("form_", "");
-      // Retrieve the value from localStorage
       const value = localStorage.getItem(key);
-      // Add the field and its value to the formData object
       formData[fieldName] = value;
     }
   }
 
-  // Send the formData to your Google Apps Script Web App
+  // Optionally include a timestamp
+  formData.timestamp = new Date().toISOString();
+
+  // Send data using no-cors mode (avoids CORS issues with Google Apps Script)
   fetch("https://script.google.com/macros/s/AKfycbwfTPxrBxp41x8p5klprPyAzP0VfU1iZqy5YJv_4PP0Up_t9sWqJRHMTqyAdm8lHc6s/exec", {
     method: "POST",
+    mode: "no-cors", // <-- Important to bypass CORS restriction
     body: JSON.stringify(formData),
     headers: {
       "Content-Type": "application/json"
     }
   })
-  .then(response => response.text())
-  .then(responseText => {
-    // Handle the response from the server
-    alert("Data successfully sent to Google Sheets: " + responseText);
-    // Optionally, clear the localStorage after successful submission
+  .then(() => {
+    // Since we can't get a response in no-cors mode, assume success
+    alert("✅ Data sent to Google Sheets! Check your sheet to confirm.");
+    // Optionally clear stored data
     // localStorage.clear();
   })
   .catch(error => {
-    // Handle any errors that occur during the fetch operation
-    console.error("Error sending data to Google Sheets:", error);
-    alert("An error occurred while sending data to Google Sheets.");
+    console.error("❌ Error sending data:", error);
+    alert("❌ There was a problem sending your data. Please try again.");
   });
 }
+
+
+
 
 
 
