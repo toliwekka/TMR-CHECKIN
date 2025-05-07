@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TMR ConnectedCare | Mental Health by ToliWekka</title>
-  <link rel="icon" type="image/png" href="logo.png" />
+  <title>TMR International | T-Check Portal</title>
+  <link rel="icon" type="image/png" href="./logo.png" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
         <!-- Font Awesome -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
@@ -596,7 +596,7 @@ body {
 
                 btn.addEventListener("click", () => {
                     // Redirect the full page to report.html
-                    window.location.href = "report.html";
+                    window.location.href = "staffreport.html";
                 });
             });
 
@@ -731,8 +731,9 @@ body {
                         };
 
                         // Save to localStorage
-                        localStorage.setItem("BScore", scoreTotal);
-                        localStorage.setItem("BAnswers", JSON.stringify(userAnswers));
+                        localStorage.setItem("form_064_PartB_Score", scoreTotal);
+                        localStorage.setItem("form_065_PartB_Answers", JSON.stringify(userAnswers));
+
 
                         // Continue or disable on final question
                         setTimeout(() => {

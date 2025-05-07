@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TMR International | T-Check Portal</title>
+  <link rel="icon" type="image/png" href="./logo.png" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="themes.css" />
+        <link rel="stylesheet" href="introstyles.css" />
+    </head>
+    <body>
+        <!-- Main content area -->
+        <div class="page-wrapper">
+            <div class="theme-switcher">
+                <select id="themeSelect" class="form-select">
+                    <option value="default" selected> <img src="path/to/logo.png" alt="TMR Fresh Logo" style="width: 20px; vertical-align: middle; margin-right: 8px; display: inline-block;" /> TMR </option>
+                    <option value="fieryRed">🔥 Fiery Red</option>
+                    <option value="blushRose">🌸 Blush Rose</option>
+                    <option value="midnightDark">🌚 Midnight Dark</option>
+                    <option value="sereneLavender">💜 Serene Lavender</option>
+                    <option value="oceanBreeze">🌊 Ocean Breeze</option>
+                    <option value="goldenSunset">🌅 Golden Sunset</option>
+                    <option value="softStone">🪶 Soft Stone</option>
+                    <option value="softBlush">💖 Soft Blush</option>
+                </select>
+            </div>
+
+            <div id="landingPage" class="container">
+                <h1 class="text-center mb-4" style="color: var(--primary); font-weight: 700;">TMR T|Check: Leading the Mental Wellness Revolution!</h1>
+
+                <div class="hero-section">
+                    <p id="hero-description-dynamic" class="hero-description-dynamic">Starting your wellness transformation with T|Check...</p>
+                </div>
+
+                <div class="pane">
+                    <div id="consent-card" class="card text-center card-button" role="button" tabindex="0" aria-pressed="false">
+                        <div class="card-icon"><i class="bi bi-emoji-smile"></i></div>
+                        <h3>Step 1: Consent</h3>
+                        <p>
+                            Understand the steps and the value of your consent. Your privacy and autonomy are protected throughout.
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="card text-center card-button" role="button" tabindex="0" aria-pressed="false" data-disabled="true">
+                        <div class="card-icon"><i class="bi bi-clipboard-data"></i></div>
+                        <h3>Step 2: Assessment</h3>
+                        <p>
+                            Step into the T|Check experience, empowering you with clear insights and self-awareness.
+                        </p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="card text-center card-button" role="button" tabindex="0" aria-pressed="false" data-disabled="true">
+                        <div class="card-icon"><i class="bi bi-bar-chart-line"></i></div>
+                        <h3>Step 3: Insights</h3>
+                        <p>
+                            Explore custom insights into your mental well-being through beautifully designed visualizations and improvement plans.
+                        </p>
+                    </div>
+
+                    <style>
+                        .card-button {
+                            cursor: pointer;
+                            transition: transform 0.2s, box-shadow 0.2s;
+                            outline: none;
+                        }
+
+                        .card-button:hover,
+                        .card-button:focus {
+                            transform: scale(1.02);
+                            box-shadow: 0 0 0 3px var(--primary-light);
+                        }
+
+                        .card-button:active {
+                            transform: scale(0.98);
+                        }
+                    </style>
+                </div>
+            </div>
+        </div>
+        <!-- FULLSCREEN IFRAME -->
+        <div id="iframeContainer" class="fullscreen-iframe">
+            <iframe id="assessmentIframe" src="staffregister.html" allowfullscreen></iframe>
+        </div>
+
+        <footer class="sticky-footer">
+            <p>
+                &copy; TMR International | Powered by Toli Wekka. All rights reserved. |
+                <a href="#">Privacy</a>
+                |
+                <a href="#">Terms</a>
+            </p>
+        </footer>
+
+        <script src="themes.js"></script>
+
+        <!-- SCRIPT -->
+        <script>
+            function openIframe() {
+                document.getElementById("iframeContainer").style.display = "block";
+                document.getElementById("landingPage").style.display = "none";
+            }
+
+            function closeIframe() {
+                document.getElementById("iframeContainer").style.display = "none";
+                document.getElementById("landingPage").style.display = "block";
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                const consentCard = document.getElementById("consent-card");
+
+                consentCard.addEventListener("click", openIframe);
+            });
+        </script>
+
+        <script>
+            // Dynamic Hero Description Rotation
+const heroDescriptions = [
+    "Start your TMR journey today — because your mental health deserves the spotlight.",
+    "TMR unlocks the power of mental clarity, guiding you toward self-discovery.",
+    "Get personalized insights into your well-being with TMR, and start transforming today.",
+    "TMR helps you understand what’s going on inside, empowering you to take control.",
+    "Discover a clearer, healthier mind with TMR, your personal wellness guide.",
+    "TMR: Where clarity meets action. Begin your mental wellness journey now.",
+    "TMR empowers you with the tools for growth and self-awareness.",
+    "Take the first step toward a balanced mind with TMR, your mental wellness ally.",
+    "TMR provides the insights you need to achieve a deeper understanding of yourself.",
+    "Your mental wellness journey begins here — with TMR, every step brings clarity.",
+    "Feel understood, find balance, and embrace growth with TMR’s insightful approach.",
+    "With TMR, you’ll uncover what truly matters for your mental well-being and growth.",
+    "TMR is more than a tool. It’s the key to unlocking your potential for mental wellness.",
+    "Transform how you see yourself with TMR — because mental clarity changes everything.",
+    "TMR gives you the personalized insights that make self-discovery simple and empowering."
+];
+
+            let heroIndex = 0;
+            const heroEl = document.getElementById("hero-description-dynamic");
+
+            setInterval(() => {
+                heroEl.style.opacity = 0;
+                setTimeout(() => {
+                    heroEl.textContent = heroDescriptions[heroIndex];
+                    heroEl.style.opacity = 1;
+                    heroIndex = (heroIndex + 1) % heroDescriptions.length;
+                }, 500);
+            }, 5000);
+
+            let currentTheme = localStorage.getItem("theme") || "default";
+            const themeSelect = document.getElementById("themeSelect");
+
+            function applyTheme(themeName) {
+                const theme = themes[themeName];
+                if (!theme) return;
+
+                // Apply CSS variables
+                Object.keys(theme).forEach((key) => {
+                    document.documentElement.style.setProperty(key, theme[key]);
+                });
+
+                // Adjust text color based on --primary-dark
+                setHeroDescriptionTextColor();
+
+                // Store and sync
+                localStorage.setItem("theme", themeName);
+                currentTheme = themeName;
+
+                // Broadcast to all iframes
+                document.querySelectorAll("iframe").forEach((iframe) => {
+                    iframe.contentWindow?.postMessage({ theme: themeName }, "*");
+                });
+            }
+
+            function getComputedCSSVar(variable) {
+                return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+            }
+
+            function getLuminance(hex) {
+                const rgb = hex
+                    .replace("#", "")
+                    .match(/.{2}/g)
+                    .map((x) => parseInt(x, 16) / 255);
+                const lum = rgb.map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+                return 0.2126 * lum[0] + 0.7152 * lum[1] + 0.0722 * lum[2];
+            }
+
+            function setHeroDescriptionTextColor() {
+                const bg = getComputedCSSVar("--primary-dark");
+                if (!bg || !bg.startsWith("#")) return;
+                const luminance = getLuminance(bg);
+                const color = luminance > 0.5 ? "#111" : "#fff";
+                const heroDesc = document.querySelector(".hero-description");
+                if (heroDesc) heroDesc.style.color = color;
+            }
+
+            // Handle messages from parent or other sources
+            window.addEventListener("message", (event) => {
+                if (event.data?.theme && themes[event.data.theme]) {
+                    applyTheme(event.data.theme);
+                    if (themeSelect) themeSelect.value = event.data.theme;
+                }
+            });
+
+            document.addEventListener("DOMContentLoaded", () => {
+                // Initial theme setup
+                applyTheme(currentTheme);
+                if (themeSelect) themeSelect.value = currentTheme;
+
+                // Re-broadcast theme after short delay (for iframes loading late)
+                setTimeout(() => {
+                    document.querySelectorAll("iframe").forEach((iframe) => {
+                        iframe.contentWindow?.postMessage({ theme: currentTheme }, "*");
+                    });
+                }, 500);
+
+                // Theme dropdown handler
+                if (themeSelect) {
+                    themeSelect.addEventListener("change", (e) => {
+                        applyTheme(e.target.value);
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>

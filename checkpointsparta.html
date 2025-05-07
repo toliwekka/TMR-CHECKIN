@@ -1,568 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>TMR International | T-Check Portal</title>
-        <link rel="icon" type="image/png" href="logo.png" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
-        <link rel="stylesheet" href="themes.css" />
-        <link rel="stylesheet" href="chkstyles.css" />
-        <style>
-            /* Responsive Design */
-            @media (max-width: 768px) {
-                .survey-container {
-                    padding: 1.5rem;
-                }
-
-                h1 {
-                    font-size: 1.5rem;
-                }
-
-                .flip-badge {
-                    font-size: 1.5rem;
-                    width: 35px;
-                    height: 35px;
-                    line-height: 35px;
-                }
-
-                .survey-card {
-                    margin-bottom: 1.5rem;
-                }
-
-                .survey-card h3,
-                .survey-card p {
-                    font-size: 1rem;
-                }
-
-                .option {
-                    font-size: 0.9rem;
-                    padding: 0.8rem 1.5rem;
-                }
-
-                .continue-button {
-                    font-size: 0.9rem;
-                    padding: 0.8rem 2rem;
-                }
-
-                footer {
-                    font-size: 0.8rem;
-                }
-            }
-
-            @media (max-width: 480px) {
-                .survey-container {
-                    padding: 1rem;
-                }
-
-                h1 {
-                    font-size: 1.2rem;
-                }
-
-                .flip-badge {
-                    font-size: 1.2rem;
-                    width: 30px;
-                    height: 30px;
-                    line-height: 30px;
-                }
-
-                .survey-card {
-                    margin-bottom: 1rem;
-                }
-
-                .survey-card h3,
-                .survey-card p {
-                    font-size: 0.9rem;
-                }
-
-                .option {
-                    font-size: 0.8rem;
-                    padding: 0.7rem 1.2rem;
-                }
-
-                .continue-button {
-                    font-size: 0.8rem;
-                    padding: 0.7rem 1.5rem;
-                }
-            }
-
-            #chkpt.survey-container {
-                overflow-y: scroll; /* Always show vertical scrollbar */
-                overflow-x: scroll; /* Always show horizontal scrollbar */
-                box-sizing: border-box;
-                padding: 1rem;
-                margin: 0 auto;
-                transition: none !important;
-            }
-
-            /* Webkit (Chrome, Safari) */
-            #chkpt.survey-container::-webkit-scrollbar {
-                width: 8px;
-                height: 8px;
-            }
-
-            #chkpt.survey-container::-webkit-scrollbar-thumb {
-                background-color: rgba(0, 0, 0, 0.3);
-                border-radius: 4px;
-            }
-
-            #chkpt.survey-container::-webkit-scrollbar-track {
-                background: transparent;
-            }
-
-            /* Responsive tweaks */
-            @media (max-width: 768px) {
-                .survey-container {
-                    padding: 16px;
-                }
-            }
-
-            @media (max-width: 480px) {
-                .survey-container {
-                    padding: 12px;
-                }
-            }
-
-            #chkpt.survey-container {
-                overflow-y: scroll; /* Always show vertical scrollbar */
-                overflow-x: scroll; /* Always show horizontal scrollbar */
-                box-sizing: border-box;
-                padding: 1rem;
-                margin: 0 auto;
-                transition: none !important;
-            }
-
-            /* Webkit (Chrome, Safari) */
-            #chkpt.survey-container::-webkit-scrollbar {
-                width: 8px;
-                height: 8px;
-            }
-
-            #chkpt.survey-container::-webkit-scrollbar-thumb {
-                background-color: rgba(0, 0, 0, 0.3);
-                border-radius: 4px;
-            }
-
-            #chkpt.survey-container::-webkit-scrollbar-track {
-                background: transparent;
-            }
-
-            html,
-            body {
-                margin: 0;
-                padding: 0;
-                height: auto;
-                min-height: 100vh;
-                overflow-y: auto; /* Allow scrolling */
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    overflow-y: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Page wrapper for additional structure if needed */
-.page-wrapper {
-    width: 100%;
-    padding: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Main survey container */
-#chkpt.survey-container {
-    width: 800px;
-    max-width: 100%;
-    height: auto;
-    max-height: 90vh; /* Keeps it from overflowing vertically */
-    overflow: auto;
-    box-sizing: border-box;
-    padding: 1rem;
-    margin: 0 auto;
-
-    /* Disable all transitions */
-    transition: none !important;
-    animation: none !important;
-    transform: none !important;
-}
-
-/* Optional scrollbars */
-#chkpt.survey-container::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-#chkpt.survey-container::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
-}
-
-#chkpt.survey-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-/* Responsive tweaks (no layout change, just spacing adjustments) */
-@media (max-width: 768px) {
-    .survey-container {
-        padding: 1rem;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TMR International | T-Check Portal</title>
+  <link rel="icon" type="image/png" href="./logo.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --emoji-scale: 3rem;
+      --label-scale: 1rem;
+      --question-scale: 2rem;
     }
-}
 
-@media (max-width: 480px) {
-    .survey-container {
-        padding: 0.75rem;
-    }
-}
-
-
-
-
-        </style>
-    </head>
-    <body>
-        <!-- Main content area -->
-        <div class="page-wrapper">
-            <!-- Theme switcher -->
-            <div class="theme-switcher">
-                <select id="themeSelect" class="form-select">
-                    <option value="default" selected> <img src="logo.png" alt="TMR Fresh Logo" style="width: 20px; vertical-align: middle; margin-right: 8px; display: inline-block;" /> TMR </option>
-                    <option value="fieryRed">🔥 Fiery Red</option>
-                    <option value="blushRose">🌸 Blush Rose</option>
-                    <option value="midnightDark">🌚 Midnight Dark</option>
-                    <option value="sereneLavender">💜 Serene Lavender</option>
-                    <option value="oceanBreeze">🌊 Ocean Breeze</option>
-                    <option value="goldenSunset">🌅 Golden Sunset</option>
-                    <option value="softStone">🪶 Soft Stone</option>
-                    <option value="softBlush">💖 Soft Blush</option>
-                </select>
-            </div>
-
-            <div id="chkpt" class="survey-container">
-                <h1 class="text-center mb-4" style="color: var(--primary); font-weight: 700;">
-                    Begin Your T|Check Self-Discovery Journey
-                </h1>
-
-                <div class="flip-badge" id="questionBadge">1</div>
-
-                <div class="survey-card">
-                    <h3 class="question-intro" id="questionSection">Section A</h3>
-                    <p class="question-context" id="questionMeta">During the past 14 days</p>
-                    <p class="question-text" id="questionText">I’ve been feeling optimistic about the future.</p>
-                </div>
-
-                <div class="option-card" id="optionsContainer">
-                    <!-- Options injected -->
-                </div>
-                <button
-                    id="continueBtn"
-                    class="continue-button"
-                    style="
-                        display: none;
-                        margin-top: 2rem;
-                        padding: 0.8rem 2rem;
-                        font-weight: 600;
-                        font-size: 1rem;
-                        border: none;
-                        border-radius: 30px;
-                        background-color: var(--button-bg);
-                        color: white;
-                        cursor: pointer;
-                        transition: background-color 0.3s ease;
-                    "
-                >
-                    Continue
-                </button>
-            </div>
-        </div>
-
-        <script src="themes.js"></script>
-
-        <!-- SCRIPT -->
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const btn = document.getElementById("continueBtn");
-
-                btn.addEventListener("click", () => {
-                    // Redirect the full page to report.html
-                    window.location.href = "assessmentintrob.html";
-                });
-            });
-        </script>
-
-        <script>
-            const questions = [
-                { id: 1, section: "During the past 14 days", pastcoupledays: " ", text: "I’ve been feeling optimistic about the future.", answerType: "MentalWellBeing" },
-                { id: 2, section: "During the past 14 days", pastcoupledays: " ", text: "I’ve been feeling useful", answerType: "MentalWellBeing" },
-                { id: 3, section: "During the past 14 days", pastcoupledays: " ", text: "I’ve been feeling relaxed", answerType: "MentalWellBeing" },
-                { id: 4, section: "During the past 14 days", pastcoupledays: " ", text: "I’ve been feeling interested in other people", answerType: "MentalWellBeing" },
-                { id: 5, section: "During the past 14 days", pastcoupledays: " ", text: "I’ve had energy to spare", answerType: "MentalWellBeing" },
-                { id: 6, section: "During the past 14 days", pastcoupledays: " ", text: "I’ve been dealing with problems well", answerType: "MentalWellBeing" },
-                { id: 7, section: "During the past 14 days", pastcoupledays: " ", text: "I’ve been thinking clearly", answerType: "MentalWellBeing" },
-                { id: 8, section: "During the past 14 days", pastcoupledays: " ", text: "I’ve been feeling good about myself", answerType: "MentalWellBeing" },
-                { id: 9, section: "During the past 14 days", pastcoupledays: " ", text: "I’ve been feeling close to other people", answerType: "MentalWellBeing" },
-                { id: 10, section: "During the past 14 days", pastcoupledays: " ", text: "I’ve been feeling confident", answerType: "MentalWellBeing" },
-                { id: 11, section: "During the past 14 days", pastcoupledays: " ", text: "I’ve been able to make up my own mind about things", answerType: "MentalWellBeing" },
-                { id: 12, section: "During the past 14 days", pastcoupledays: " ", text: "I’ve been feeling loved", answerType: "MentalWellBeing" },
-                { id: 13, section: "During the past 14 days", pastcoupledays: " ", text: "I’ve been interested in new things", answerType: "MentalWellBeing" },
-                { id: 14, section: "During the past 14 days", pastcoupledays: " ", text: "I've been feeling cheerful", answerType: "MentalWellBeing" },
-            ];
-
-            const answerSets = {
-                "Worst-Best": ["0 = Worst Possible", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Best Possible"],
-                Satisfaction: ["Not Satisfied at All", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Completely Satisfied"],
-                Health: ["0 = Poor", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Perfect Health"],
-                Limitation: ["0 = Severely Limited", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Not Limited at All"],
-                Worthwhile: ["0 = Not at All Worthwhile", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Completely Worthwhile"],
-                Agreement: ["0 = Strongly Disagree", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Strongly Agree"],
-                TrueOfMe: ["0 = Not True of Me", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Completely True of Me"],
-                Frequency: ["0 = Never", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = All of the Time"],
-                Happiness: ["0 = Extremely Unhappy", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Extremely Happy"],
-                MentalWellBeing: ["Not at All", "Rarely", "Some of the Time", "Often", "All the Time"],
-                Community: ["0 = Very Weak", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Extremely Strong"],
-                Loneliness: ["0 = Always", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Never"],
-                SatisfactionWithCity: ["0 = Completely Dissatisfied", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Completely Satisfied"],
-                WorrySafety: ["0 = Worry All of the Time", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Do Not Ever Worry"],
-                WorryAboutLivingExpenses: ["0 = Worry All of the Time", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10 = Do Not Ever Worry"],
-            };
-
-            let currentIndex = 0;
-
-            function applyTheme(themeName) {
-                const theme = themes[themeName];
-                Object.entries(theme).forEach(([key, val]) => {
-                    document.documentElement.style.setProperty(key, val);
-                });
-                localStorage.setItem("theme", themeName);
-            }
-
-            let scoreTotal = 0;
-            const userResponses = {}; // score by question index
-            const userAnswers = {}; // question text + answer by index
-
-            function renderQuestion(index) {
-                const q = questions[index];
-                document.getElementById("questionSection").textContent = q.section;
-                document.getElementById("questionMeta").textContent = q.pastcoupledays;
-                document.getElementById("questionText").textContent = q.text;
-                document.getElementById("questionBadge").textContent = index + 1;
-
-                const optionsContainer = document.getElementById("optionsContainer");
-                optionsContainer.innerHTML = "";
-
-                const scoreMapping = {
-                    "Not at All": 1,
-                    Rarely: 2,
-                    "Some of the Time": 3,
-                    Often: 4,
-                    "All the Time": 5,
-                };
-
-                (answerSets[q.answerType] || []).forEach((opt) => {
-                    const btn = document.createElement("button");
-                    btn.className = "option";
-                    btn.textContent = opt;
-
-                    if (opt.length > 6) btn.classList.add("long-option");
-
-                    btn.addEventListener("click", () => {
-                        // Clear previous selection
-                        const allButtons = optionsContainer.querySelectorAll(".option");
-                        allButtons.forEach((b) => b.classList.remove("selected"));
-                        btn.classList.add("selected");
-
-                        // Get the score for the selected option
-                        const score = scoreMapping[opt] || 0;
-
-                        // Adjust score total if answer already existed
-                        if (userResponses[index] !== undefined) {
-                            scoreTotal -= userResponses[index]; // subtract old
-                        }
-
-                        // Store new response
-                        userResponses[index] = score;
-                        userAnswers[index] = {
-                            question: q.text,
-                            answer: opt,
-                        };
-                        scoreTotal += score;
-
-                        // Save to localStorage
-                        localStorage.setItem("AScore", scoreTotal);
-                        localStorage.setItem("AAnswers", JSON.stringify(userAnswers));
-
-                        setTimeout(() => {
-                            if (index === questions.length - 1) {
-                                document.getElementById("continueBtn").style.display = "block";
-                                console.debug("✅ Final AScore:", scoreTotal);
-
-                                // Disable all buttons after last question is answered
-                                const allButtons = optionsContainer.querySelectorAll(".option");
-                                allButtons.forEach((b) => {
-                                    b.disabled = true;
-                                    b.classList.add("disabled"); // Optional: add class for styling
-                                });
-                            } else {
-                                currentIndex++;
-                                renderQuestion(currentIndex);
-                            }
-                        }, 200);
-                    });
-
-                    optionsContainer.appendChild(btn);
-                });
-            }
-
-            // Initialize and apply theme as early as possible
-            let currentTheme = localStorage.getItem("theme") || "default";
-            applyTheme(currentTheme);
-
-            // Theme selection dropdown
-            document.addEventListener("DOMContentLoaded", () => {
-                const themeSelect = document.getElementById("themeSelect");
-                if (themeSelect) {
-                    themeSelect.value = currentTheme;
-                    themeSelect.addEventListener("change", (e) => {
-                        applyTheme(e.target.value);
-                    });
-                }
-
-                // Render initial question
-                renderQuestion(currentIndex);
-            });
-
-            // Apply the selected theme
-            function applyTheme(themeName) {
-                const theme = themes[themeName];
-                if (!theme) return;
-
-                // Apply CSS variables
-                Object.entries(theme).forEach(([key, value]) => {
-                    document.documentElement.style.setProperty(key, value);
-                });
-
-                // Adjust text color for readability
-                setHeroDescriptionTextColor();
-
-                // Persist and sync
-                localStorage.setItem("theme", themeName);
-                currentTheme = themeName;
-            }
-
-            // Adjust text color based on theme background
-            function setHeroDescriptionTextColor() {
-                const bg = getComputedCSSVar("--primary-dark");
-                if (!bg || !bg.startsWith("#")) return;
-                const luminance = getLuminance(bg);
-                const color = luminance > 0.5 ? "#111" : "#fff";
-                const heroDesc = document.querySelector(".hero-description");
-                if (heroDesc) heroDesc.style.color = color;
-            }
-
-            // Get CSS variable value
-            function getComputedCSSVar(variable) {
-                return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
-            }
-
-            // Calculate luminance for color contrast
-            function getLuminance(hex) {
-                const rgb = hex
-                    .replace("#", "")
-                    .match(/.{2}/g)
-                    .map((x) => parseInt(x, 16) / 255);
-                const lum = rgb.map((c) => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)));
-                return 0.2126 * lum[0] + 0.7152 * lum[1] + 0.0722 * lum[2];
-            }
-
-            // Listen for theme sync messages
-            window.addEventListener("message", (event) => {
-                if (event.data?.theme && themes[event.data.theme]) {
-                    applyTheme(event.data.theme);
-                    const themeSelect = document.getElementById("themeSelect");
-                    if (themeSelect) themeSelect.value = event.data.theme;
-                }
-            });
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  const inputs = document.querySelectorAll("input, textarea, select");
-
-  inputs.forEach((input) => {
-    const key = `form_${input.id || input.name}`;
-
-    // Restore previous value from localStorage
-    const savedValue = localStorage.getItem(key);
-    if (savedValue !== null) {
-      if (input.type === "checkbox") {
-        input.checked = savedValue === "true";
-      } else {
-        input.value = savedValue;
+    @media (max-width: 768px) {
+      :root {
+        --emoji-scale: 2.5rem;
+        --label-scale: 0.9rem;
+        --question-scale: 1.5rem;
       }
     }
 
-    // Save value on 'input', 'change', and 'blur' — supports both manual and programmatic fills
-    const saveToLocal = () => {
-      const value = input.type === "checkbox" ? input.checked : input.value.trim();
-      localStorage.setItem(key, value);
+    @media (max-width: 480px) {
+      :root {
+        --emoji-scale: 2rem;
+        --label-scale: 0.85rem;
+        --question-scale: 1.2rem;
+      }
+    }
+
+    .emoji {
+      font-size: var(--emoji-scale);
+    }
+
+    .label {
+      font-size: var(--label-scale);
+      margin-top: 0.5rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .question-text {
+      font-size: var(--question-scale);
+    }
+
+    .mood-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      padding: 1.25rem;
+      border-radius: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      width: 100px;
+      height: 140px;
+    }
+
+    @media (min-width: 640px) {
+      .mood-card { width: 110px; height: 160px; }
+    }
+
+    @media (min-width: 768px) {
+      .mood-card { width: 120px; height: 180px; }
+    }
+
+    .mood-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .selected {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .fade {
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    .hiddenFade {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .visibleFade {
+      opacity: 1;
+    }
+
+    .question-counter-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-width: 4px;
+      border-style: solid;
+      border-radius: 9999px;
+      width: 60px;
+      height: 60px;
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .question-counter-circle {
+        width: 80px;
+        height: 80px;
+        font-size: 1.5rem;
+      }
+    }
+.fade-out {
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+  </style>
+</head>
+<body id="body" class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen flex flex-col items-center justify-center text-white p-4 relative touch-none">
+
+  <audio id="soundSelect" src="Surrender_To_Love.mp3"></audio>
+  <audio id="soundFinish" src="https://assets.mixkit.co/sfx/preview/mixkit-game-level-completed-2059.mp3"></audio>
+  <audio id="soundBG" src="smooth-chill-jazzy.mp3" loop></audio>
+
+  <div class="absolute top-4 right-4 flex items-center gap-4">
+    <select id="themeSelector" class="bg-white text-black px-3 py-1 rounded shadow">
+      <option value="default" selected>🌿 TMR Fresh</option>
+      <option value="fieryRed">🔥 Fiery Red</option>
+      <option value="blushRose">🌸 Blush Rose</option>
+      <option value="midnightDark">🌚 Midnight Dark</option>
+      <option value="sereneLavender">💜 Serene Lavender</option>
+      <option value="oceanBreeze">🌊 Ocean Breeze</option>
+      <option value="goldenSunset">🌅 Golden Sunset</option>
+      <option value="softStone">🪶 Soft Stone</option>
+      <option value="softBlush">💖 Soft Blush</option>
+    </select>
+    <button id="musicToggle" class="bg-white text-black px-3 py-1 rounded shadow">🔈 Music</button>
+  </div>
+
+  <div id="avatarMood" class="text-5xl mb-4 animate-bounce">😐</div>
+
+  <div class="max-w-4xl w-full px-10 py-14 rounded-3xl bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_20px_60px_rgba(255,255,255,0.15)] transition-all duration-700 ease-in-out transform hover:scale-[1.015]">
+    <div id="questionCounterWrapper" class="flex flex-col items-center mb-10">
+      <div id="questionCounterCircle" class="question-counter-circle border-red-400 animate-pulse bg-gradient-to-br from-white/30 to-white/5 text-white shadow-inner shadow-white/10 backdrop-blur-xl">1</div>
+      <div class="text-2xl mt-4 text-white/90 font-light tracking-widest uppercase">Over the past 14 days</div>
+    </div>
+
+    <div id="questionContainer" class="mb-10 flex items-center justify-center min-h-[100px] text-center">
+      <p class="question-text font-semibold text-white leading-snug tracking-tight animate-fade-in max-w-2xl"></p>
+    </div>
+
+    <div id="moodOptions" class="flex justify-center gap-6 flex-wrap mt-6 px-6"></div>
+
+    <div id="selectedFeedback" class="mt-10 text-xl sm:text-2xl font-semibold text-yellow-300 text-center transition-opacity duration-500 ease-in-out opacity-90"></div>
+    <div id="completionMessage" class="mt-12 text-2xl sm:text-3xl font-extrabold hidden text-green-300 text-center animate-fade-in tracking-wide"></div>
+  </div>
+
+  <script>
+    const questions = [
+      "I’ve been feeling optimistic about the future.",
+      "I’ve been feeling useful",
+      "I’ve been feeling relaxed",
+      "I’ve been feeling interested in other people",
+      "I’ve had energy to spare",
+      "I’ve been dealing with problems well",
+      "I’ve been thinking clearly",
+      "I’ve been feeling good about myself",
+      "I’ve been feeling close to other people",
+      "I’ve been feeling confident",
+      "I’ve been able to make up my own mind about things",
+      "I’ve been feeling loved",
+      "I’ve been interested in new things",
+      "I've been feeling cheerful"
+    ];
+
+    const options = [
+      { label: "Not at All", emoji: "😞", color: "bg-red-500", score: 1 },
+      { label: "Rarely", emoji: "😕", color: "bg-orange-400", score: 2 },
+      { label: "Some of the Time", emoji: "😐", color: "bg-yellow-300 text-black", score: 3 },
+      { label: "Often", emoji: "🙂", color: "bg-green-400", score: 4 },
+      { label: "All the Time", emoji: "😄", color: "bg-blue-500", score: 5 }
+    ];
+
+    const themes = [
+      { border: 'border-red-400', anim: 'animate-pulse' },
+      { border: 'border-orange-400', anim: 'animate-bounce' },
+      { border: 'border-yellow-300', anim: 'animate-spin' },
+      { border: 'border-green-400', anim: 'animate-ping' },
+      { border: 'border-blue-500', anim: 'animate-bounce' }
+    ];
+
+    const themePresets = {
+      default: ['from-[#006c9c]', 'to-[#003d5b]'],
+      fieryRed: ['from-red-700', 'to-red-900'],
+      blushRose: ['from-pink-300', 'to-pink-500'],
+      midnightDark: ['from-gray-900', 'to-black'],
+      sereneLavender: ['from-purple-300', 'to-indigo-600'],
+      oceanBreeze: ['from-cyan-400', 'to-blue-600'],
+      goldenSunset: ['from-yellow-400', 'to-orange-500'],
+      softStone: ['from-zinc-300', 'to-gray-400'],
+      softBlush: ['from-rose-200', 'to-pink-300']
     };
 
-    input.addEventListener("input", saveToLocal);
-    input.addEventListener("change", saveToLocal);
-    input.addEventListener("blur", saveToLocal);
-  });
+    let currentIndex = 0;
+    let totalScore = 0;
+    const responses = [];
 
-  // MutationObserver for detecting value changes (e.g., by autocomplete APIs)
-  const observer = new MutationObserver(() => {
-    inputs.forEach((input) => {
-      const key = `form_${input.id || input.name}`;
-      const value = input.type === "checkbox" ? input.checked : input.value.trim();
-      localStorage.setItem(key, value);
+    const counterCircle = document.getElementById('questionCounterCircle');
+    const questionContainer = document.getElementById('questionContainer');
+    const moodOptionsEl = document.getElementById('moodOptions');
+    const feedback = document.getElementById('selectedFeedback');
+    const completionMessage = document.getElementById('completionMessage');
+    const body = document.getElementById('body');
+    const themeSelector = document.getElementById('themeSelector');
+    const avatar = document.getElementById('avatarMood');
+    const soundSelect = document.getElementById('soundSelect');
+    const soundFinish = document.getElementById('soundFinish');
+    const soundBG = document.getElementById('soundBG');
+    const musicToggle = document.getElementById('musicToggle');
+
+    musicToggle.onclick = () => {
+      if (soundBG.paused) {
+        soundBG.play();
+        musicToggle.textContent = '🔊 Music';
+      } else {
+        soundBG.pause();
+        musicToggle.textContent = '🔈 Music';
+      }
+    };
+
+    function updateAvatar(score) {
+      avatar.textContent = score < 20 ? "😞" : score < 35 ? "😐" : score < 50 ? "🙂" : "😄";
+    }
+
+    function renderQuestion(idx) {
+      const theme = themes[idx % themes.length];
+      counterCircle.innerText = idx + 1;
+      counterCircle.className = `question-counter-circle ${theme.border} ${theme.anim}`;
+      const questionP = questionContainer.querySelector('p');
+      questionP.classList.remove("visibleFade");
+      questionP.classList.add("hiddenFade");
+
+      setTimeout(() => {
+        questionP.innerText = questions[idx];
+        questionP.classList.remove("hiddenFade");
+        questionP.classList.add("visibleFade");
+      }, 100);
+
+      moodOptionsEl.innerHTML = '';
+      options.forEach(opt => {
+        const card = document.createElement('div');
+        card.className = `mood-card ${opt.color}`;
+        card.innerHTML = `<div class="emoji">${opt.emoji}</div><div class="label">${opt.label}</div>`;
+        card.onclick = () => selectAnswer(opt, card);
+        moodOptionsEl.appendChild(card);
+      });
+
+      feedback.innerText = '';
+    }
+
+    function selectAnswer(opt, cardEl) {
+      soundSelect.play();
+      cardEl.classList.add('selected');
+      feedback.innerText = `You selected: "${opt.label}"`;
+
+      totalScore += opt.score;
+      responses.push({ q: questions[currentIndex], a: opt.label, s: opt.score });
+
+
+      setTimeout(() => {
+        cardEl.classList.remove('selected');
+        currentIndex++;
+
+        if (currentIndex < questions.length) {
+          renderQuestion(currentIndex);
+          updateAvatar(totalScore);
+        } else {
+
+  questionContainer.innerHTML = '';
+  moodOptionsEl.innerHTML = '';
+  feedback.innerText = '';
+  updateAvatar(totalScore);
+                        // Save to localStorage
+                        localStorage.setItem("form_062_PartA_Score", totalScore);
+                        localStorage.setItem("form_063_PartA_Answers", JSON.stringify(responses));
+  completionMessage.innerText = `🎉 Assessment Complete! Your Score: ${totalScore} / ${questions.length * 5}`;
+  completionMessage.classList.remove('hidden');
+
+  setTimeout(() => {
+    document.body.classList.add('fade-out');
+  }, 2000);
+
+  setTimeout(() => {
+    window.location.href = 'assessmentintrob.html';
+  }, 4000);
+
+        }
+      }, 800);
+    }
+
+    themeSelector.addEventListener('change', (e) => {
+      const theme = themePresets[e.target.value];
+      if (theme) {
+        body.className = `bg-gradient-to-br ${theme[0]} ${theme[1]} min-h-screen flex flex-col items-center justify-center text-white p-4 relative`;
+      }
     });
-  });
 
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    characterData: true,
-  });
-});
+    // Swipe gestures
+    let touchStartX = 0;
+    body.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
 
+    body.addEventListener("touchend", (e) => {
+      const diffX = e.changedTouches[0].screenX - touchStartX;
+      if (diffX > 70 && currentIndex > 0) {
+        currentIndex--;
+        totalScore -= responses.pop()?.s || 0;
+        renderQuestion(currentIndex);
+      }
+    });
 
-
-        </script>
-    </body>
+    renderQuestion(currentIndex);
+  </script>
+</body>
 </html>

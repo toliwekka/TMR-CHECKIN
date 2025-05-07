@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>TMR International | T-Check Portal</title>
+        <title>TMR International | Staff T-Check Portal</title>
         <link rel="icon" type="image/png" href="./logo.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
@@ -351,8 +351,9 @@
 
             // Function to fetch data from localStorage and retry if it's not yet available
             function getStoredData() {
-                const tempAScore = localStorage.getItem("AScore");
-                const tempBScore = localStorage.getItem("BScore");
+                const tempAScore = localStorage.getItem("form_062_PartA_Score");
+                const tempBScore = localStorage.getItem("form_064_PartB_Score");
+
 
                 // If the scores are not yet available, retry after 100ms
                 if (tempAScore === null || tempBScore === null) {
@@ -384,7 +385,7 @@
                     data[key] = value;
                 }
 
-                db.collection("tmrclientResponses")
+                db.collection("tmrstaffResponses")
                     .add(data)
                     .then(() => {
                         alert("Data submitted successfully!");

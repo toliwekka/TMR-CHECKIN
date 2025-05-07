@@ -1,0 +1,2518 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TMR International | T-Check Portal</title>
+        <link rel="icon" type="image/png" href="./logo.png" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+        <script>
+            (function () {
+                // Retrieve the themes from themes.js
+                const themes = {
+                    default: {
+                        "--primary": "#003366", // Deep Navy Blue
+                        "--primary-light": "#00509e", // Bright Ocean Blue
+                        "--primary-dark": "#001f4d", // Midnight Blue
+                        "--secondary": "#5ac8fa", // Sky Blue
+                        "--secondary-light": "#a3e4f7", // Pale Baby Blue
+                        "--secondary-dark": "#0077b6", // Deep Azure
+                        "--bg": "#f4f6f8", // Soft Light Grey
+                        "--card-bg-light": "#f0f4f8", // Pale Grey-Blue
+                        "--card-bg-dark": "#1e2a38", // Charcoal Navy
+                        "--card-bg-muted": "#eaf1f9", // Dusty Blue Tint
+                        "--card-bg": "#f0f4f8", // Pale Grey-Blue
+                        "--text-color": "#1a1a1a", // Deep Charcoal
+                        "--text-color-light": "#1a1a1a", // Deep Charcoal
+                        "--text-color-dark": "#ffffff", // White
+                        "--accent-1": "#00bfff", // Vivid Cyan
+                        "--accent-2": "#e0f7fa", // Icy Aqua
+                        "--accent-3": "#dde2e8", // Pale Grey-Blue
+                        "--hover-bg": "#001f4d", // Midnight Blue
+                        "--hover-text": "#ffffff", // White
+                        "--section-bg": "#ffffff", // White
+                        "--section-border": "#ccc", // Light Grey
+                        "--mini-card-bg": "#e6f0fa", // Powder Blue
+                        "--mini-card-border": "#b0c4de", // Light Steel Blue
+                        "--mini-card-hover": "#cce6ff", // Light Sky Blue
+                        "--button-bg": "#003366", // Deep Navy
+                        "--button-hover-bg": "#00509e", // Ocean Blue
+                        "--highlight-bg": "#00509e", // Deep Ocean Blue (matching the primary light color)
+                        "--highlight-text-color": "#ffffff", // White for strong contrast
+                        "--highlight-context-color": "#d1e8ff", // Pale Aqua to match the secondary color
+                    },
+                    fieryRed: {
+                        "--primary": "#930d0e", // Blood Red
+                        "--primary-light": "#c22c2c", // Bright Crimson
+                        "--primary-dark": "#7b0a0b", // Deep Maroon
+                        "--secondary": "#2a7a4e", // Forest Green
+                        "--secondary-light": "#66b59b", // Minty Green
+                        "--secondary-dark": "#1e5c3f", // Pine Green
+                        "--bg": "#f5fdf7", // Light Mint
+                        "--card-bg-light": "#f0f4f8", // Pale Grey-Blue
+                        "--card-bg-dark": "#1e2a38", // Charcoal Navy
+                        "--card-bg-muted": "#eaf1f9", // Dusty Blue Tint
+                        "--card-bg": "#f0f4f8", // Pale Grey-Blue
+                        "--text-color": "#333", // Dark Grey
+                        "--text-color-light": "#333", // Dark Grey
+                        "--text-color-dark": "#ffffff", // White
+                        "--accent-1": "#ff3333", // Crimson Red
+                        "--accent-2": "#ff9f9f", // Light Crimson
+                        "--accent-3": "#f4b6b6", // Pale Blush
+                        "--hover-bg": "#7b0a0b", // Deep Maroon
+                        "--hover-text": "#ffffff", // White
+                        "--section-bg": "#ffffff", // White
+                        "--section-border": "#ccc", // Light Grey
+                        "--mini-card-bg": "#e6f0fa", // Powder Blue
+                        "--mini-card-border": "#b0c4de", // Light Steel Blue
+                        "--mini-card-hover": "#ffb3b3", // Soft Crimson
+                        "--button-bg": "#930d0e", // Blood Red
+                        "--button-hover-bg": "#c22c2c", // Bright Crimson
+                        "--highlight-bg": "#c22c2c", // Bright Crimson (matching the primary light color)
+                        "--highlight-text-color": "#ffffff", // White for strong contrast
+                        "--highlight-context-color": "#f9d5d4", // Soft Rose to complement the theme
+                    },
+                    blushRose: {
+                        "--primary": "#e84393", // Fuchsia Pink
+                        "--primary-light": "#f56eb5", // Lavender
+                        "--primary-dark": "#b93372", // Berry Plum
+                        "--secondary": "#fab1a0", // Soft Peach
+                        "--secondary-light": "#ffcfb8", // Blush Peach
+                        "--secondary-dark": "#f28f75", // Coral Apricot
+                        "--bg": "#fceff9", // Light Pink Mist
+                        "--card-bg-light": "#f0f4f8", // Pale Grey-Blue
+                        "--card-bg-dark": "#1e2a38", // Charcoal Navy
+                        "--card-bg-muted": "#eaf1f9", // Dusty Blue Tint
+                        "--card-bg": "#f0f4f8", // Pale Grey-Blue
+                        "--text-color": "#6c2c5b", // Grape Purple
+                        "--text-color-light": "#6c2c5b", // Grape Purple
+                        "--text-color-dark": "#ffffff", // White
+                        "--accent-1": "#ff7f7f", // Soft Coral
+                        "--accent-2": "#ffb3b3", // Light Blush
+                        "--accent-3": "#ffdde1", // Soft Peachy Tint
+                        "--hover-bg": "#b93372", // Berry Plum
+                        "--hover-text": "#ffffff", // White
+                        "--section-bg": "#ffffff", // White
+                        "--section-border": "#ccc", // Light Grey
+                        "--mini-card-bg": "#e6f0fa", // Powder Blue
+                        "--mini-card-border": "#b0c4de", // Light Steel Blue
+                        "--mini-card-hover": "#ffb3b3", // Soft Crimson
+                        "--button-bg": "#e84393", // Fuchsia Pink
+                        "--button-hover-bg": "#f56eb5", // Lavender
+                        "--highlight-bg": "#f56eb5", // Lavender (matching the primary light color)
+                        "--highlight-text-color": "#ffffff", // White for strong contrast
+                        "--highlight-context-color": "#ffccd7", // Baby Pink to complement the primary
+                    },
+                    midnightDark: {
+                        "--primary": "#ff5252", // Neon Coral
+                        "--primary-light": "#ff7f7f", // Bubblegum Red
+                        "--primary-dark": "#e10000", // Bright Red
+                        "--secondary": "#00c896", // Bright Teal
+                        "--secondary-light": "#33e0b3", // Aqua Green
+                        "--secondary-dark": "#009c75", // Emerald Teal
+                        "--bg": "#1a1a1a", // Jet Black
+                        "--card-bg-light": "#f0f4f8", // Pale Grey-Blue
+                        "--card-bg-dark": "#1e2a38", // Charcoal Navy
+                        "--card-bg-muted": "#eaf1f9", // Dusty Blue Tint
+                        "--card-bg": "#f0f4f8", // Pale Grey-Blue
+                        "--text-color": "#eee", // Light Grey
+                        "--text-color-light": "#eee", // Light Grey
+                        "--text-color-dark": "#ffffff", // White
+                        "--accent-1": "#ff2d2d", // Fiery Red
+                        "--accent-2": "#ff4444", // Tomato Red
+                        "--accent-3": "#ff6b6b", // Light Coral
+                        "--hover-bg": "#e10000", // Bright Red
+                        "--hover-text": "#ffffff", // White
+                        "--section-bg": "#ffffff", // White
+                        "--section-border": "#ccc", // Light Grey
+                        "--mini-card-bg": "#e6f0fa", // Powder Blue
+                        "--mini-card-border": "#b0c4de", // Light Steel Blue
+                        "--mini-card-hover": "#ffb3b3", // Soft Crimson
+                        "--button-bg": "#ff5252", // Neon Coral
+                        "--button-hover-bg": "#ff7f7f", // Bubblegum Red
+                        "--highlight-bg": "#ff7f7f", // Bubblegum Red (matching the primary light color)
+                        "--highlight-text-color": "#ffffff", // White for strong contrast
+                        "--highlight-context-color": "#ffbdbd", // Light Coral to blend with the primary theme
+                    },
+                    sereneLavender: {
+                        "--primary": "#9b59b6", // Medium Purple
+                        "--primary-light": "#ab70c6", // Lavender
+                        "--primary-dark": "#7a478d", // Deep Violet
+                        "--secondary": "#dcd6f7", // Pale Lilac
+                        "--secondary-light": "#f1f0fe", // White Lilac
+                        "--secondary-dark": "#a5a1d8", // Dusty Purple
+                        "--bg": "#f6f0ff", // White Lavender
+                        "--card-bg-light": "#f0f4f8", // Pale Grey-Blue
+                        "--card-bg-dark": "#1e2a38", // Charcoal Navy
+                        "--card-bg-muted": "#eaf1f9", // Dusty Blue Tint
+                        "--card-bg": "#f0f4f8", // Pale Grey-Blue
+                        "--text-color": "#4a347f", // Deep Violet
+                        "--text-color-light": "#4a347f", // Deep Violet
+                        "--text-color-dark": "#ffffff", // White
+                        "--accent-1": "#d1a3d4", // Lavender Purple
+                        "--accent-2": "#d8b6e4", // Light Lilac
+                        "--accent-3": "#ebd9f1", // Soft Lavender
+                        "--hover-bg": "#7a478d", // Deep Violet
+                        "--hover-text": "#ffffff", // White
+                        "--section-bg": "#ffffff", // White
+                        "--section-border": "#ccc", // Light Grey
+                        "--mini-card-bg": "#e6f0fa", // Powder Blue
+                        "--mini-card-border": "#b0c4de", // Light Steel Blue
+                        "--mini-card-hover": "#ffb3b3", // Soft Crimson
+                        "--button-bg": "#9b59b6", // Medium Purple
+                        "--button-hover-bg": "#ab70c6", // Lavender
+                        "--highlight-bg": "#ab70c6", // Lavender (matching the primary light color)
+                        "--highlight-text-color": "#ffffff", // White for strong contrast
+                        "--highlight-context-color": "#f1e0f1", // Soft Lavender to complement the theme
+                    },
+                    oceanBreeze: {
+                        "--primary": "#0077b6", // Ocean Blue
+                        "--primary-light": "#66a6c9", // Sky Blue
+                        "--primary-dark": "#004f74", // Deep Sea Blue
+                        "--secondary": "#90e0ef", // Aquamarine
+                        "--secondary-light": "#b8efff", // Pale Aqua
+                        "--secondary-dark": "#60b6c8", // Cool Cyan
+                        "--bg": "#e0f7fa", // Icy Blue
+                        "--card-bg-light": "#f0f4f8", // Pale Grey-Blue
+                        "--card-bg-dark": "#1e2a38", // Charcoal Navy
+                        "--card-bg-muted": "#eaf1f9", // Dusty Blue Tint
+                        "--card-bg": "#f0f4f8", // Pale Grey-Blue
+                        "--text-color": "#003b5c", // Ocean Teal
+                        "--text-color-light": "#003b5c", // Ocean Teal
+                        "--text-color-dark": "#ffffff", // White
+                        "--accent-1": "#00b5e2", // Bright Cyan
+                        "--accent-2": "#a6e6f0", // Light Aqua
+                        "--accent-3": "#d1e8f3", // Soft Blue
+                        "--hover-bg": "#004f74", // Deep Sea Blue
+                        "--hover-text": "#ffffff", // White
+                        "--section-bg": "#ffffff", // White
+                        "--section-border": "#ccc", // Light Grey
+                        "--mini-card-bg": "#e6f0fa", // Powder Blue
+                        "--mini-card-border": "#b0c4de", // Light Steel Blue
+                        "--mini-card-hover": "#b3e0ff", // Soft Blue
+                        "--button-bg": "#0077b6", // Ocean Blue
+                        "--button-hover-bg": "#66a6c9", // Sky Blue
+                        "--highlight-bg": "#66a6c9", // Sky Blue (matching the primary light color)
+                        "--highlight-text-color": "#ffffff", // White for strong contrast
+                        "--highlight-context-color": "#b8efff", // Light Aqua to complement the theme
+                    },
+                    goldenSunset: {
+                        "--primary": "#f4a261", // Golden Yellow
+                        "--primary-light": "#ffb84d", // Sunburst
+                        "--primary-dark": "#d6892d", // Deep Gold
+                        "--secondary": "#ffecb3", // Soft Amber
+                        "--secondary-light": "#fff6d7", // Light Golden
+                        "--secondary-dark": "#e5b83f", // Warm Mustard
+                        "--bg": "#fef2d1", // Soft Yellow Tint
+                        "--card-bg-light": "#f0f4f8", // Pale Grey-Blue
+                        "--card-bg-dark": "#1e2a38", // Charcoal Navy
+                        "--card-bg-muted": "#eaf1f9", // Dusty Blue Tint
+                        "--card-bg": "#f0f4f8", // Pale Grey-Blue
+                        "--text-color": "#4f2f16", // Dark Coffee
+                        "--text-color-light": "#4f2f16", // Dark Coffee
+                        "--text-color-dark": "#ffffff", // White
+                        "--accent-1": "#ffb84d", // Sunburst Gold
+                        "--accent-2": "#ffd699", // Golden Glow
+                        "--accent-3": "#ffebcc", // Light Butter
+                        "--hover-bg": "#d6892d", // Deep Gold
+                        "--hover-text": "#ffffff", // White
+                        "--section-bg": "#ffffff", // White
+                        "--section-border": "#ccc", // Light Grey
+                        "--mini-card-bg": "#e6f0fa", // Powder Blue
+                        "--mini-card-border": "#b0c4de", // Light Steel Blue
+                        "--mini-card-hover": "#ffdd7f", // Soft Sun
+                        "--button-bg": "#f4a261", // Golden Yellow
+                        "--button-hover-bg": "#ffb84d", // Sunburst
+                        "--highlight-bg": "#ffb84d", // Sunburst (matching the primary light color)
+                        "--highlight-text-color": "#ffffff", // White for strong contrast
+                        "--highlight-context-color": "#ffd699", // Golden Glow to complement the primary
+                    },
+                    softStone: {
+                        "--primary": "#7f8c8d", // Slate Grey
+                        "--primary-light": "#95a5a6", // Light Slate
+                        "--primary-dark": "#5d6d7e", // Deep Grey
+                        "--secondary": "#d5dbdb", // Misty Grey
+                        "--secondary-light": "#f4f6f6", // Light Mist
+                        "--secondary-dark": "#aab7b8", // Greyed Blue
+                        "--bg": "#f2f4f4", // Off-White
+                        "--card-bg-light": "#f0f4f8", // Pale Grey-Blue
+                        "--card-bg-dark": "#1e2a38", // Charcoal Navy
+                        "--card-bg-muted": "#eaf1f9", // Dusty Blue Tint
+                        "--card-bg": "#f0f4f8", // Pale Grey-Blue
+                        "--text-color": "#2c3e50", // Dark Slate
+                        "--text-color-light": "#2c3e50", // Dark Slate
+                        "--text-color-dark": "#ffffff", // White
+                        "--accent-1": "#7f8c8d", // Slate Grey
+                        "--accent-2": "#d5dbdb", // Misty Grey
+                        "--accent-3": "#aab7b8", // Greyed Blue
+                        "--hover-bg": "#5d6d7e", // Deep Grey
+                        "--hover-text": "#ffffff", // White
+                        "--section-bg": "#ffffff", // White
+                        "--section-border": "#ccc", // Light Grey
+                        "--mini-card-bg": "#e6f0fa", // Powder Blue
+                        "--mini-card-border": "#b0c4de", // Light Steel Blue
+                        "--mini-card-hover": "#c2cfd6", // Misty Grey
+                        "--button-bg": "#7f8c8d", // Slate Grey
+                        "--button-hover-bg": "#95a5a6", // Light Slate
+                        "--highlight-bg": "#95a5a6", // Light Slate (matching the primary light color)
+                        "--highlight-text-color": "#ffffff", // White for strong contrast
+                        "--highlight-context-color": "#d5dbdb", // Misty Grey to complement the theme
+                    },
+                    softBlush: {
+                        "--primary": "#f7a7c2", // Soft Blush Pink
+                        "--primary-light": "#ffb8d3", // Light Blush
+                        "--primary-dark": "#d27a94", // Rosewood
+                        "--secondary": "#fce8f1", // Soft Pink Tint
+                        "--secondary-light": "#f8c7d9", // Light Blush Pink
+                        "--secondary-dark": "#e1a3b7", // Rose Tint
+                        "--bg": "#ffebf2", // Light Rose
+                        "--card-bg-light": "#f0f4f8", // Pale Grey-Blue
+                        "--card-bg-dark": "#1e2a38", // Charcoal Navy
+                        "--card-bg-muted": "#eaf1f9", // Dusty Blue Tint
+                        "--card-bg": "#f0f4f8", // Pale Grey-Blue
+                        "--text-color": "#6d3d47", // Deep Rose
+                        "--text-color-light": "#6d3d47", // Deep Rose
+                        "--text-color-dark": "#ffffff", // White
+                        "--accent-1": "#f7a7c2", // Soft Blush Pink
+                        "--accent-2": "#ffb8d3", // Light Blush
+                        "--accent-3": "#f8c7d9", // Light Blush Pink
+                        "--hover-bg": "#d27a94", // Rosewood
+                        "--hover-text": "#ffffff", // White
+                        "--section-bg": "#ffffff", // White
+                        "--section-border": "#ccc", // Light Grey
+                        "--mini-card-bg": "#e6f0fa", // Powder Blue
+                        "--mini-card-border": "#b0c4de", // Light Steel Blue
+                        "--mini-card-hover": "#ffb8d3", // Light Blush
+                        "--button-bg": "#f7a7c2", // Soft Blush Pink
+                        "--button-hover-bg": "#ffb8d3", // Light Blush
+                        "--highlight-bg": "#ffb8d3", // Light Blush (matching the primary light color)
+                        "--highlight-text-color": "#ffffff", // White for strong contrast
+                        "--highlight-context-color": "#f8c7d9", // Light Blush Pink to complement the theme
+                    },
+                };
+
+                // Get the theme from localStorage (default is 'default')
+                const themeName = localStorage.getItem("theme") || "default";
+                const theme = themes[themeName];
+
+                // Apply the theme if it's valid
+                if (theme) {
+                    const root = document.documentElement;
+                    const style = document.createElement("style");
+                    let cssVars = ":root {";
+                    for (const key in theme) {
+                        cssVars += `${key}: ${theme[key]};`;
+                    }
+                    cssVars += "}";
+                    style.innerHTML = cssVars;
+                    document.head.appendChild(style);
+                }
+            })();
+        </script>
+
+        <style>
+            html {
+                transition: none !important;
+            }
+        </style>
+        <link rel="stylesheet" href="themes.css" />
+        <link rel="stylesheet" href="introstyles.css" />
+        <style>
+            /* General Reset and Fonts */
+            body,
+            html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                font-family: "Poppins", sans-serif;
+                background: linear-gradient(145deg, #001933, #001121);
+                color: var(--text-light);
+                overflow-x: hidden;
+            }
+
+            /* 🌌 Registration Section Container */
+            .registration-section {
+                padding: 4rem 2rem;
+                margin: 4rem auto;
+                border-radius: 24px;
+                max-width: 1080px;
+                background: var(--card-bg);
+                box-shadow: var(--shadow-xl);
+                border: 1px solid var(--border-color);
+                transition: var(--transition);
+            }
+
+            /* Title */
+            .registration-section h2 {
+                text-align: center;
+                font-size: 2.5rem;
+                color: var(--primary);
+                margin-bottom: 2rem;
+            }
+
+            /* 🎨 Form Fields */
+            .registration-section input,
+            .registration-section select,
+            .registration-section textarea {
+                width: 100%;
+                padding: 1rem;
+                margin: 0.75rem 0 1.5rem;
+                font-size: 1rem;
+                border: 2px solid var(--border-color);
+                border-radius: 12px;
+                background: var(--input-bg);
+                color: var(--text-color);
+                backdrop-filter: var(--glass-blur);
+                box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03);
+                transition: var(--transition);
+            }
+
+            .registration-section input:focus,
+            .registration-section select:focus,
+            .registration-section textarea:focus {
+                outline: none;
+                border-color: var(--primary-light);
+                box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.2);
+            }
+
+            /* 📌 Labels */
+            .add-form-label,
+            .MS-add-form-label {
+                font-weight: 700;
+                background: linear-gradient(90deg, var(--accent-1), var(--primary-light));
+                color: #fff;
+                padding: 10px 16px;
+                border-radius: 10px;
+                box-shadow: 2px 6px 20px rgba(0, 0, 0, 0.2);
+                margin-bottom: 0.5rem;
+                display: inline-block;
+                transition: var(--transition);
+                text-align: right;
+                margin-left: auto;
+                margin-right: 0;
+            }
+
+            /* 🤹🏻 Form Groups */
+            .MS-add-form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            /* 📦 Suggestion Box */
+            .MS-add-suggestion-box {
+                position: absolute;
+                width: 100%;
+                background: var(--card-bg-muted);
+                color: var(--text-color);
+                max-height: 200px;
+                overflow-y: auto;
+                border-radius: 12px;
+                box-shadow: var(--shadow-xl);
+                z-index: 999;
+                transition: var(--transition);
+            }
+
+            .MS-add-suggestion-box div {
+                padding: 12px;
+                border-bottom: 1px solid var(--accent-3);
+                cursor: pointer;
+            }
+
+            .MS-add-suggestion-box div:hover {
+                background-color: var(--accent-1);
+                color: #fff;
+            }
+
+            /* 🪄 Accordion */
+            .accordion-item {
+                background: var(--card-bg-muted);
+                border-radius: 16px;
+                margin-bottom: 1.5rem;
+                overflow: hidden;
+                transition: var(--transition);
+            }
+
+            .accordion-header {
+                padding: 1.25rem;
+                font-weight: 700;
+                background: linear-gradient(90deg, var(--primary), var(--secondary-dark));
+                color: white;
+                cursor: pointer;
+                font-size: 1.1rem;
+                text-align: right;
+                justify-content: flex-end;
+                display: flex;
+                align-items: center;
+            }
+
+            .accordion-container {
+                display: flex;
+                flex-direction: column; /* Column layout is more standard for accordions */
+                gap: 1rem; /* Adds spacing between items */
+                width: 100%;
+            }
+
+            /* Each item wraps header and body */
+            .accordion-item {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                border-radius: 12px;
+                overflow: hidden;
+                background: var(--card-bg-strong);
+                box-shadow: var(--shadow-xl);
+                transition: var(--transition);
+            }
+
+            /* Header styles */
+            .accordion-header {
+                padding: 1.25rem 1.5rem;
+                font-weight: 700;
+                background: linear-gradient(90deg, var(--primary), var(--secondary-dark));
+                color: white;
+                font-size: 1.1rem;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start; /* Left-aligned text */
+                cursor: pointer;
+                flex-grow: 1;
+                width: 100%;
+                border: none;
+                outline: none;
+            }
+
+            /* Body initially hidden, shown when .active is on item */
+            .accordion-body {
+                padding: 1.5rem;
+                display: none;
+                animation: fadeIn 0.5s ease-in-out;
+                width: 80%;
+            }
+
+            .accordion-item.active .accordion-body {
+                display: block;
+            }
+
+            /* Optional: smoother hover */
+            .accordion-header:hover {
+                filter: brightness(1.1);
+            }
+
+            .accordion-body {
+                padding: 1.5rem;
+                display: none;
+                animation: fadeIn 0.5s ease-in-out;
+            }
+
+            .accordion-item.active .accordion-body {
+                display: block;
+            }
+
+            /* ✨ Theme Switcher */
+            .theme-switcher {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--card-bg);
+                padding: 10px 20px;
+                border-radius: 12px;
+                box-shadow: var(--shadow-xl);
+                backdrop-filter: var(--glass-blur);
+                z-index: 1000;
+            }
+
+            /* 🎯 Buttons */
+            button {
+                background: linear-gradient(135deg, var(--primary), var(--accent-1));
+                color: white;
+                border: none;
+                border-radius: 12px;
+                padding: 12px 24px;
+                font-size: 1rem;
+                font-weight: bold;
+                cursor: pointer;
+                transition: var(--transition);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            }
+
+            button:hover {
+                background: linear-gradient(135deg, var(--accent-3), var(--secondary));
+                transform: scale(1.05);
+            }
+
+            /* 🔮 Utility Effects */
+            .card:hover {
+                transform: translateY(-4px) scale(1.02);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            }
+
+            .highlight {
+                background: var(--highlight-bg);
+                color: var(--highlight-text-color);
+                padding: 12px;
+                border-radius: 10px;
+                font-weight: 600;
+                display: inline-block;
+            }
+
+            /* 🌀 Animations */
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Main content area -->
+
+        <div class="page-wrapper">
+            <!-- Theme switcher -->
+            <div class="theme-switcher">
+                <select id="themeSelect" class="form-select">
+                    <option value="default" selected> <img src="logo.png" alt="TMR Fresh Logo" style="width: 20px; vertical-align: middle; margin-right: 8px; display: inline-block;" /> TMR </option>
+                    <option value="fieryRed">🔥 Fiery Red</option>
+                    <option value="blushRose">🌸 Blush Rose</option>
+                    <option value="midnightDark">🌚 Midnight Dark</option>
+                    <option value="sereneLavender">💜 Serene Lavender</option>
+                    <option value="oceanBreeze">🌊 Ocean Breeze</option>
+                    <option value="goldenSunset">🌅 Golden Sunset</option>
+                    <option value="softStone">🪶 Soft Stone</option>
+                    <option value="softBlush">💖 Soft Blush</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="rgStr" class="container registration-wrapper">
+            <section class="registration-section glass-section">
+                <h2 class="section-title">Complete Your Registration</h2>
+                <div class="register-flex">
+                    <!-- LEFT SECTION -->
+                    <section class="left registration-panel">
+                        <h3 class="panel-title">Your Details</h3>
+
+                        <div class="accordion">
+                            <!-- CONTACT DETAILS -->
+                            <div class="accordion-item">
+                                <button class="accordion-header">🏛️ Departments</button>
+                                <div class="accordion-body">
+                                    <!-- Venue Type -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="001_hospital_department" class="MS-add-form-label" style="width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Medical Departments
+                                        </label>
+                                        <select id="001_hospital_department" class="form-group" style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;">
+                                            <option value="" selected disabled>Select Department...</option>
+                                            <!-- Medical Departments -->
+                                            <optgroup label="Medical Departments">
+                                                <option value="outpatient">Outpatient Department (OPD)</option>
+                                                <option value="emergency">Emergency & Accident Department</option>
+                                                <option value="inpatient">Inpatient Department</option>
+                                                <option value="surgical">Surgical Services</option>
+                                                <option value="internal-medicine">Internal Medicine</option>
+                                                <option value="obstetrics-gynecology">Obstetrics & Gynecology</option>
+                                                <option value="pediatrics">Pediatrics</option>
+                                                <option value="radiology">Radiology & Imaging</option>
+                                                <option value="laboratory">Laboratory Services</option>
+                                                <option value="dental">Dental Department</option>
+                                                <option value="physiotherapy">Physiotherapy & Rehabilitation</option>
+                                                <option value="pharmacy">Pharmacy</option>
+                                                <option value="anesthesiology">Anesthesiology & Pain Management</option>
+                                                <option value="icu">ICU & High Dependency Unit (HDU)</option>
+                                                <option value="mental-health">Mental Health & Psychiatry</option>
+                                                <option value="nutrition">Nutrition & Dietetics</option>
+                                                <option value="management">Hospital Management & Administration</option>
+                                                <option value="finance">Finance & Accounts</option>
+                                                <option value="human-resources">Human Resources (HR)</option>
+                                                <option value="procurement">Procurement & Supply Chain</option>
+                                                <option value="it-support">Information Technology (IT) & Systems</option>
+                                                <option value="customer-care">Customer Care & Front Desk</option>
+                                                <option value="marketing">Marketing & Public Relations</option>
+                                                <option value="medical-records">Medical Records & Documentation</option>
+                                                <option value="insurance">Insurance & Billing</option>
+                                                <option value="housekeeping">Housekeeping & Sanitation</option>
+                                                <option value="security">Security & Safety</option>
+                                                <option value="catering">Catering & Nutrition Services</option>
+                                                <option value="transport">Transport & Ambulance Services</option>
+                                                <option value="maintenance">Facilities & Maintenance</option>
+                                                <option value="quality-control">Quality Control & Patient Safety</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+
+                                    <!-- Evaluation Location -->
+                                    <div class="form-group" style="display: none; align-items: center; margin-bottom: 10px; position: relative;">
+                                        <label for="002_evaluation_address" class="MS-add-form-label" style="background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Evaluation Location
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="002_evaluation_address"
+                                            class="MS-add-form-control"
+                                            placeholder="Search by address or postcode..."
+                                            autocomplete="off"
+                                            readonly
+                                            value="TMR International Hospital, Kira Lane, Naalya, Kyaliwajjala, Naalya Estate, Wakiso, Central Region, Uganda"
+                                            style="width: 100%; padding: 0.5rem; font-size: 1rem; border-radius: 5px; border: 1px solid #ccc;"
+                                        />
+                                        <div
+                                            id="002_evaluation_suggestions"
+                                            class="MS-add-suggestion-box"
+                                            style="
+                                                position: absolute;
+                                                top: 100%;
+                                                left: 0;
+                                                right: 0;
+                                                background: #ffd5db;
+                                                border: 1px solid #ccc;
+                                                border-top: none;
+                                                z-index: 10;
+                                                display: none;
+                                                max-height: 200px;
+                                                overflow-y: auto;
+                                                margin-top: 8px;
+                                                border-radius: 5px;
+                                            "
+                                        ></div>
+                                    </div>
+
+                                    <!-- Country (Autofilled) -->
+                                    <div class="form-group" style="display: none; align-items: center; margin-bottom: 10px;">
+                                        <label for="003_evaluation_country" class="MS-add-form-label" style="width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Country
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="003_evaluation_country"
+                                            class="MS-add-form-control"
+                                            value="Uganda"
+                                            readonly
+                                            style="
+                                                flex-grow: 1;
+                                                font-family: 'Poppins', sans-serif;
+                                                background-color: #f9f9f9;
+                                                cursor: not-allowed;
+                                                padding: 12px;
+                                                font-size: 1rem;
+                                                border: 1px solid #ccc;
+                                                border-radius: 6px;
+                                                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+                                            "
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PERSONAL DETAILS -->
+                        <div class="accordion-item">
+                            <button class="accordion-header">👤 Personal Details</button>
+                            <div class="accordion-body">
+                                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                    <label for="004_title" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        Title
+                                    </label>
+                                    <select
+                                        id="004_title"
+                                        class="form-group"
+                                        style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                    >
+                                        <option value="" selected disabled>Select Salutation...</option>
+                                        <!-- Common Salutations -->
+                                        <!-- Common Salutations -->
+                                        <optgroup label="Common">
+                                            <option value="mr">Mr.</option>
+                                            <option value="mrs">Mrs.</option>
+                                            <option value="miss">Miss</option>
+                                            <option value="ms">Ms.</option>
+                                            <option value="dr">Dr.</option>
+                                            <option value="prof">Prof.</option>
+                                            <option value="rev">Rev.</option>
+                                            <option value="sir">Sir</option>
+                                            <option value="madam">Madam</option>
+                                            <option value="consultant">Consultant</option>
+                                            <option value="specialist">Specialist</option>
+                                            <option value="medical-officer">Medical Officer</option>
+                                            <option value="clinical-officer">Clinical Officer</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                    <label for="005_first-name" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        First Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="005_first-name"
+                                        placeholder="e.g. Jane"
+                                        required
+                                        style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                    />
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                    <label for="006_surname" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        Surname
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="006_surname"
+                                        placeholder="e.g. Doe"
+                                        required
+                                        style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CONTACT DETAILS -->
+                        <div class="accordion-item">
+                            <button class="accordion-header">📞 Contact Details</button>
+                            <div class="accordion-body">
+                                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                    <label for="007_email" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        Email Address
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="007_email"
+                                        placeholder="e.g. you@example.com"
+                                        required
+                                        style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                    />
+                                </div>
+
+                                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                    <label for="008_phone" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        Phone Number
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        id="008_phone"
+                                        placeholder="e.g. +1234567890"
+                                        required
+                                        style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PERSONAL INFO -->
+                        <div class="accordion-item">
+                            <button class="accordion-header">📋 Personal Information</button>
+                            <div class="accordion-body">
+                                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 5px;">
+                                    <label for="009_gender" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        Gender
+                                    </label>
+                                    <select
+                                        id="009_gender"
+                                        required
+                                        style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                    >
+                                        <option value="">Select</option>
+                                        <option>Female</option>
+                                        <option>Male</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 5px;">
+                                    <label for="010_age-group" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        Age Group
+                                    </label>
+                                    <select
+                                        id="010_age-group"
+                                        required
+                                        style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                    >
+                                        <option value="">Select</option>
+                                        <option>10-17</option>
+                                        <option>18-24</option>
+                                        <option>25-34</option>
+                                        <option>35-44</option>
+                                        <option>45-54</option>
+                                        <option>55+</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 5px;">
+                                    <label for="011_marital-status" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        Marital Status
+                                    </label>
+                                    <select
+                                        id="011_marital-status"
+                                        required
+                                        style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                    >
+                                        <option value="">Select</option>
+                                        <option>Single</option>
+                                        <option>Married</option>
+                                        <option>Divorced</option>
+                                        <option>Widowed</option>
+                                    </select>
+                                </div>
+
+                                <!-- Immediate Family Size -->
+                                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                    <label
+                                        for="012_immediate-family-size"
+                                        class="MS-add-form-label"
+                                        style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                    >
+                                        Family Size
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="012_immediate-family-size"
+                                        min="1"
+                                        placeholder="Total number in your immediate family"
+                                        required
+                                        style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                    />
+                                </div>
+
+                                <!-- Family Type -->
+                                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                    <label for="013_family-type" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        Family Type
+                                    </label>
+                                    <select id="013_family-type" required style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;">
+                                        <option value="" disabled selected>Select family type...</option>
+                                        <option value="nuclear">Nuclear (parents + children)</option>
+                                        <option value="extended">Extended (includes grandparents, aunts/uncles, etc.)</option>
+                                        <option value="single-parent">Single Parent</option>
+                                        <option value="blended">Blended (step-parents/siblings)</option>
+                                        <option value="child-headed">Child-headed Household</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="display: none; align-items: center; margin-bottom: 5px;">
+                                    <label for="014_nationality" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        Nationality
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="014_nationality"
+                                        placeholder="Start typing to search..."
+                                        list="nationalities"
+                                        required
+                                        value="Uganda"
+                                        style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                    />
+                                    <datalist id="nationalities">
+                                        <option value="Algeria"></option>
+                                        <option value="Angola"></option>
+                                        <option value="Benin"></option>
+                                        <option value="Botswana"></option>
+                                        <option value="Burkina Faso"></option>
+                                        <option value="Burundi"></option>
+                                        <option value="Cabo Verde"></option>
+                                        <option value="Cameroon"></option>
+                                        <option value="Central African Republic"></option>
+                                        <option value="Chad"></option>
+                                        <option value="Comoros"></option>
+                                        <option value="Democratic Republic of the Congo"></option>
+                                        <option value="Republic of the Congo"></option>
+                                        <option value="Côte d'Ivoire"></option>
+                                        <option value="Djibouti"></option>
+                                        <option value="Egypt"></option>
+                                        <option value="Equatorial Guinea"></option>
+                                        <option value="Eritrea"></option>
+                                        <option value="Eswatini"></option>
+                                        <option value="Ethiopia"></option>
+                                        <option value="Gabon"></option>
+                                        <option value="Gambia"></option>
+                                        <option value="Ghana"></option>
+                                        <option value="Guinea"></option>
+                                        <option value="Guinea-Bissau"></option>
+                                        <option value="Kenya"></option>
+                                        <option value="Lesotho"></option>
+                                        <option value="Liberia"></option>
+                                        <option value="Libya"></option>
+                                        <option value="Madagascar"></option>
+                                        <option value="Malawi"></option>
+                                        <option value="Mali"></option>
+                                        <option value="Mauritania"></option>
+                                        <option value="Mauritius"></option>
+                                        <option value="Morocco"></option>
+                                        <option value="Mozambique"></option>
+                                        <option value="Namibia"></option>
+                                        <option value="Niger"></option>
+                                        <option value="Nigeria"></option>
+                                        <option value="Rwanda"></option>
+                                        <option value="São Tomé and Príncipe"></option>
+                                        <option value="Senegal"></option>
+                                        <option value="Seychelles"></option>
+                                        <option value="Sierra Leone"></option>
+                                        <option value="Somalia"></option>
+                                        <option value="South Africa"></option>
+                                        <option value="South Sudan"></option>
+                                        <option value="Sudan"></option>
+                                        <option value="Tanzania"></option>
+                                        <option value="Togo"></option>
+                                        <option value="Tunisia"></option>
+                                        <option value="Uganda"></option>
+                                        <option value="Zambia"></option>
+                                        <option value="Zimbabwe"></option>
+                                    </datalist>
+                                </div>
+
+                                <div class="form-group" style="display: none; align-items: center; margin-bottom: 5px;">
+                                    <label for="015_ethnicity" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        Ethnicity
+                                    </label>
+                                    <select
+                                        id="015_ethnicity"
+                                        required
+                                        style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                    >
+                                        <option value="">Select</option>
+                                        <option selected>African</option>
+                                        <option>Caucasian</option>
+                                        <option>Asian</option>
+                                        <option>Hispanic</option>
+                                        <option>Mixed</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <!-- EMPLOYMENT STATUS -->
+                            <button class="accordion-header">💼 Employment Status</button>
+                            <div class="accordion-body">
+                                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                    <label for="016_employment" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        Employment Status
+                                    </label>
+                                    <select
+                                        id="016_employment"
+                                        class="form-group"
+                                        style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        onchange="toggleConditionalSections()"
+                                    >
+                                        <option value="" disabled>Select Employment Status...</option>
+                                        <option value="employed" selected>Employed</option>
+                                        <option value="self_employed">Self-Employed</option>
+                                        <option value="student">Student</option>
+                                        <option value="unemployed">Unemployed</option>
+                                        <option value="retired">Retired</option>
+                                    </select>
+                                </div>
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", () => {
+                                        toggleConditionalSections(); // trigger on page load
+                                    });
+                                </script>
+
+                                <!-- Conditional Sections: Student, Business, Professional -->
+
+                                <div class="conditional-section" id="employed-details" style="display: none; margin-top: 20px;">
+                                    <!-- Employer Name -->
+                                    <div class="form-group" style="display: none; align-items: center; margin-bottom: 10px;">
+                                        <label for="017_employer-name" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Employer Name
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="017_employer-name"
+                                            value="TMR International Hospital Naalya"
+                                            placeholder="Enter your employer's name"
+                                            required
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        />
+                                    </div>
+
+                                    <!-- Industry -->
+                                    <div class="form-group" style="display: none; align-items: center; margin-bottom: 10px;">
+                                        <label
+                                            for="018-employment-industry"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
+                                            Industry / Sector
+                                        </label>
+                                        <select
+                                            id="018_employment-industry"
+                                            class="form-group"
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        >
+                                            <option value="" disabled>Select Industry...</option>
+                                            <option value="healthcare" selected>Healthcare</option>
+                                            <option value="education">Education</option>
+                                            <option value="agriculture">Agriculture</option>
+                                            <option value="construction">Construction</option>
+                                            <option value="mining">Mining</option>
+                                            <option value="it">Information Technology</option>
+                                            <option value="public_service">Public Service / Government</option>
+                                            <option value="retail">Retail / Wholesale</option>
+                                            <option value="transport">Transport / Logistics</option>
+                                            <option value="manufacturing">Manufacturing</option>
+                                            <option value="finance">Banking / Finance / Insurance</option>
+                                            <option value="hospitality">Hospitality / Tourism</option>
+                                            <option value="legal">Legal</option>
+                                            <option value="ngo">NGO / Non-Profit</option>
+                                            <option value="domestic">Domestic Work</option>
+                                            <option value="security">Security Services</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Job Title -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="019_job-title" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Job Title / Role
+                                        </label>
+
+                                        <select
+                                            id="019_job-title"
+                                            name="job-title"
+                                            required
+                                            onchange="toggleOtherJobTitle()"
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;"
+                                        >
+                                            <option value="" selected disabled>Select Job Title...</option>
+
+                                            <!-- Clinical / Medical Staff -->
+                                            <optgroup label="Clinical / Medical">
+                                                <option value="consultant-physician">Consultant Physician</option>
+                                                <option value="consultant-surgeon">Consultant Surgeon</option>
+                                                <option value="medical-officer">Medical Officer</option>
+                                                <option value="clinical-officer">Clinical Officer</option>
+                                                <option value="resident-doctor">Resident Doctor</option>
+                                                <option value="dentist">Dentist</option>
+                                                <option value="anesthetist">Anesthetist</option>
+                                                <option value="pharmacist">Pharmacist</option>
+                                                <option value="nurse">Nurse</option>
+                                                <option value="midwife">Midwife</option>
+                                                <option value="radiologist">Radiologist</option>
+                                                <option value="physiotherapist">Physiotherapist</option>
+                                                <option value="nutritionist">Nutritionist</option>
+                                            </optgroup>
+
+                                            <!-- Administrative & Management -->
+                                            <optgroup label="Administrative & Management">
+                                                <option value="ceo">Chief Executive Officer (CEO)</option>
+                                                <option value="hospital-director">Hospital Director</option>
+                                                <option value="medical-director">Medical Director</option>
+                                                <option value="operations-manager">Operations Manager</option>
+                                                <option value="finance-manager">Finance & Accounts Manager</option>
+                                                <option value="hr-manager">Human Resources Manager</option>
+                                                <option value="customer-relations">Customer Relations Officer</option>
+                                                <option value="public-relations">Public Relations Officer</option>
+                                                <option value="insurance-billing-officer">Insurance & Billing Officer</option>
+                                            </optgroup>
+
+                                            <!-- Support & Operations -->
+                                            <optgroup label="Support & Operations">
+                                                <option value="housekeeping-attendant">Housekeeping Attendant</option>
+                                                <option value="security-officer">Security Officer</option>
+                                                <option value="maintenance-officer">Maintenance Officer</option>
+                                                <option value="ambulance-driver">Ambulance Driver</option>
+                                                <option value="storekeeper">Storekeeper</option>
+                                                <option value="catering-manager">Catering Manager</option>
+                                            </optgroup>
+
+                                            <!-- Specialized Services -->
+                                            <optgroup label="Specialized Services">
+                                                <option value="radiographer">Radiographer</option>
+                                                <option value="sonographer">Sonographer</option>
+                                                <option value="anesthesia-technician">Anesthesia Technician</option>
+                                                <option value="dental-assistant">Dental Assistant</option>
+                                                <option value="physiotherapy-assistant">Physiotherapy Assistant</option>
+                                                <option value="mortuary-attendant">Mortuary Attendant</option>
+                                            </optgroup>
+
+                                            <!-- Other Option -->
+                                            <option value="other">Other (please specify)</option>
+                                        </select>
+
+                                        <!-- Hidden text input for 'Other' -->
+                                        <input
+                                            type="text"
+                                            id="020_other-job-title"
+                                            name="other-job-title"
+                                            placeholder="Please specify job title"
+                                            style="display: none; flex-grow: 1; margin-top: 10px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;"
+                                        />
+                                    </div>
+
+                                    <script>
+                                        function toggleOtherJobTitle() {
+                                            const jobTitleDropdown = document.getElementById("019_job-title");
+                                            const otherJobTitleInput = document.getElementById("020_other-job-title");
+                                            if (jobTitleDropdown.value === "other") {
+                                                otherJobTitleInput.style.display = "block";
+                                            } else {
+                                                otherJobTitleInput.style.display = "none";
+                                                otherJobTitleInput.value = "";
+                                            }
+                                        }
+                                    </script>
+
+                                    <!-- Work Type -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="021_work-type" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Work Arrangement
+                                        </label>
+                                        <select
+                                            id="021_work-type"
+                                            class="form-group"
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        >
+                                            <option value="" selected disabled>Select Work Type...</option>
+                                            <option value="on_site">On-site</option>
+                                            <option value="remote">Remote</option>
+                                            <option value="hybrid">Hybrid (Remote + On-site)</option>
+                                            <option value="field">Field-based</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Work Hours -->
+
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="022_work-hours" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Typical Work Hours
+                                        </label>
+                                        <select
+                                            id="022_work-hours"
+                                            class="form-group"
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        >
+                                            <option value="" selected disabled>Select...</option>
+                                            <option value="standard">8am – 5pm</option>
+                                            <option value="shift">Shift Work</option>
+                                            <option value="flexible">Flexible / Freelance</option>
+                                            <option value="extended">More than 10 hours/day</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Health Access -->
+                                    <!-- Health Access -->
+                                    <div class="form-group" style="margin-bottom: 30px;">
+                                        <!-- Main Label: Question -->
+                                        <label
+                                            class="MS-add-form-label"
+                                            style="
+                                                background-color: var(--primary);
+                                                padding: 1rem 2rem;
+                                                border-radius: 10px;
+                                                color: #fff;
+                                                display: inline-block;
+                                                font-size: 1.3rem;
+                                                font-weight: bold;
+                                                margin-bottom: 25px;
+                                                width: 100%;
+                                                max-width: 700px;
+                                                text-align: center;
+                                                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                                            "
+                                        >
+                                            Do you have access to any of the following?
+                                        </label>
+
+                                        <!-- Checkbox Container -->
+<!-- Checkbox Container -->
+<div style="display: flex; flex-direction: column; gap: 20px;">
+    <style>
+        .checkbox-wrapper {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: start;
+            background-color: #f8f8f8;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            gap: 20px;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            transform: scale(1.4);
+            margin-top: 5px;
+        }
+
+        .checkbox-wrapper label {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .checkbox-wrapper span {
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .checkbox-wrapper small {
+            color: #555;
+            margin-top: 5px;
+        }
+    </style>
+
+    <!-- Private Medical Insurance -->
+    <div class="checkbox-wrapper">
+        <input type="checkbox" id="023_private-medical-insurance" name="healthcare_options" value="private_insurance" />
+        <label for="023_private-medical-insurance">
+            <span>Private Medical Insurance</span>
+            <small>Access to private medical coverage for emergencies and regular healthcare services.</small>
+        </label>
+    </div>
+
+    <!-- Government Healthcare -->
+    <div class="checkbox-wrapper">
+        <input type="checkbox" id="024_government-healthcare" name="healthcare_options" value="government_healthcare" />
+        <label for="024-government-healthcare">
+            <span>Government Healthcare</span>
+            <small>National health services or programs provided by the government for public health coverage.</small>
+        </label>
+    </div>
+
+    <!-- Employer Clinic / Health Centre -->
+    <div class="checkbox-wrapper">
+        <input type="checkbox" id="025_employer-health-clinic" name="healthcare_options" value="employer_clinic" />
+        <label for="025_employer-health-clinic">
+            <span>Employer Clinic / Health Centre</span>
+            <small>Healthcare services provided through your employer's on-site clinic or health center.</small>
+        </label>
+    </div>
+
+    <!-- None Option -->
+    <div class="checkbox-wrapper">
+        <input type="checkbox" id="026_no-healthcare-option" name="healthcare_options" value="none" />
+        <label for="026_no-healthcare-option">
+            <span>None</span>
+            <small>You do not have access to any of the healthcare options listed above.</small>
+        </label>
+    </div>
+</div>
+                                    </div>
+
+                                    <!-- Commute -->
+
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="027_commute" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Average Commute (One-way)
+                                        </label>
+                                        <select
+                                            id="027_commute"
+                                            class="form-group"
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        >
+                                            <option value="" selected disabled>Select Commute Time...</option>
+                                            <option value="under_15">Under 15 minutes</option>
+                                            <option value="15_30">15 – 30 minutes</option>
+                                            <option value="30_60">30 – 60 minutes</option>
+                                            <option value="over_60">Over 1 hour</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="conditional-section" id="unemployed-details" style="display: none; margin-top: 20px;">
+                                    <!-- Last Job Held -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="028_last-job" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Last Job Held <small>(optional)</small>
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="028_last-job"
+                                            placeholder="e.g. Waiter, Driver, Cleaner"
+                                            required
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        />
+                                    </div>
+
+                                    <!-- Duration Unemployed -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label
+                                            for="029_unemployed-duration"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
+                                            How long have you been unemployed?
+                                        </label>
+                                        <select
+                                            id="029_unemployed-duration"
+                                            class="form-group"
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        >
+                                            <option value="" selected disabled>Select Duration...</option>
+                                            <option value="less_3_months">Less than 3 months</option>
+                                            <option value="3_6_months">3 – 6 months</option>
+                                            <option value="6_12_months">6 – 12 months</option>
+                                            <option value="over_1_year">Over 1 year</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Seeking Work -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="030_seeking-work" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Are you actively seeking work?
+                                        </label>
+                                        <select
+                                            id="030_seeking-work"
+                                            class="form-group"
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        >
+                                            <option value="" selected disabled>Select...</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Challenges Finding Work -->
+                                    <div class="form-group" style="margin-bottom: 30px;">
+                                        <!-- Main Label: Question -->
+                                        <label
+                                            class="MS-add-form-label"
+                                            style="
+                                                background-color: var(--primary);
+                                                padding: 1rem 2rem;
+                                                border-radius: 10px;
+                                                color: #fff;
+                                                display: inline-block;
+                                                font-size: 1.3rem;
+                                                font-weight: bold;
+                                                margin-bottom: 25px;
+                                                width: 100%;
+                                                max-width: 700px;
+                                                text-align: center;
+                                                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                                            "
+                                        >
+                                            What are your biggest challenges in finding work?
+                                        </label>
+
+                                        <!-- Checkbox Container -->
+                                        <div style="display: flex; flex-direction: column; gap: 20px;">
+                                            <!-- Shared checkbox style -->
+                                            <style>
+                                                .checkbox-wrapper {
+                                                    display: grid;
+                                                    grid-template-columns: auto 1fr;
+                                                    align-items: start;
+                                                    background-color: #f8f8f8;
+                                                    padding: 15px 20px;
+                                                    border-radius: 10px;
+                                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                                                    gap: 20px;
+                                                }
+
+                                                .checkbox-wrapper input[type="checkbox"] {
+                                                    transform: scale(1.4);
+                                                    margin-top: 5px;
+                                                }
+
+                                                .checkbox-wrapper label {
+                                                    display: flex;
+                                                    flex-direction: column;
+                                                }
+
+                                                .checkbox-wrapper span {
+                                                    font-size: 1.1rem;
+                                                    color: #333;
+                                                    font-weight: bold;
+                                                }
+
+                                                .checkbox-wrapper small {
+                                                    color: #555;
+                                                    margin-top: 5px;
+                                                }
+                                            </style>
+
+                                            <!-- Transport -->
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="031_transport" value="transport" />
+                                                <label for="031_transport">
+                                                    <span>Transport / Distance</span>
+                                                    <small>Getting to work or interviews is difficult due to transport or location.</small>
+                                                </label>
+                                            </div>
+
+                                            <!-- Lack of Experience -->
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="032_experience" value="experience" />
+                                                <label for="032_experience">
+                                                    <span>Lack of Experience</span>
+                                                    <small>Not enough work experience for most positions.</small>
+                                                </label>
+                                            </div>
+
+                                            <!-- Lack of Skills -->
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="033_skills" value="skills" />
+                                                <label for="033_skills">
+                                                    <span>Lack of Skills / Education</span>
+                                                    <small>Missing key qualifications, skills, or training.</small>
+                                                </label>
+                                            </div>
+
+                                            <!-- Few Job Opportunities -->
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="034_opportunities" value="job_opportunities" />
+                                                <label for="034_opportunities">
+                                                    <span>Few Job Opportunities Nearby</span>
+                                                    <small>Limited employment options available in your area.</small>
+                                                </label>
+                                            </div>
+
+                                            <!-- Health Challenges -->
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="035_health" value="health" />
+                                                <label for="035_health">
+                                                    <span>Health Challenges</span>
+                                                    <small>Physical or mental health concerns that affect your ability to work.</small>
+                                                </label>
+                                            </div>
+
+                                            <!-- Discrimination -->
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="036_discrimination" value="discrimination" />
+                                                <label for="036_discrimination">
+                                                    <span>Discrimination / Age / Gender</span>
+                                                    <small>Bias or discrimination during job search.</small>
+                                                </label>
+                                            </div>
+
+                                            <!-- Other -->
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="037_other" value="other" />
+                                                <label for="037_other">
+                                                    <span>Other</span>
+                                                    <small>Any other reason not listed here.</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Currently Upskilling -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="038_upskilling" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Are you currently in any form of training or upskilling?
+                                        </label>
+                                        <select
+                                            id="038_upskilling"
+                                            class="form-group"
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        >
+                                            <option value="" selected disabled>Select...</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Support Source -->
+                                    >
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="039_support-source" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            What is your primary source of support?
+                                        </label>
+                                        <select
+                                            id="039_support-source"
+                                            class="form-group"
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        >
+                                            <option value="" selected disabled>Select Support Source...</option>
+                                            <option value="family">Family / Relatives</option>
+                                            <option value="government">Government Assistance</option>
+                                            <option value="community">Community / Church / NGOs</option>
+                                            <option value="savings">Own Savings</option>
+                                            <option value="none">None</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="conditional-section" id="retired-details" style="display: none; margin-top: 20px;">
+                                    <!-- Last Profession -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="040_last-profession" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Last Profession Before Retirement
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="040_last-profession"
+                                            placeholder="e.g. Teacher, Engineer, Nurse"
+                                            required
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        />
+                                    </div>
+
+                                    <!-- Retirement Year -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="041_retirement-year" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Year of Retirement
+                                        </label>
+
+                                        <input
+                                            type="number"
+                                            id="041_retirement-year"
+                                            placeholder="e.g. 2015"
+                                            min="1950"
+                                            max="2099"
+                                            required
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        />
+                                    </div>
+
+                                    <!-- Current Activities -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label
+                                            for="042_retired-activities"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
+                                            Current Activities
+                                        </label>
+                                        <select
+                                            id="042_retired-activities"
+                                            class="form-group"
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        >
+                                            <option value="" selected disabled>Select Activity...</option>
+                                            <option value="volunteer">Volunteering</option>
+                                            <option value="farming">Farming</option>
+                                            <option value="family_support">Caring for Family / Grandkids</option>
+                                            <option value="leisure">Leisure / Rest</option>
+                                            <option value="consulting">Consulting / Mentoring</option>
+                                            <option value="small_business">Running a Small Business</option>
+                                            <option value="church">Religious / Church Work</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Pension Access -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="043_pension-access" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Do you receive any pension or retirement benefits?
+                                        </label>
+                                        <select
+                                            id="043_pension-access"
+                                            class="form-group"
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        >
+                                            <option value="" selected disabled>Select...</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                            <option value="irregular">Irregular / Unreliable</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Health Needs -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="044_health-needs" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            How would you describe your current health needs?
+                                        </label>
+                                        <select
+                                            id="044_health-needs"
+                                            class="form-group"
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        >
+                                            <option value="" selected disabled>Select...</option>
+                                            <option value="low">Low – Very Independent</option>
+                                            <option value="moderate">Moderate – Some Assistance Needed</option>
+                                            <option value="high">High – Regular Care / Medication</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Living Situation -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="045_living-situation" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Living Situation
+                                        </label>
+                                        <select
+                                            id="045_living-situation"
+                                            class="form-group"
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        >
+                                            <option value="" selected disabled>Select...</option>
+                                            <option value="alone">Living Alone</option>
+                                            <option value="family">With Family</option>
+                                            <option value="assisted">Assisted Living / Home Care</option>
+                                            <option value="community">Senior Community / Center</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="conditional-section" id="student-details" style="display: none;">
+                                    <!-- Institution / Facility Picker -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="046_institution" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Institution Name
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="046_institution"
+                                            class="form-group"
+                                            placeholder="Search for school, clinic, venue, etc."
+                                            autocomplete="off"
+                                            style="width: 100%; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;"
+                                        />
+                                        <div
+                                            id="institution-suggestions"
+                                            class="MS-add-suggestion-box"
+                                            style="position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #ccc; border-top: none; z-index: 10; display: none; max-height: 200px; overflow-y: auto;"
+                                        ></div>
+                                    </div>
+
+                                    <script>
+                                        const institutionInput = document.getElementById("046_institution");
+                                        const institutionSuggestions = document.getElementById("institution-suggestions");
+
+                                        let institutionDebounce;
+
+                                        function escapeHTML(str) {
+                                            return str.replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
+                                        }
+
+                                        function clearInstitutionSuggestions() {
+                                            institutionSuggestions.innerHTML = "";
+                                            institutionSuggestions.style.display = "none";
+                                        }
+
+                                        function showInstitutionSuggestions(results) {
+                                            clearInstitutionSuggestions();
+
+                                            results.forEach((item) => {
+                                                const suggestionItem = document.createElement("div");
+                                                suggestionItem.innerHTML = escapeHTML(item.display_name);
+                                                suggestionItem.style.cssText = "padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; font-family: Poppins, sans-serif;";
+                                                suggestionItem.onclick = () => {
+                                                    institutionInput.value = item.display_name;
+                                                    clearInstitutionSuggestions();
+                                                };
+
+                                                institutionSuggestions.appendChild(suggestionItem);
+                                            });
+
+                                            institutionSuggestions.style.display = "block";
+                                        }
+
+                                        institutionInput.addEventListener("input", () => {
+                                            const query = institutionInput.value.trim();
+
+                                            clearTimeout(institutionDebounce);
+
+                                            if (query.length < 3) {
+                                                clearInstitutionSuggestions();
+                                                return;
+                                            }
+
+                                            institutionDebounce = setTimeout(() => {
+                                                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&addressdetails=1`)
+                                                    .then((res) => res.json())
+                                                    .then((data) => {
+                                                        if (Array.isArray(data) && data.length > 0) {
+                                                            showInstitutionSuggestions(data);
+                                                        } else {
+                                                            clearInstitutionSuggestions();
+                                                        }
+                                                    })
+                                                    .catch((err) => {
+                                                        console.error("Institution address fetch failed:", err);
+                                                        clearInstitutionSuggestions();
+                                                    });
+                                            }, 300);
+                                        });
+
+                                        document.addEventListener("click", (e) => {
+                                            if (!institutionInput.contains(e.target) && !institutionSuggestions.contains(e.target)) {
+                                                clearInstitutionSuggestions();
+                                            }
+                                        });
+                                    </script>
+                                    <!-- Grade / Class (academic + student at event) -->
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="047_grade" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Grade / Class
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="047_grade"
+                                            class="form-group"
+                                            style="flex-grow: 1; min-width: 250px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;"
+                                            placeholder="e.g. Grade 8 or Year 2"
+                                        />
+                                    </div>
+
+                                    <!-- Attendance Mode -->
+                                    <div class="attendance_mode" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="048_attendance_mode" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Attendance Mode
+                                        </label>
+                                        <select id="048_attendance_mode" class="form-group" style="flex-grow: 1; min-width: 250px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;">
+                                            <option disabled selected>Select Mode</option>
+                                            <option>Full-Time</option>
+                                            <option>Part-Time</option>
+                                            <option>Day</option>
+                                            <option>Remote</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Peer Support -->
+                                    <div class="form-group context-hospital context-event-student" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="049_peer_support" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Peer Support
+                                        </label>
+
+                                        <select id="049_peer_support" class="form-group" style="flex-grow: 1; min-width: 250px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;">
+                                            <option disabled selected>Do you feel supported?</option>
+                                            <option>Yes</option>
+                                            <option>No</option>
+                                            <option>Sometimes</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Reason for Visit -->
+                                    <div class="form-group context-hospital context-event-student" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="050_visit_reason" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Reason for Visit
+                                        </label>
+                                        <select id="050_visit_reason" class="form-group" style="flex-grow: 1; min-width: 250px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;">
+                                            <option disabled selected>Select Reason</option>
+                                            <option>Routine Checkup</option>
+                                            <option>Mental Health Referral</option>
+                                            <option>Follow-Up</option>
+                                            <option>Emergency</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Past Visits -->
+                                    <div class="form-group context-hospital context-event-student" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="051_past_visits" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Previous Visits
+                                        </label>
+                                        <select id="051_past_visits" class="form-group" style="flex-grow: 1; min-width: 250px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;">
+                                            <option disabled selected>Have you visited before?</option>
+                                            <option>Yes</option>
+                                            <option>No</option>
+                                            <option>Prefer Not to Say</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Safe at School or Home -->
+                                    <div class="form-group context-hospital context-event-student" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="052_safe_env" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Do you feel safe?
+                                        </label>
+
+                                        <select id="052_safe_env" class="form-group" style="flex-grow: 1; min-width: 250px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;">
+                                            <option disabled selected>At home or institution?</option>
+                                            <option>Yes</option>
+                                            <option>No</option>
+                                            <option>Sometimes</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Bullying -->
+                                    <div class="form-group context-hospital context-event-student" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="053_bullying" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Experience of Bullying
+                                        </label>
+                                        <select id="053_bullying" class="form-group" style="flex-grow: 1; min-width: 250px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;">
+                                            <option disabled selected>Have you been bullied?</option>
+                                            <option>Yes</option>
+                                            <option>No</option>
+                                            <option>Prefer Not to Say</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <script>
+                                    const venueSelector = document.getElementById("001_hospital_department");
+                                    const participantRole = document.getElementById("016_employment"); // You need this dropdown too
+
+                                    function updateContextFields() {
+                                        const venue = venueSelector.value;
+                                        const role = participantRole?.value?.toLowerCase() || "";
+
+                                        const allFields = document.querySelectorAll('[class*="context-"]');
+                                        allFields.forEach((el) => (el.style.display = "none"));
+
+                                        if (venue) {
+                                            // Show default venue fields
+                                            document.querySelectorAll(`.context-${venue}`).forEach((el) => (el.style.display = "flex"));
+
+                                            // If student at non-academic venue, show extended
+                                            if (role === "student") {
+                                                if (venue === "event" || venue === "hospital") {
+                                                    document.querySelectorAll(`.context-${venue}-student`).forEach((el) => (el.style.display = "flex"));
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    venueSelector.addEventListener("change", updateContextFields);
+                                    participantRole?.addEventListener("change", updateContextFields);
+                                </script>
+
+                                <div class="conditional-section" id="business-details" style="display: none;">
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="054_business-name" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Business Name:
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="054_business-name"
+                                            placeholder="Enter business name"
+                                            required
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        />
+                                    </div>
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="055_business-sector" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Business Sector:
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="055_business-sector"
+                                            placeholder="Enter business sector"
+                                            required
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        />
+                                    </div>
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label
+                                            for="056_business-employees"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
+                                            Number of Employees:
+                                        </label>
+
+                                        <input
+                                            type="number"
+                                            id="056_business-employees"
+                                            placeholder="Enter number of employees"
+                                            required
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="conditional-section" id="professional-details" style="display: none;">
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label
+                                            for="057_professional-employer"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
+                                            Employer Name:
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="057_professional-employer"
+                                            placeholder="Enter employer's name"
+                                            required
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        />
+                                    </div>
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label
+                                            for="058_professional-position"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
+                                            Position:
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="058_professional-position"
+                                            placeholder="Enter your position"
+                                            required
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        />
+                                    </div>
+
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="059_years-in-service" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Years of Experience:
+                                        </label>
+
+                                        <input
+                                            type="number"
+                                            id="059_years-in-service"
+                                            placeholder="Enter years of experience"
+                                            required
+                                            style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- Add your JavaScript below -->
+
+                                <script>
+                                    // Function to toggle the conditional sections based on the selected employment status
+                                    function toggleConditionalSections() {
+                                        const employmentStatus = document.getElementById("016_employment").value;
+
+                                        // Hide all sections by default
+                                        document.getElementById("unemployed-details").style.display = "none";
+                                        document.getElementById("retired-details").style.display = "none";
+                                        document.getElementById("employed-details").style.display = "none";
+                                        document.getElementById("student-details").style.display = "none";
+                                        document.getElementById("business-details").style.display = "none";
+                                        document.getElementById("professional-details").style.display = "none";
+
+                                        // Show the appropriate section based on the selected employment status
+                                        if (employmentStatus === "student") {
+                                            document.getElementById("student-details").style.display = "block";
+                                        } else if (employmentStatus === "unemployed") {
+                                            document.getElementById("unemployed-details").style.display = "block"; // Assume business details for self-employed/freelance
+                                        } else if (employmentStatus === "self_employed" || employmentStatus === "freelance") {
+                                            document.getElementById("business-details").style.display = "block"; // Assume business details for self-employed/freelance
+                                        } else if (employmentStatus === "retired") {
+                                            document.getElementById("retired-details").style.display = "block"; // Assume business details for self-employed/freelance
+                                        } else if (employmentStatus === "employed") {
+                                            document.getElementById("employed-details").style.display = "block";
+                                        }
+                                    }
+
+                                    // Function to toggle the accordion body visibility
+                                    function toggleAccordion(sectionId) {
+                                        const sectionBody = document.querySelector(`#${sectionId} .accordion-body`);
+                                        if (sectionBody.style.display === "none" || sectionBody.style.display === "") {
+                                            sectionBody.style.display = "block";
+                                        } else {
+                                            sectionBody.style.display = "none";
+                                        }
+                                    }
+                                </script>
+
+                                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                    <label for="060_education" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        Education Level
+                                    </label>
+
+                                    <select
+                                        id="060_education"
+                                        class="form-group"
+                                        style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                    >
+                                        <option value="" selected disabled>Select Education Level...</option>
+                                        <option value="none">No Formal Education</option>
+                                        <option value="primary">Primary Education</option>
+                                        <option value="secondary">Secondary Education / High School</option>
+                                        <option value="vocational">Vocational / Technical Training</option>
+                                        <option value="diploma">Diploma</option>
+                                        <option value="bachelors">Bachelor's Degree</option>
+                                        <option value="postgraduate">Postgraduate Diploma</option>
+                                        <option value="masters">Master's Degree</option>
+                                        <option value="doctorate">Doctorate (PhD)</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- RIGHT SECTION -->
+
+                    <section class="right registration-panel">
+                        <h3 class="panel-title">Your Consent</h3>
+
+                        <div class="mini-card">
+                            <div class="accordion">
+                                <!-- CONSENT STATUS -->
+                                <div class="accordion-item">
+                                    <!-- Font Awesome for optional icons -->
+                                    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+                                    <!-- Consent Accordion Header -->
+                                    <button id="consent-header" class="accordion-header" type="button" onclick="toggleConsent()">
+                                        <i class="fas fa-user-check consent-icon"></i>
+                                        <span class="accordion-label">Data Collection Consent | Data Processing Consent</span>
+                                    </button>
+                                </div>
+
+                                <div
+                                    class="accordion-body"
+                                    id="consent-body"
+                                    style="
+                                        display: none;
+                                        padding: 1.5rem;
+                                        background-color: var(--bg); /* Use background color from the theme */
+                                        border: 1px solid var(--accent-1); /* Use accent color for the border */
+                                        border-radius: 12px;
+                                        margin-top: 1rem;
+                                        color: var(--text-color); /* Use the text color from the theme */
+                                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                                    "
+                                >
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="consent-chkbx" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Informed Consent Declaration
+                                        </label>
+
+                                        <!-- Consent Statement -->
+                                        <label id="consent-chkbx" style="display: block; font-size: 0.95rem; line-height: 1.6; margin-bottom: 12px;">
+                                            <!-- Consent Checkbox -->
+                                            <input type="checkbox" id="061_consentCheckbox" onchange="toggleConsent()" required style="margin-right: 8px;" />
+                                            I confirm that I have been informed that my personal data will be collected and processed in full compliance with the data protection laws of
+                                            <strong id="country-name-display">[Your Country]</strong>, specifically the <strong id="regulation-name-display">[Law Name]</strong>.
+                                        </label>
+                                    </div>
+
+                                    <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <label for="data-law-note" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                            Applicable Data Protection Regulation
+                                        </label>
+
+                                        <!-- Regulation Description -->
+                                        <div id="data-law-note" style="padding: 12px 14px; background-color: #fffaf5; border: 1px solid #e3e3e3; border-radius: 6px; font-size: 0.9rem; color: #5a5a5a;">
+                                            <!-- Dynamic regulation details appear here -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    localStorage.clear();
+                                    document.addEventListener("DOMContentLoaded", () => {
+                                        const consentCheckbox = document.getElementById("consent-chkbx");
+                                        const consentBtn = document.getElementById("chk-header");
+
+                                        // ✅ Form validation logic
+                                        function validateFormFields() {
+                                            const fields = {
+                                                department: document.getElementById("001_hospital_department"),
+                                                theaddress: document.getElementById("002_evaluation_address"),
+                                                title: document.getElementById("004_title"),
+                                                firstName: document.getElementById("005_first-name"),
+                                                lastName: document.getElementById("006_surname"),
+                                                email: document.getElementById("007_email"),
+                                                phone: document.getElementById("008_phone"),
+                                                gender: document.getElementById("009_gender"),
+                                                ageGroup: document.getElementById("010_age-group"),
+                                                employment: document.getElementById("016_employment"),
+                                                education: document.getElementById("060_education"),
+                                            };
+
+                                            let isValid = true;
+                                            let errorMessage = "";
+
+                                            for (let key in fields) {
+                                                const field = fields[key];
+                                                if (!field || !field.value.trim()) {
+                                                    isValid = false;
+                                                    errorMessage += `• ${field.name || key.replace(/([A-Z])/g, " $1")}\n`;
+                                                }
+                                            }
+
+                                            return { isValid, errorMessage };
+                                        }
+
+                                        // ✅ Respond to checkbox change AFTER the change happens
+                                        consentCheckbox.addEventListener("change", () => {
+                                            const { isValid, errorMessage } = validateFormFields();
+
+                                            console.log("Checkbox was toggled. Is valid:", isValid);
+                                            if (!isValid) {
+                                                alert("Please complete the following fields before giving consent:\n\n" + errorMessage);
+                                                consentCheckbox.checked = false; // Immediately revert checkbox
+                                                consentBtn.disabled = true;
+                                            } else {
+                                                consentBtn.disabled = false;
+                                                console.log("Consent allowed. Button enabled:", !consentBtn.disabled);
+                                            }
+                                        });
+
+                                        // ✅ Auto-disable consent button on any form change
+                                        const fieldIds = ["department", "hospital address", "title", "first-name", "last-name", "email", "phone", "age-group", "employment", "education", "gender"];
+
+                                        fieldIds.forEach((id) => {
+                                            const field = document.getElementById(id);
+                                            if (field) {
+                                                field.addEventListener("input", () => {
+                                                    const { isValid } = validateFormFields();
+                                                    if (!isValid) {
+                                                        consentCheckbox.checked = false;
+                                                        consentBtn.disabled = true;
+                                                        console.log("Form became invalid. Consent reset.");
+                                                    }
+                                                });
+                                            }
+                                        });
+
+                                        // ✅ Final check on consent button click
+                                        consentBtn.addEventListener("click", (e) => {
+                                            e.preventDefault();
+                                            const { isValid, errorMessage } = validateFormFields();
+
+                                            if (!isValid) {
+                                                alert("Please complete all required fields:\n\n" + errorMessage);
+                                                consentCheckbox.checked = false;
+                                                consentBtn.disabled = true;
+                                                return;
+                                            }
+
+                                            // Wait for checkbox to fully update before checking
+                                            setTimeout(() => {
+                                                if (!consentCheckbox.checked) {
+                                                    consentBtn.disabled = false;
+                                                    consentCheckbox.checked = true;
+                                                }
+                                            }, 50);
+                                        });
+                                    });
+
+                                    document.addEventListener("DOMContentLoaded", () => {
+                                        const firstNameInput = document.getElementById("first-name");
+
+                                        if (firstNameInput) {
+                                            // Update localStorage on blur (when user leaves the input)
+                                            firstNameInput.addEventListener("blur", () => {
+                                                const firstNames = firstNameInput.value.trim();
+                                                if (firstNames) {
+                                                    localStorage.setItem("firstNames", firstNames);
+                                                }
+                                            });
+
+                                            // Optional: Update localStorage on typing (live as they type)
+                                            firstNameInput.addEventListener("input", () => {
+                                                const firstNames = firstNameInput.value.trim();
+                                                if (firstNames) {
+                                                    localStorage.setItem("firstNames", firstNames);
+                                                }
+                                            });
+                                        }
+                                    });
+
+                                    document.addEventListener("DOMContentLoaded", () => {
+                                        const inputs = document.querySelectorAll("input, textarea, select");
+
+                                        inputs.forEach((input) => {
+                                            const key = `form_${input.id || input.name}`;
+
+                                            // Restore previous value from localStorage
+                                            const savedValue = localStorage.getItem(key);
+                                            if (savedValue !== null) {
+                                                if (input.type === "checkbox") {
+                                                    input.checked = savedValue === "true";
+                                                } else {
+                                                    input.value = savedValue;
+                                                }
+                                            }
+
+                                            // Save value on 'input', 'change', and 'blur' — supports both manual and programmatic fills
+                                            const saveToLocal = () => {
+                                                const value = input.type === "checkbox" ? input.checked : input.value.trim();
+                                                localStorage.setItem(key, value);
+                                            };
+
+                                            input.addEventListener("input", saveToLocal);
+                                            input.addEventListener("change", saveToLocal);
+                                            input.addEventListener("blur", saveToLocal);
+                                        });
+
+                                        // MutationObserver for detecting value changes (e.g., by autocomplete APIs)
+                                        const observer = new MutationObserver(() => {
+                                            inputs.forEach((input) => {
+                                                const key = `form_${input.id || input.name}`;
+                                                const value = input.type === "checkbox" ? input.checked : input.value.trim();
+                                                localStorage.setItem(key, value);
+                                            });
+                                        });
+
+                                        observer.observe(document.body, {
+                                            childList: true,
+                                            subtree: true,
+                                            attributes: true,
+                                            characterData: true,
+                                        });
+                                    });
+                                </script>
+
+                                <script>
+                                    // Toggle accordion with highlight
+                                    function toggleConsent() {
+                                        const consentBody = document.getElementById("consent-body");
+                                        const consentHeader = document.querySelector(".accordion-header");
+                                        const consentButton = document.getElementById("consent-header");
+                                        const consentCheckbox = document.getElementById("061_consentCheckbox");
+
+                                        if (consentCheckbox.checked) {
+                                            consentButton.style.background = "#28a745"; // Traffic light green when consent is given
+                                            consentButton.style.color = "#fff"; // White text
+                                        } else {
+                                            consentButton.style.background = "#a3e4d7"; // Blended mint green background
+                                            consentButton.style.color = "#145a32"; // Dark mint color for text
+                                        }
+
+                                        const isOpen = consentBody.style.display === "block";
+                                        consentBody.style.display = isOpen ? "none" : "block";
+
+                                        consentHeader.classList.toggle("active", !isOpen);
+
+                                        // Update law block when opened
+                                        if (!isOpen && selectedCountry) updateDataLawNote();
+                                    }
+
+                                    // Auto-update on load if country is selected
+                                    document.addEventListener("DOMContentLoaded", () => {
+                                        if (selectedCountry) {
+                                            updateDataLawNote();
+                                        }
+                                    });
+                                </script>
+                                <style>
+                                    #data-law-note {
+                                        padding: 12px;
+                                        background-color: #fff;
+                                        border-left: 4px solid #4da6ff;
+                                        border-radius: 6px;
+                                        margin-top: 8px;
+                                        font-family: "Poppins", sans-serif;
+                                        font-size: 0.95rem;
+                                        line-height: 1.5;
+                                        color: #333;
+                                        transition: opacity 0.3s ease;
+                                    }
+
+                                    /* Consent Statement Label Styling */
+                                    #consent-body label {
+                                        display: flex;
+                                        align-items: flex-start;
+                                        gap: 10px;
+                                        background-color: #fefefe;
+                                        padding: 12px 14px;
+                                        border: 1px solid #ddd;
+                                        border-radius: 6px;
+                                        font-size: 0.95rem;
+                                        line-height: 1.6;
+                                        color: #333;
+                                        margin-bottom: 12px;
+                                        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+                                    }
+
+                                    #consent-body label input[type="checkbox"] {
+                                        margin-top: 3px;
+                                        transform: scale(1.2);
+                                        accent-color: #4da6ff;
+                                        cursor: pointer;
+                                    }
+
+                                    #consent-body label strong {
+                                        color: #2a2a2a;
+                                        font-weight: 600;
+                                    }
+                                </style>
+                            </div>
+                        </div>
+
+                        <!-- Font Awesome -->
+                        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+                        <!-- Serene Lavender Consent Button -->
+                        <button disabled id="chk-header" class="chk-accordion serene-theme" type="button">
+                            <div class="chk-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <div class="chk-content">
+                                <h3 class="chk-title">Step 2: Personal Checkpoint</h3>
+                                <p class="chk-description"></p>
+                                <span class="consent-label">Start your T|Check Checkpoints</span>
+                            </div>
+                        </button>
+
+                        <style>
+                            .chk-accordion.serene-theme {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                width: 100%;
+                                text-align: center;
+                                background: var(--secondary-light, #dcd6f7);
+                                border: none;
+                                border-radius: 14px;
+                                padding: 1.5rem 1rem;
+                                cursor: pointer;
+                                margin-top: 10px;
+                                transition: background-color 0.3s ease, opacity 0.3s ease;
+                                box-shadow: 0 8px 16px rgba(155, 89, 182, 0.15);
+                                font-family: "Poppins", sans-serif;
+                            }
+
+                            .chk-accordion.serene-theme:hover:not(:disabled) {
+                                background-color: var(--accent-1, #e8daf6);
+                            }
+
+                            .chk-accordion:disabled {
+                                opacity: 0.5;
+                                cursor: not-allowed;
+                                pointer-events: none;
+                            }
+
+                            .chk-icon {
+                                font-size: 2.2rem;
+                                color: var(--primary-dark, #7a478d);
+                                margin-bottom: 0.75rem;
+                            }
+
+                            .chk-title {
+                                font-size: 1.3rem;
+                                font-weight: 600;
+                                margin: 0.25rem 0;
+                                color: var(--text-color, #311d53);
+                            }
+
+                            .chk-description {
+                                font-size: 0.95rem;
+                                color: #5d3d73;
+                                margin: 0.25rem 0 0.5rem;
+                            }
+
+                            .consent-label {
+                                font-size: 0.85rem;
+                                font-weight: 500;
+                                background: var(--primary, #9b59b6);
+                                color: #fff;
+                                padding: 0.4rem 0.8rem;
+                                border-radius: 6px;
+                                display: inline-block;
+                                margin-top: 0.3rem;
+                            }
+                        </style>
+                    </section>
+                </div>
+            </section>
+        </div>
+        <script>
+            const accordions = document.querySelectorAll(".accordion-header");
+            accordions.forEach((header) => {
+                header.addEventListener("click", () => {
+                    const item = header.parentElement;
+                    item.classList.toggle("active");
+                });
+            });
+        </script>
+
+        <!-- STYLES -->
+        <style>
+            .hero-description {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #fff;
+                background-color: var(--primary-dark, #5a0c0c);
+                padding: 1.2rem 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+                max-width: 100vw;
+                margin: 2rem auto;
+                text-align: center;
+                line-height: 1.6;
+                letter-spacing: 0.4px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+        </style>
+        <script src="themes.js"></script>
+        <!-- SCRIPT -->
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const btn = document.getElementById("chk-header");
+
+                btn.addEventListener("click", () => {
+                    window.location.href = "assessmentintroa.html";
+                });
+            });
+        </script>
+
+        <script>
+            // Initialize and apply theme as early as possible
+            let currentTheme = localStorage.getItem("theme") || "default";
+            applyTheme(currentTheme);
+
+            // Theme selection dropdown
+            document.addEventListener("DOMContentLoaded", () => {
+                const themeSelect = document.getElementById("themeSelect");
+                if (themeSelect) {
+                    themeSelect.value = currentTheme;
+                    themeSelect.addEventListener("change", (e) => {
+                        applyTheme(e.target.value);
+                    });
+                }
+            });
+
+            // Apply the selected theme
+            function applyTheme(themeName) {
+                const theme = themes[themeName];
+                if (!theme) return;
+
+                // Apply CSS variables
+                Object.entries(theme).forEach(([key, value]) => {
+                    document.documentElement.style.setProperty(key, value);
+                });
+
+                // Adjust text color for readability
+                setHeroDescriptionTextColor();
+
+                // Persist and sync
+                localStorage.setItem("theme", themeName);
+                currentTheme = themeName;
+            }
+
+            // Adjust text color based on theme background
+            function setHeroDescriptionTextColor() {
+                const bg = getComputedCSSVar("--primary-dark");
+                if (!bg || !bg.startsWith("#")) return;
+                const luminance = getLuminance(bg);
+                const color = luminance > 0.5 ? "#111" : "#fff";
+                const heroDesc = document.querySelector(".hero-description");
+                if (heroDesc) heroDesc.style.color = color;
+            }
+
+            // Get CSS variable value
+            function getComputedCSSVar(variable) {
+                return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+            }
+
+            // Calculate luminance for color contrast
+            function getLuminance(hex) {
+                const rgb = hex
+                    .replace("#", "")
+                    .match(/.{2}/g)
+                    .map((x) => parseInt(x, 16) / 255);
+                const lum = rgb.map((c) => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)));
+                return 0.2126 * lum[0] + 0.7152 * lum[1] + 0.0722 * lum[2];
+            }
+
+            // Listen for theme sync messages
+            window.addEventListener("message", (event) => {
+                if (event.data?.theme && themes[event.data.theme]) {
+                    applyTheme(event.data.theme);
+                    const themeSelect = document.getElementById("themeSelect");
+                    if (themeSelect) themeSelect.value = event.data.theme;
+                }
+            });
+        </script>
+        <script>
+            // Re-enable transitions after everything has loaded
+            window.addEventListener("load", () => {
+                // Clear any transition-blocking styles from <html> or <body>
+                document.documentElement.style.transition = "";
+                document.body.style.transition = "";
+
+                // Remove inline 'transition: none' from all elements (for smooth future interactions)
+                document.querySelectorAll("*").forEach((el) => el.style.removeProperty("transition"));
+
+                // Reveal the page if it was hidden to prevent flicker
+                document.body.style.visibility = "visible";
+            });
+        </script>
+        <script src="staff.js"></script>
+    </body>
+</html>
