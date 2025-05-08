@@ -282,7 +282,11 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                const name = localStorage.getItem("firstNames") || "Your";
+                const firstName = localStorage.getItem("form_005_first-name") || "Your";
+                const lastName = localStorage.getItem("form_005_alst-name") || "Name";
+                const fullName = `${firstName} ${lastName}`;
+
+                const name = fullName || "Your";
                 const capitalized = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
                 document.getElementById("userName").textContent = `${capitalized},`;
             });
