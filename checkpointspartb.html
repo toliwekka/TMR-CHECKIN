@@ -5,482 +5,753 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TMR International | T-Check Portal</title>
   <link rel="icon" type="image/png" href="./logo.png" />
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <style>
+            body {
+                background-color: #fdf8f5; /* Light coral warm background */
+                color: #2c3e50; /* Contrasting text color */
+                font-family: "Arial", sans-serif;
+            }
+            .header {
+                background-color: var(--accent); /* Replaces light coral with soft green */
+                padding: 1rem;
+                text-align: center;
+                border-bottom: 4px solid var(--primary-light); /* Bright green border */
+            }
+            .header h1 {
+                 color: var(--text-color); 
+            }
+            .content-section {
+                padding: 2rem;
+                background-color: #ffffff; /* White for content clarity */
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                margin-bottom: 1.5rem;
+            }
+            .chart-container {
+                padding: 1rem;
+                border: 2px solid #a3c1ad; /* Light olive green border */
+                border-radius: 8px;
+                margin-top: 1.5rem;
+                background-color: #f8fff7; /* Subtle green tone */
+            }
+            footer {
+                text-align: center;
+                padding: 1rem;
+                background-color: #ffa07a; /* Coral footer */
+                color: white;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
+        </style>
+
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TMR International Hospital | Addressing the Elephant in the Room: A Journey to Mental Well-being</title>
+        <link rel="icon" type="image/png" href="logo.jpeg" />
+
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
         <!-- Font Awesome -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
-        <link rel="stylesheet" href="themes.css" />
-        <link rel="stylesheet" href="chkstyles.css" />
-
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
-            /* General Styling */
+            :root {
+                --primary: #2ecc71;
+                --primary-light: #3ae074;
+                --primary-dark: #1e8e4e;
+                --bg: #edf8f6;
+                --card-bg: rgba(255, 255, 255, 0.15);
+                --text-color: #145a32;
+                --accent: #b8e6d4;
+                --hover-bg: #d4f0e4;
+                --button-bg: #2ecc71;
+                --button-hover-bg: #28a745;
+                --shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            }
+
             body {
                 margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                overflow-x: hidden; /* Prevent horizontal scrolling */
+                font-family: "Poppins", sans-serif;
+                background: var(--bg);
+                color: var(--text-color);
+                padding: 2rem 1rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                position: relative;
             }
 
-            /* Survey Container Styling */
-            .survey-container {
-                padding: 1.5rem;
-                margin-top: 40px; /* Add margin to ensure the top of the page is visible */
+            .theme-switcher {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1000;
             }
 
-            /* Responsive Design */
-            @media (max-width: 768px) {
-                .survey-container {
-                    padding: 1.5rem;
-                    margin-top: 40px; /* Ensure the top of the page is visible by adding more space */
-                }
-            }
-
-            @media (max-width: 480px) {
-                .survey-container {
-                    padding: 1rem;
-                    margin-top: 40px; /* Ensure the top of the page is visible */
-                }
-
-                .flip-badge {
-                    font-size: 1.2rem;
-                    width: 30px;
-                    height: 30px;
-                    line-height: 30px;
-                }
-            }
-        </style>
-
-
-
-        <style>
-            /* General Styling */
-            body {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                overflow-x: hidden; /* Prevent horizontal scrolling */
-                font-family: 'Poppins', sans-serif;
-            }
-
-            /* Survey Container Styling */
-            .survey-container {
-                padding: 1.5rem;
-                margin-top: 40px;
-                width: 100%;
-                box-sizing: border-box;
-            }
-
-            /* Responsive Design */
-            @media (max-width: 768px) {
-                .survey-container {
-                    padding: 1rem;
-                    margin-top: 30px;
-                }
-
-                .flip-badge {
-                    font-size: 1.5rem;
-                }
-            }
-
-            @media (max-width: 480px) {
-                .survey-container {
-                    padding: 1rem;
-                    margin-top: 20px;
-                }
-
-                .flip-badge {
-                    font-size: 1.2rem;
-                    width: 30px;
-                    height: 30px;
-                    line-height: 30px;
-                }
-            }
-
-            /* Ensure buttons are flexible */
-            .continue-button {
-                width: 100%;
-                padding: 1rem;
-                font-size: 1.1rem;
+            .form-select {
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
                 border: none;
-                cursor: pointer;
-                margin-top: 1rem;
+                background: var(--card-bg);
+                color: var(--text-color);
+                font-weight: 600;
+                box-shadow: var(--shadow);
             }
 
-            /* Make the theme switcher mobile-friendly */
-            .theme-switcher select {
+            .survey-container {
+                max-width: 800px;
                 width: 100%;
-                padding: 0.8rem;
-                font-size: 1rem;
+                background: var(--card-bg);
+                border-radius: 20px;
+                backdrop-filter: blur(20px);
+                box-shadow: var(--shadow);
+                padding: 2rem;
+                text-align: center;
             }
 
-            /* Flip badge */
             .flip-badge {
-                font-size: 2rem;
-                background: #007bff;
+                width: 60px;
+                height: 60px;
+                background: var(--primary);
                 color: white;
                 border-radius: 50%;
-                display: inline-block;
-                width: 50px;
-                height: 50px;
-                text-align: center;
-                line-height: 50px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.3rem;
+                margin: 0 auto 1.5rem;
+                box-shadow: var(--shadow);
+                animation: popIn 0.4s ease-in-out;
             }
 
-            /* Survey Card */
             .survey-card {
+                background: rgba(255, 255, 255, 0.25);
+                padding: 2rem;
+                border-radius: 16px;
+                box-shadow: var(--shadow);
                 margin-bottom: 2rem;
             }
 
-            .survey-card h3 {
-                font-size: 1.3rem;
-            }
-
-            /* Responsive Buttons */
-            .chk-accordion {
-                width: 100%;
-                text-align: center;
-                background: #27ef96;
-                padding: 1.5rem;
-                cursor: pointer;
-                border-radius: 14px;
-                margin-top: 1rem;
-                box-shadow: 0 8px 16px rgba(155, 89, 182, 0.15);
-                transition: background-color 0.3s ease;
-            }
-
-            .chk-accordion:hover {
-                background-color: #d6fff1;
-            }
-
-            .chk-accordion .chk-icon {
-                font-size: 2.2rem;
-                color: #7a478d;
-                margin-bottom: 0.75rem;
-            }
-
-            .chk-accordion .chk-title {
-                font-size: 1.3rem;
+            .question-intro {
+                font-size: 1.2rem;
                 font-weight: 600;
-                color: #311d53;
+                color: var(--primary-dark);
+                margin-bottom: 0.25rem;
             }
 
-            .chk-accordion .chk-description {
+            .question-context {
                 font-size: 0.95rem;
-                color: #5d3d73;
+                opacity: 0.7;
+                margin-bottom: 1rem;
             }
 
-            /* Additional Styling for Mobile View */
-            .chk-accordion.serene-theme {
-                padding: 1rem;
+            .question-text {
+                font-size: 1.6rem;
+                font-weight: bold;
+                color: var(--text-color);
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Base container styling */
-.survey-container {
-    width: 100%;
-    height: auto;
-    padding: 20px;
-    box-sizing: border-box;
-    font-size: 1vw; /* Text size adjusts based on viewport width */
-    border-radius: 8px;
-    margin: 0 auto;
-    transition: all 0.3s ease;
-}
-
-/* Responsive adjustments for smaller screens */
-@media (max-width: 1200px) {
-    .survey-container {
-        font-size: 2.5vw; /* Adjust text size slightly larger for larger screens */
-    }
-}
-
-@media (max-width: 768px) {
-    .survey-container {
-        font-size: 3vw; /* Adjust text size slightly larger for medium screens */
-        padding: 15px; /* Adjust padding for smaller screens */
-    }
-}
-
-@media (max-width: 480px) {
-    .survey-container {
-        font-size: 4vw; /* Increase text size for mobile */
-        padding: 10px; /* Reduce padding */
-    }
-}
-
-/* Optional: Make sure text size doesn't become too small or large */
-.survey-container h1,
-.survey-container p {
-    font-size: calc(1rem + 2vw); /* Uses both rem and vw for flexible font size */
-}
-
-/* Optional: Add a scrollable container */
-.survey-container {
-    max-height: 90vh; /* Limits height to 90% of the viewport height */
-    overflow-y: auto; /* Adds scrolling if content exceeds the max height */
-}
-
-
-
-
-
-
-
-
-
-
-
-/* Base container styling */
-.survey-container {
-    width: 100%;
-    height: auto;
-    padding: 20px;
-    box-sizing: border-box;
-    font-size: 1rem; /* Set a solid base font size */
-    line-height: 1.6;
-    border-radius: 8px;
-    margin: 0 auto;
-    max-height: 90vh;
-    overflow-y: auto;
-    transition: all 0.3s ease;
-}
-
-/* Headers and paragraph scaling smoothly */
-.survey-container h1 {
-    font-size: clamp(1.5rem, 2vw + 1rem, 2.75rem); /* Responsive between 1.5rem and 2.75rem */
-}
-
-.survey-container p {
-    font-size: clamp(1rem, 1.25vw + 0.5rem, 1.25rem); /* Responsive but controlled */
-}
-
-/* Responsive tweaks */
-@media (max-width: 768px) {
-    .survey-container {
-        padding: 16px;
-    }
-}
-
-@media (max-width: 480px) {
-    .survey-container {
-        padding: 12px;
-    }
-}
-
-
-#chkpt.survey-container {
-  overflow-y: scroll;     /* Always show vertical scrollbar */
-  overflow-x: scroll;     /* Always show horizontal scrollbar */
-  box-sizing: border-box;
-  padding: 1rem;
-  margin: 0 auto;
-  transition: none !important;
-}
-
-
-/* Webkit (Chrome, Safari) */
-#chkpt.survey-container::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-#chkpt.survey-container::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-}
-
-#chkpt.survey-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-
-html, body {
-  margin: 0;
-  padding: 0;
-  height: auto;
-  min-height: 100vh;
-  overflow-y: auto; /* Allow scrolling */
-}
-
-
-
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    overflow-y: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Page wrapper for additional structure if needed */
-.page-wrapper {
-    width: 100%;
-    padding: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Main survey container */
-#chkpt.survey-container {
-    width: 800px;
-    max-width: 100%;
-    height: auto;
-    max-height: 90vh; /* Keeps it from overflowing vertically */
-    overflow: auto;
-    box-sizing: border-box;
-    padding: 1rem;
-    margin: 0 auto;
-
-    /* Disable all transitions */
-    transition: none !important;
-    animation: none !important;
-    transform: none !important;
-}
-
-/* Optional scrollbars */
-#chkpt.survey-container::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-#chkpt.survey-container::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
-}
-
-#chkpt.survey-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-/* Responsive tweaks (no layout change, just spacing adjustments) */
-@media (max-width: 768px) {
-    .survey-container {
-        padding: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .survey-container {
-        padding: 0.75rem;
-    }
-}
-
-
-
-
-
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    overflow-y: auto;
-    display: block; /* important: do NOT use flex here */
-}
-
-/* Optional wrapper for structure (not centering vertically anymore) */
-.page-wrapper {
-    width: 100%;
-    padding: 2rem 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* top-aligned */
-    box-sizing: border-box;
-}
-
-/* Main survey container */
-#chkpt.survey-container {
-    width: 800px;
-    max-width: 100%;
-    height: auto;
-    overflow: auto;
-    box-sizing: border-box;
-    padding: 1.5rem;
-    margin: 0 auto;
-
-    /* Disable transitions */
-    transition: none !important;
-    animation: none !important;
-    transform: none !important;
-}
-
-/* Custom scrollbars */
-#chkpt.survey-container::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-#chkpt.survey-container::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
-}
-
-#chkpt.survey-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-/* Responsive tweaks */
-@media (max-width: 768px) {
-    .survey-container {
-        padding: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .survey-container {
-        padding: 0.75rem;
-    }
-}
-
-
-
+            .option-card {
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 12px;
+                padding: 1.5rem 1rem;
+                box-shadow: var(--shadow);
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .option {
+                padding: 0.7rem 1.5rem;
+                background: var(--primary-light);
+                color: white;
+                border: none;
+                border-radius: 30px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background 0.2s ease-in-out;
+            }
+
+            .option:hover {
+                background: var(--primary-dark);
+            }
+
+            .option {
+                padding: 0.7rem 1.5rem;
+                background: var(--primary-light);
+                color: var(--option-text-color, #ffffff); /* fallback to white */
+                border: none;
+                border-radius: 30px;
+                font-weight: 700;
+                font-size: 1rem;
+                letter-spacing: 0.1px;
+                cursor: pointer;
+                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); /* subtle shadow for more visual lift */
+                transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+            }
+
+            .option:hover {
+                background: var(--primary-dark);
+                color: var(--option-hover-text-color, #fff);
+            }
+
+            .next-button {
+                display: block;
+                margin: 2rem auto 0;
+                background: var(--primary);
+                color: white;
+                padding: 0.9rem 2rem;
+                border: none;
+                border-radius: 30px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: transform 0.2s ease;
+            }
+
+            .next-button:hover {
+                transform: scale(1.05);
+            }
+
+            @keyframes popIn {
+                from {
+                    transform: scale(0.8);
+                    opacity: 0;
+                }
+                to {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            .option.selected {
+                background: var(--button-bg);
+                color: #fff;
+                transform: scale(1.05);
+            }
+
+            html,
+            body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .page-wrapper {
+                flex: 1;
+            }
+
+            .sticky-footer {
+                background: rgba(0, 0, 0, 0.3);
+                color: #fff;
+                text-align: center;
+                padding: 1rem 0;
+                font-size: 0.9rem;
+                backdrop-filter: blur(10px);
+                width: 100%;
+            }
+
+            .sticky-footer a {
+                color: #ffd3a5;
+                text-decoration: none;
+                margin: 0 0.5rem;
+            }
+
+            .sticky-footer a:hover {
+                text-decoration: underline;
+            }
+
+            .continue-button {
+                margin: 2rem auto 0;
+                padding: 0.8rem 2rem;
+                background: var(--primary);
+                color: white;
+                font-weight: 600;
+                font-size: 1rem;
+                border: none;
+                border-radius: 30px;
+                cursor: pointer;
+                transition: background 0.3s ease;
+                display: block;
+                text-align: center;
+            }
+
+            .continue-button:hover {
+                background: var(--button-hover-bg);
+            }
+
+            .option-card {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+                margin-top: 2rem;
+            }
+
+            .option {
+                background: var(--primary-light);
+                color: var(--option-text-color, #fff);
+                border: none;
+                border-radius: 30px;
+                font-weight: 600;
+                padding: 0.7rem 1.5rem;
+                font-size: 1rem;
+                cursor: pointer;
+                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+                transition: background 0.2s ease-in-out;
+                max-width: 100%;
+                white-space: normal;
+                text-align: center;
+                line-height: 1.4;
+            }
+
+            /* Automatically make longer options full width */
+            .option.long-option {
+                flex: 1 1 100%;
+            }
+
+            /* Optional: better layout for small screens */
+            @media (max-width: 576px) {
+                .option {
+                    flex: 1 1 100%;
+                }
+            }
+
+            .option-cards-wrapper {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                width: 100%;
+            }
+
+            .option-card-group {
+                background: var(--card-bg);
+                border-radius: 16px;
+                padding: 1.5rem;
+                box-shadow: var(--shadow);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .card-1 .option {
+                flex: 1 1 100%;
+                text-align: center;
+            }
+
+            .card-2 {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 1rem;
+            }
+
+            .card-3 .option {
+                flex: 1 1 100%;
+                text-align: center;
+            }
+
+            .option {
+                padding: 0.7rem 1.5rem;
+                background: var(--primary-light);
+                color: var(--option-text-color, #fff);
+                border: none;
+                border-radius: 30px;
+                font-weight: 600;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background 0.2s ease-in-out;
+                white-space: normal;
+                text-align: center;
+                line-height: 1.4;
+            }
+
+            .option:hover {
+                background: var(--primary-dark);
+            }
+
+            .option.selected {
+                background-color: var(--primary-dark);
+                color: #fff;
+            }
+            .option.disabled {
+                opacity: 0.5;
+                pointer-events: none;
+            }
+        </style>
+        <style>
+            .fade-in {
+                opacity: 0;
+                transition: opacity 1s ease;
+            }
+
+            .fade-in.show {
+                opacity: 1;
+            }
         </style>
 
+        <style>
+            body {
+                background: linear-gradient(135deg, #d4f5ef, #a8e6cf);
+                font-family: "Poppins", sans-serif;
+                color: #333;
+            }
+            .card {
+                border-radius: 20px;
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            }
+            .chart-container {
+                position: relative;
+                height: 250px;
+            }
+            h5 {
+                margin-bottom: 1rem;
+            }
+        </style>
 
+        <link rel="icon" type="image/png" href="logo.jpeg" />
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+
+        <!-- Font Awesome -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+        <!-- Bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <style>
+            :root {
+                --primary: #2ecc71;
+                --primary-light: #3ae074;
+                --primary-dark: #1e8e4e;
+                --bg: #edf8f6;
+                --text-color: #145a32;
+                --shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            }
+
+            body {
+                font-family: "Poppins", sans-serif;
+                background: var(--bg);
+                color: var(--text-color);
+                padding: 2rem;
+            }
+
+            .theme-switcher {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1000;
+            }
+
+            .survey-container {
+                max-width: 800px;
+                margin: auto;
+                background: white;
+                border-radius: 20px;
+                box-shadow: var(--shadow);
+                padding: 2rem;
+            }
+
+            .chart-container {
+                position: relative;
+                height: 250px;
+            }
+
+            .option-card button {
+                padding: 0.7rem 1.5rem;
+                background: var(--primary-light);
+                color: white;
+                border: none;
+                border-radius: 30px;
+                cursor: pointer;
+                transition: background 0.2s ease-in-out;
+            }
+
+            .option-card button:hover {
+                background: var(--primary-dark);
+            }
+
+            .continue-button {
+                background: var(--primary);
+                color: white;
+                padding: 0.9rem 2rem;
+                border: none;
+                border-radius: 30px;
+                font-weight: 600;
+                cursor: pointer;
+                display: block;
+                margin: 2rem auto 0;
+                transition: transform 0.2s ease;
+            }
+
+            .continue-button:hover {
+                transform: scale(1.05);
+            }
+        </style>
+        <style>
+            :root {
+        "--primary": "#003366", // Deep Navy Blue
+        "--primary-light": "#00509e", // Bright Ocean Blue
+        "--primary-dark": "#001f4d", // Midnight Blue
+        "--secondary": "#5ac8fa", // Sky Blue
+        "--secondary-light": "#a3e4f7", // Pale Baby Blue
+        "--secondary-dark": "#0077b6", // Deep Azure
+        "--bg": "#f4f6f8", // Soft Light Grey
+        "--card-bg-light": "#f0f4f8", // Pale Grey-Blue
+        "--card-bg-dark": "#1e2a38", // Charcoal Navy
+        "--card-bg-muted": "#eaf1f9", // Dusty Blue Tint
+        "--card-bg": "#f0f4f8", // Pale Grey-Blue
+        "--text-color": "#1a1a1a", // Deep Charcoal
+        "--text-color-light": "#1a1a1a", // Deep Charcoal
+        "--text-color-dark": "#ffffff", // White
+        "--accent-1": "#00bfff", // Vivid Cyan
+        "--accent-2": "#e0f7fa", // Icy Aqua
+        "--accent-3": "#dde2e8", // Pale Grey-Blue
+        "--hover-bg": "#001f4d", // Midnight Blue
+        "--hover-text": "#ffffff", // White
+        "--section-bg": "#ffffff", // White
+        "--section-border": "#ccc", // Light Grey
+        "--mini-card-bg": "#e6f0fa", // Powder Blue
+        "--mini-card-border": "#b0c4de", // Light Steel Blue
+        "--mini-card-hover": "#cce6ff", // Light Sky Blue
+        "--button-bg": "#003366", // Deep Navy
+        "--button-hover-bg": "#00509e", // Ocean Blue
+        "--highlight-bg": "#00509e", // Deep Ocean Blue (matching the primary light color)
+        "--highlight-text-color": "#ffffff", // White for strong contrast
+        "--highlight-context-color": "#d1e8ff", // Pale Aqua to match the secondary color
+            }
+
+            body {
+                margin: 0;
+                font-family: "Poppins", sans-serif;
+                background: var(--bg);
+                color: var(--text-color);
+                padding: 2rem 1rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                position: relative;
+            }
+        </style>
+        <!-- STYLES -->
+        <style>
+            .hero-description {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #fff;
+                background-color: var(--primary-dark, #5a0c0c);
+                padding: 1.2rem 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+                max-width: 100vw;
+                margin: 2rem auto;
+                text-align: center;
+                line-height: 1.6;
+                letter-spacing: 0.4px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            .fullscreen-iframe {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                display: none;
+                background: var(--bg, #f5fdf7);
+                z-index: 9999;
+            }
+
+            .fullscreen-iframe iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+
+            .close-btn {
+                position: absolute;
+                top: 20px;
+                right: 30px;
+                background: var(--primary, #930d0e);
+                color: #fff;
+                border: none;
+                padding: 10px 18px;
+                font-size: 1rem;
+                border-radius: 8px;
+                cursor: pointer;
+                z-index: 10000;
+            }
+
+            /* Base container styling */
+            .survey-container {
+                width: 100%;
+                height: auto;
+                padding: 20px;
+                box-sizing: border-box;
+                font-size: 1vw; /* Text size adjusts based on viewport width */
+                border-radius: 8px;
+                margin: 0 auto;
+                transition: all 0.3s ease;
+            }
+
+            /* Responsive adjustments for smaller screens */
+            @media (max-width: 1200px) {
+                .survey-container {
+                    font-size: 2.5vw; /* Adjust text size slightly larger for larger screens */
+                }
+            }
+
+            @media (max-width: 768px) {
+                .survey-container {
+                    font-size: 3vw; /* Adjust text size slightly larger for medium screens */
+                    padding: 15px; /* Adjust padding for smaller screens */
+                }
+            }
+
+            @media (max-width: 480px) {
+                .survey-container {
+                    font-size: 4vw; /* Increase text size for mobile */
+                    padding: 10px; /* Reduce padding */
+                }
+            }
+
+            /* Optional: Make sure text size doesn't become too small or large */
+            .survey-container h1,
+            .survey-container p {
+                font-size: calc(1rem + 2vw); /* Uses both rem and vw for flexible font size */
+            }
+
+            /* Optional: Add a scrollable container */
+            .survey-container {
+                max-height: 90vh; /* Limits height to 90% of the viewport height */
+                overflow-y: auto; /* Adds scrolling if content exceeds the max height */
+            }
+
+            /* Base container styling */
+            .survey-container {
+                width: 100%;
+                height: auto;
+                padding: 20px;
+                box-sizing: border-box;
+                font-size: 1rem; /* Set a solid base font size */
+                line-height: 1.6;
+                border-radius: 8px;
+                margin: 0 auto;
+                max-height: 90vh;
+                overflow-y: auto;
+                transition: all 0.3s ease;
+            }
+
+            /* Headers and paragraph scaling smoothly */
+            .survey-container h1 {
+                font-size: clamp(1.5rem, 2vw + 1rem, 2.75rem); /* Responsive between 1.5rem and 2.75rem */
+            }
+
+            .survey-container p {
+                font-size: clamp(1rem, 1.25vw + 0.5rem, 1.25rem); /* Responsive but controlled */
+            }
+
+            /* Responsive tweaks */
+            @media (max-width: 768px) {
+                .survey-container {
+                    padding: 16px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .survey-container {
+                    padding: 12px;
+                }
+            }
+        </style>
+
+                <style>
+                    .chk-accordion.serene-theme {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        width: 100%;
+                        text-align: center;
+                        background: #27ef96;
+                        border: none;
+                        border-radius: 14px;
+                        padding: 1.5rem 1rem;
+                        cursor: pointer;
+                        margin-top: 10px;
+                        transition: background-color 0.3s ease, opacity 0.3s ease;
+                        box-shadow: 0 8px 16px rgba(155, 89, 182, 0.15);
+                        font-family: "Poppins", sans-serif;
+                    }
+
+                    .chk-accordion.serene-theme:hover:not(:disabled) {
+                        background-color: #d6fff1;
+                    }
+
+                    .chk-accordion:disabled {
+                        opacity: 0.5;
+                        cursor: not-allowed;
+                        pointer-events: none;
+                    }
+
+                    .chk-icon {
+                        font-size: 2.2rem;
+                        color: var(--primary-dark, #7a478d);
+                        margin-bottom: 0.75rem;
+                    }
+
+                    .chk-title {
+                        font-size: 1.3rem;
+                        font-weight: 600;
+                        margin: 0.25rem 0;
+                        color: var(--text-color, #311d53);
+                    }
+
+                    .chk-description {
+                        font-size: 0.95rem;
+                        color: #5d3d73;
+                        margin: 0.25rem 0 0.5rem;
+                    }
+
+                    .consent-label {
+                        font-size: 0.85rem;
+                        font-weight: 500;
+                        background: #d6fff1;
+                        color: #fff;
+                        padding: 0.4rem 0.8rem;
+                        border-radius: 6px;
+                        display: inline-block;
+                        margin-top: 0.3rem;
+                    }
+                </style>
 
     </head>
     <body>
+        <div class="header">
+            <h1 class="question-intro" id="questionSection">Section A</h1>
+        </div>
         <!-- Main content area -->
         <div class="page-wrapper">
-       
+
             <!-- Theme switcher -->
             <div class="theme-switcher">
                 <select id="themeSelect" class="form-select">
-                    <option value="default" selected> <img src="ogo.png" alt="TMR Fresh Logo" style="width: 20px; vertical-align: middle; margin-right: 8px; display: inline-block;" /> TMR </option>
+                    <option value="default" selected>🌿 TMR Blue</option>
                     <option value="fieryRed">🔥 Fiery Red</option>
                     <option value="blushRose">🌸 Blush Rose</option>
                     <option value="midnightDark">🌚 Midnight Dark</option>
@@ -492,103 +763,48 @@ body {
                 </select>
             </div>
 
-        <div id="chkpt" class="survey-container">
-            <h1 class="text-center mb-4" style="color: var(--primary); font-weight: 700;">
-                Begin Your T|Check Self-Discovery Journey
-            </h1>
+            <div id="chkpt" class="survey-container">
+                <div class="flip-badge" id="questionBadge">1</div>
 
-            <div class="flip-badge" id="questionBadge">1</div>
-
-            <div class="survey-card">
-                <h3 class="question-intro" id="questionSection">Section A</h3>
-                <p class="question-context" id="questionMeta">During the past 14 days</p>
-                <p class="question-text" id="questionText">I’ve been feeling optimistic about the future.</p>
-            </div>
-
-            <div class="option-card" id="optionsContainer">
-                <!-- Options injected -->
-            </div>
-            <button id="continueBtn" class="continue-button" style="display: none;">
-                Continue
-            </button>
-
-            <!-- Serene Lavender Consent Button -->
-            <button id="chk-header" class="chk-accordion serene-theme" type="button" style="display: none;">
-                <div class="chk-icon">
-                    <i class="bi bi-bar-chart-line"></i>
+                <div class="survey-card">
+                    <p class="question-context" id="questionMeta">During the past 14 days</p>
+                    <p class="question-text" id="questionText">I’ve been feeling optimistic about the future.</p>
                 </div>
-                <div class="chk-content">
-                    <h3 class="chk-title">Step 3: Your Personal Insights</h3>
-                    <p class="chk-description"></p>
+                <div class="option-card" id="optionsContainer">
+                    <!-- Options injected -->
                 </div>
-            </button>
 
-            <style>
-                .chk-accordion.serene-theme {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    width: 100%;
-                    text-align: center;
-                    background: #27ef96;
-                    border: none;
-                    border-radius: 14px;
-                    padding: 1.5rem 1rem;
-                    cursor: pointer;
-                    margin-top: 10px;
-                    transition: background-color 0.3s ease, opacity 0.3s ease;
-                    box-shadow: 0 8px 16px rgba(155, 89, 182, 0.15);
-                    font-family: "Poppins", sans-serif;
-                }
+                <button id="continueBtn" class="continue-button" style="display: none;">
+                    Continue
+                </button>
+                </div>
 
-                .chk-accordion.serene-theme:hover:not(:disabled) {
-                    background-color: #d6fff1;
-                }
+                <!-- Serene Lavender Consent Button -->
+                <button id="chk-header" class="chk-accordion serene-theme" type="button" style="display: none;">
+                    <div class="chk-icon">
+                        <i class="bi bi-bar-chart-line"></i>
+                    </div>
+                    <div class="chk-content">
+                        <h3 class="chk-title">Step 3: Your Personal Insights</h3>
+                        <p class="chk-description"></p>
+                    </div>
+                </button>
 
-                .chk-accordion:disabled {
-                    opacity: 0.5;
-                    cursor: not-allowed;
-                    pointer-events: none;
-                }
-
-                .chk-icon {
-                    font-size: 2.2rem;
-                    color: var(--primary-dark, #7a478d);
-                    margin-bottom: 0.75rem;
-                }
-
-                .chk-title {
-                    font-size: 1.3rem;
-                    font-weight: 600;
-                    margin: 0.25rem 0;
-                    color: var(--text-color, #311d53);
-                }
-
-                .chk-description {
-                    font-size: 0.95rem;
-                    color: #5d3d73;
-                    margin: 0.25rem 0 0.5rem;
-                }
-
-                .consent-label {
-                    font-size: 0.85rem;
-                    font-weight: 500;
-                    background: #d6fff1;
-                    color: #fff;
-                    padding: 0.4rem 0.8rem;
-                    border-radius: 6px;
-                    display: inline-block;
-                    margin-top: 0.3rem;
-                }
-            </style>
-        </div>
+            </div>
         </div>
 
+        <!-- Footer (sticks to bottom when content is short) -->
+        <footer class="sticky-footer">
+            <p>
+                &copy; TMR International Hospital | Powered by Toli Wekka. All rights reserved. |
+                <a href="#">Privacy</a>
+                |
+                <a href="#">Terms</a>
+            </p>
+        </footer>
 
-
-
-        <script src="themes.js"></script>
-
+        <!-- Bootstrap JS Bundle -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
         <!-- SCRIPT -->
         <script>
             document.addEventListener("DOMContentLoaded", () => {
@@ -596,9 +812,121 @@ body {
 
                 btn.addEventListener("click", () => {
                     // Redirect the full page to report.html
-                    window.location.href = "staffreport.html";
+                    window.location.href = "report.html";
                 });
             });
+
+            const themes = {
+    default: {
+  "--primary": "#003d5b",
+  "--primary-light": "#005b87",
+  "--primary-dark": "#00263e",
+  "--bg": "#e6f4f9",
+  "--card-bg": "rgba(255, 255, 255, 0.08)",
+  "--text-color": "#00263e",
+  "--accent": "#84c5e1",
+  "--hover-bg": "#0077aa",
+  "--button-bg": "#006c9c",
+  "--button-hover-bg": "#00547a",
+
+                },
+                fieryRed: {
+                    "--primary": "#c0392b",
+                    "--primary-light": "#e74c3c",
+                    "--primary-dark": "#922b21",
+                    "--bg": "#f9ebea",
+                    "--card-bg": "rgba(255, 255, 255, 0.2)",
+                    "--text-color": "#4a0f0f",
+                    "--accent": "#f5b7b1",
+                    "--hover-bg": "#fadbd8",
+                    "--button-bg": "#e74c3c",
+                    "--button-hover-bg": "#c0392b",
+                },
+                blushRose: {
+                    "--primary": "#e84393",
+                    "--primary-light": "#f56eb5",
+                    "--primary-dark": "#b93372",
+                    "--bg": "#fceff9",
+                    "--card-bg": "rgba(255, 255, 255, 0.2)",
+                    "--text-color": "#511a3f",
+                    "--accent": "#ffd3e3",
+                    "--hover-bg": "#f3a8b7",
+                    "--button-bg": "#e84393",
+                    "--button-hover-bg": "#ec5987",
+                },
+                midnightDark: {
+                    "--primary": "#2c3e50",
+                    "--primary-light": "#34495e",
+                    "--primary-dark": "#1c2833",
+                    "--bg": "#1a1a1a",
+                    "--card-bg": "#2a2a2a",
+                    "--text-color": "#ffffff",
+                    "--accent": "#5d6d7e",
+                    "--hover-bg": "#34495e",
+                    "--button-bg": "#34495e",
+                    "--button-hover-bg": "#2c3e50",
+                },
+                sereneLavender: {
+                    "--primary": "#9b59b6",
+                    "--primary-light": "#ab70c6",
+                    "--primary-dark": "#7a478d",
+                    "--bg": "#f6f0ff",
+                    "--card-bg": "rgba(255, 255, 255, 0.25)",
+                    "--text-color": "#311d53",
+                    "--accent": "#e8daf6",
+                    "--hover-bg": "#dcd6f7",
+                    "--button-bg": "#9b59b6",
+                    "--button-hover-bg": "#7a478d",
+                },
+                oceanBreeze: {
+                    "--primary": "#0077b6",
+                    "--primary-light": "#00b4d8",
+                    "--primary-dark": "#023e8a",
+                    "--bg": "#e0f7fa",
+                    "--card-bg": "rgba(255, 255, 255, 0.15)",
+                    "--text-color": "#012c46",
+                    "--accent": "#caf0f8",
+                    "--hover-bg": "#bde0fe",
+                    "--button-bg": "#0077b6",
+                    "--button-hover-bg": "#005f86",
+                },
+                goldenSunset: {
+                    "--primary": "#ff6b6b",
+                    "--primary-light": "#ff9999",
+                    "--primary-dark": "#d94d4d",
+                    "--bg": "#fffaf0",
+                    "--card-bg": "rgba(255, 255, 255, 0.15)",
+                    "--text-color": "#3a1d14",
+                    "--accent": "#ffe9d6",
+                    "--hover-bg": "#ffcccb",
+                    "--button-bg": "#ff6b6b",
+                    "--button-hover-bg": "#ff4444",
+                },
+                softStone: {
+                    "--primary": "#7f8c8d",
+                    "--primary-light": "#a4b0b1",
+                    "--primary-dark": "#5f6a6a",
+                    "--bg": "#f2f4f4",
+                    "--card-bg": "rgba(255, 255, 255, 0.25)",
+                    "--text-color": "#1c2a35",
+                    "--accent": "#e5e8e8",
+                    "--hover-bg": "#c8d1d2",
+                    "--button-bg": "#7f8c8d",
+                    "--button-hover-bg": "#5e6b6c",
+                },
+                softBlush: {
+                    "--primary": "#ff9aa2",
+                    "--primary-light": "#ffb6c1",
+                    "--primary-dark": "#e27a82",
+                    "--bg": "#fff5f8",
+                    "--card-bg": "rgba(255, 255, 255, 0.2)",
+                    "--text-color": "#8c1f34",
+                    "--accent": "#ffe9ef",
+                    "--hover-bg": "#ffdce3",
+                    "--button-bg": "#ff9aa2",
+                    "--button-hover-bg": "#e27a82",
+                },
+            };
 
             const questions = [
                 {
@@ -630,7 +958,13 @@ body {
                 { id: 14, section: "Relationships", pastcoupledays: "", text: "My relationships are as satisfying as I would want them to be.", answerType: "Agreement" },
                 { id: 15, section: "Relationships", pastcoupledays: "", text: "How often do you feel lonely?", answerType: "Loneliness" },
                 { id: 16, section: "Community and Social Support", pastcoupledays: "", text: "How would you describe your sense of belonging to your local community?", answerType: "Community" },
-                { id: 17, section: "Community and Social Support", pastcoupledays: "", text: "If you were in trouble, do you have relatives or friends you can count on to help you whenever you need them, or not?", answerType: "FrequencyNeg" },
+                {
+                    id: 17,
+                    section: "Community and Social Support",
+                    pastcoupledays: "",
+                    text: "If you were in trouble, do you have relatives or friends you can count on to help you whenever you need them, or not?",
+                    answerType: "FrequencyNeg",
+                },
                 { id: 18, section: "Community and Social Support", pastcoupledays: "", text: "Are you satisfied or dissatisfied with the city or area where you live?", answerType: "Satisfaction" },
                 { id: 19, section: "Financial Evaluation and Stability", pastcoupledays: "", text: "How often do you worry about being able to meet normal monthly living expenses?", answerType: "WorryAboutLivingExpenses" },
                 { id: 20, section: "Financial Evaluation and Stability", pastcoupledays: "", text: "How often do you worry about safety, food, or housing?", answerType: "WorrySafety" },

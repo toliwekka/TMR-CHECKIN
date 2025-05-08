@@ -1,260 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>TMR International | T-Check Portal</title>
-        <link rel="icon" type="image/png" href="./logo.png" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet" />
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        <script src="https://unpkg.com/lucide@latest"></script>
-        <style>
-            :root {
-                --tmr-dark: #003366;
-                --tmr-light: #f0f8ff;
-                --tmr-accent: #66ccff;
-                --tmr-glow: rgba(0, 102, 204, 0.2);
-                --glass: rgba(255, 255, 255, 0.15);
-            }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TMR ConnectedCare | Portal</title>
+  <link rel="icon" href="./logo.png" type="image/png" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: "Inter", sans-serif;
-            }
-
-            body {
-                background: linear-gradient(145deg, var(--tmr-light), #ffffff);
-                color: var(--tmr-dark);
-                min-height: 100vh;
-                overflow-x: hidden;
-            }
-
-            header {
-                background: var(--tmr-dark);
-                color: white;
-                padding: 2rem 4rem;
-                text-align: center;
-                box-shadow: 0 5px 15px var(--tmr-glow);
-            }
-
-            header h1 {
-                font-size: 3rem;
-                font-weight: 900;
-                letter-spacing: 1px;
-            }
-
-            header p {
-                font-size: 1.2rem;
-                opacity: 0.9;
-                margin-top: 0.5rem;
-            }
-
-            .container {
-                display: flex;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 2.5rem;
-                padding: 4rem 2rem;
-            }
-
-            .entry-card {
-                background: var(--glass);
-                backdrop-filter: blur(12px);
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-                border-radius: 2rem;
-                padding: 2.2rem;
-                width: 300px;
-                text-align: center;
-                transition: all 0.4s ease;
-                border: 2px solid transparent;
-                position: relative;
-                cursor: pointer;
-            }
-
-            .entry-card:hover {
-                transform: scale(1.05);
-                border-color: var(--tmr-accent);
-                box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
-            }
-
-            .entry-card h2 {
-                font-size: 1.6rem;
-                margin-bottom: 1rem;
-                color: var(--tmr-dark);
-                font-weight: 700;
-            }
-
-            .entry-card p {
-                font-size: 1rem;
-                color: #333;
-            }
-
-            .entry-card::before {
-                content: "";
-                position: absolute;
-                top: -30px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 60px;
-                height: 60px;
-                background: var(--tmr-accent);
-                border-radius: 50%;
-                box-shadow: 0 0 15px var(--tmr-glow);
-                opacity: 0.1;
-                z-index: -1;
-            }
-
-            .chart-preview {
-                width: 100%;
-                height: 230px;
-                margin-top: 1.2rem;
-            }
-
-            .icon-center {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 230px;
-            }
-
-            .entry-icon {
-                width: 64px;
-                height: 64px;
-                color: var(--tmr-dark);
-                opacity: 0.35;
-                transition: all 0.3s ease;
-            }
-
-            .entry-card:hover .entry-icon {
-                opacity: 0.75;
-                transform: scale(1.1);
-            }
-
-            footer {
-                text-align: center;
-                padding: 2rem;
-                background: var(--tmr-dark);
-                color: white;
-            }
-
-            @media (max-width: 768px) {
-                .container {
-                    flex-direction: column;
-                    align-items: center;
-                }
-            }
-        </style>
-
-        <script>
-            window.addEventListener("DOMContentLoaded", () => {
-                lucide.createIcons();
-            });
-        </script>
-    </head>
-    <body>
-        <header>
-            <h1>TMR ConnectedCare | Mental Health</h1>
-            <p>Empowering Wellness for Schools, Staff & Patients</p>
-        </header>
-
-        <main class="container">
-<!-- Disabled School Card -->
-<div class="entry-card disabled" onclick="return false;">
-    <h2>Schools</h2>
-    <p>Monitor student well-being, access T|Check, and analyze trends across terms.</p>
-    <div class="chart-preview icon-center">
-        <i data-lucide="school" class="entry-icon"></i>
-    </div>
-</div>
-
-<!-- Optional: CSS to style it as disabled -->
-<style>
-    .entry-card.disabled {
-        pointer-events: none;
-        opacity: 0.6;
-        cursor: not-allowed;
+  <style>
+    :root {
+      --tmr-dark: #003366;
+      --tmr-light: #f8fbff;
+      --tmr-primary: #0099cc;
+      --tmr-accent: #66ccff;
+      --tmr-glass: rgba(255, 255, 255, 0.15);
+      --tmr-border: rgba(255, 255, 255, 0.2);
     }
-</style>
 
-            <div class="entry-card" onclick="location.href='stafflogin.html'">
-                <div class="card">
-                    <h2>TMR Hospital Personnel</h2>
-                    <p>Access your personal mental health resources, track your wellness progress, and receive tailored support when you need it most.</p>
-                </div>
-                <div class="chart-preview icon-center">
-                    <i data-lucide="users" class="entry-icon"></i>
-                </div>
-            </div>
+    body {
+      font-family: "Inter", sans-serif;
+      background: var(--tmr-light);
+      color: var(--tmr-dark);
+      overflow-x: hidden;
+    }
 
-            <div class="entry-card" onclick="location.href='staffintro.html'">
-                <h2>Patients</h2>
-                <p>Access your medical journey, well-being resources, and support tools.</p>
-                <div class="chart-preview icon-center">
-                    <i data-lucide="heart-pulse" class="entry-icon"></i>
-                </div>
-            </div>
+    .navbar-glass {
+      backdrop-filter: blur(12px);
+      background-color: var(--tmr-glass);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
 
-            <div class="entry-card" onclick="location.href='admindashboard.html'">
-                <h2>TMR Admin</h2>
-                <p>Oversee operations, insights, and engagement across all domains.</p>
-                <div id="admin-chart" class="chart-preview"></div>
-            </div>
-        </main>
+    .hero {
+      background: linear-gradient(135deg, var(--tmr-primary), var(--tmr-dark));
+      color: white;
+      padding: 6rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-        <footer>
-            &copy; 2025 TMR ConnectedCare | Powered by Toli Wekka. Designed for Transformation.
-        </footer>
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.06), transparent 70%);
+      animation: swirl 12s linear infinite;
+    }
 
-        <script>
-            const categories = ["Outreach Cases", "Schools", "Staff Wellness", "Patient Visits"];
+    @keyframes swirl {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
 
-            function generateRandomValues() {
-                return categories.map(() => Math.floor(Math.random() * 20) + 10);
-            }
+    .glass-card {
+      backdrop-filter: blur(18px);
+      background: var(--tmr-glass);
+      border: 1px solid var(--tmr-border);
+      border-radius: 1.5rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      cursor: pointer;
+    }
 
-            function renderChart() {
-                const values = generateRandomValues();
+    .glass-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.1);
+    }
 
-                const layout = {
-                    margin: { t: 0, b: 20, l: 0, r: 0 },
-                    paper_bgcolor: "transparent",
-                    plot_bgcolor: "transparent",
-                    scene: {
-                        xaxis: { title: "Category" },
-                        yaxis: { title: "Volume", range: [0, 30] },
-                        zaxis: { visible: false },
-                        camera: { eye: { x: 1.2, y: 1.4, z: 0.8 } },
-                    },
-                };
+    .icon-glow {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1rem;
+      color: var(--tmr-primary);
+      transition: all 0.3s ease;
+    }
 
-                Plotly.newPlot(
-                    "admin-chart",
-                    [
-                        {
-                            type: "scatter3d",
-                            mode: "markers",
-                            x: categories.map((_, i) => i),
-                            y: values,
-                            z: [0, 0, 0, 0],
-                            marker: {
-                                size: 16,
-                                color: values,
-                                colorscale: "Blues",
-                                opacity: 0.9,
-                            },
-                            text: categories,
-                            hoverinfo: "x+y+text",
-                        },
-                    ],
-                    layout,
-                    { displayModeBar: false, responsive: true }
-                );
-            }
+    .glass-card:hover .icon-glow {
+      transform: scale(1.2);
+      color: var(--tmr-accent);
+      filter: drop-shadow(0 0 4px var(--tmr-accent));
+    }
 
-            renderChart();
-            setInterval(renderChart, 4000);
-        </script>
-    </body>
+    .offcanvas {
+      background: white;
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .login-error {
+      display: none;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      background-color: var(--tmr-dark);
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 5rem;
+      border-top: 2px solid var(--tmr-primary);
+    }
+
+    .footer-cta {
+      font-weight: 600;
+      color: var(--tmr-accent);
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-glass fixed-top px-4">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary fw-bold d-flex align-items-center" href="#">
+        <img src="./logo.png" width="30" class="me-2" alt="TMR Logo" />
+        TMR ConnectedCare
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1 class="display-4 fw-bold">Wellness Begins with Connection</h1>
+    <p class="lead mt-3">Explore secure tools for staff, patients, and outreach impact.</p>
+  </section>
+
+  <!-- Entry Cards -->
+  <div class="container py-5 mt-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+
+      <!-- Schools -->
+      <div class="col">
+        <div class="p-4 text-center glass-card disabled">
+          <i data-lucide="school" class="icon-glow"></i>
+          <h5 class="fw-semibold">Schools</h5>
+          <p class="small">Insights on student engagement and wellness—coming soon!</p>
+        </div>
+      </div>
+
+      <!-- Staff -->
+      <div class="col">
+        <div class="p-4 text-center glass-card" onclick="location.href='stafflogin.html'">
+          <i data-lucide="users" class="icon-glow"></i>
+          <h5 class="fw-semibold">Hospital Staff</h5>
+          <p class="small">Check in, support teams, and access care resources.</p>
+        </div>
+      </div>
+
+      <!-- Patients -->
+      <div class="col">
+        <div class="p-4 text-center glass-card" onclick="location.href='staffintro.html'">
+          <i data-lucide="heart-pulse" class="icon-glow"></i>
+          <h5 class="fw-semibold">Patients</h5>
+          <p class="small">Track your wellness and access emotional support tools.</p>
+        </div>
+      </div>
+
+      <!-- Admin -->
+      <div class="col">
+        <div class="p-4 text-center glass-card" data-bs-toggle="offcanvas" data-bs-target="#adminCanvas">
+          <i data-lucide="settings" class="icon-glow"></i>
+          <h5 class="fw-semibold">TMR Admin</h5>
+          <p class="small">View analytics, department engagement, and growth metrics.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Admin Chart & Login -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="adminCanvas">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title fw-semibold">Live Admin Dashboard</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div id="admin-chart" style="height: 300px;"></div>
+      <hr class="my-4"/>
+      <h6 class="fw-bold mb-3">Admin Login</h6>
+      <form onsubmit="return handleAdminLogin(event)">
+        <div class="mb-3">
+          <input type="text" class="form-control" id="adminUsername" placeholder="Username" required />
+        </div>
+        <div class="mb-3">
+          <input type="password" class="form-control" id="adminPassword" placeholder="Password" required />
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+        <div id="loginError" class="text-danger login-error mt-2">Invalid username or password.</div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-cta">Transforming Mental Wellness Across Uganda</div>
+    <div class="mt-2">&copy; 2025 TMR ConnectedCare · Designed by Toli Wekka</div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    const categories = ["Outreach", "Schools", "Staff", "Patients"];
+    const colors = ["#1e90ff", "#20c997", "#ffc107", "#ff5c8a"];
+
+    function renderChart() {
+      const values = categories.map(() => Math.floor(Math.random() * 30 + 10));
+
+      Plotly.newPlot("admin-chart", [{
+        type: "bar",
+        x: categories,
+        y: values,
+        marker: { color: colors },
+        text: values.map(v => `${v} records`),
+        textposition: "outside"
+      }], {
+        title: "Engagement Overview",
+        paper_bgcolor: "transparent",
+        plot_bgcolor: "transparent",
+        font: { family: "Inter", size: 14 },
+        margin: { t: 40, b: 40 }
+      }, { displayModeBar: false });
+    }
+
+    renderChart();
+    setInterval(renderChart, 5000);
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById("adminUsername").value.trim();
+      const pass = document.getElementById("adminPassword").value.trim();
+      const error = document.getElementById("loginError");
+
+      if (user === "admin" && pass === "admin") {
+        window.location.href = "adminstrationdashboard.html";
+      } else {
+        error.style.display = "block";
+      }
+    }
+  </script>
+</body>
 </html>

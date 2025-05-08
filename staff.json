@@ -1,0 +1,1306 @@
+{
+  "departments": [
+    {
+      "name": "Pediatrics Department",
+      "icon": "fa-baby",
+      "staff": [
+        {
+          "id": "staff_0_0",
+          "name": "Dr. Joseph Kato",
+          "position": "Pediatrician",
+          "marital_status": "Widowed",
+          "scores": {
+            "partA": 84,
+            "partB": 56
+          },
+          "family": [
+            {
+              "first_name": "Peter",
+              "last_name": "Waiswa",
+              "gender": "Male",
+              "age": 17,
+              "status": "Student",
+              "partA": 65,
+              "partB": 48
+            }
+          ]
+        },
+        {
+          "id": "staff_0_1",
+          "name": "Dr. Faith Kato",
+          "position": "Trauma Specialist",
+          "marital_status": "Married",
+          "scores": {
+            "partA": 92,
+            "partB": 90
+          },
+          "family": [
+            {
+              "first_name": "Grace",
+              "last_name": "Nakyambadde",
+              "gender": "Female",
+              "age": 25,
+              "status": "Student",
+              "partA": 90,
+              "partB": 57
+            },
+            {
+              "first_name": "Peter",
+              "last_name": "Atwine",
+              "gender": "Male",
+              "age": 28,
+              "status": "Student",
+              "partA": 69,
+              "partB": 76
+            },
+            {
+              "first_name": "Rita",
+              "last_name": "Atwine",
+              "gender": "Female",
+              "age": 47,
+              "status": "Working",
+              "partA": 45,
+              "partB": 53
+            },
+            {
+              "first_name": "David",
+              "last_name": "Waiswa",
+              "gender": "Male",
+              "age": 48,
+              "status": "Student",
+              "partA": 46,
+              "partB": 94
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Emergency Services Department",
+      "icon": "fa-ambulance",
+      "staff": [
+        {
+          "id": "staff_1_0",
+          "name": "Dr. Faith Atwine",
+          "position": "Trauma Specialist",
+          "marital_status": "Single",
+          "scores": {
+            "partA": 79,
+            "partB": 58
+          },
+          "family": [
+            {
+              "first_name": "Isaac",
+              "last_name": "Mukasa",
+              "gender": "Male",
+              "age": 19,
+              "status": "Student",
+              "partA": 85,
+              "partB": 86
+            },
+            {
+              "first_name": "Lillian",
+              "last_name": "Ouma",
+              "gender": "Female",
+              "age": 39,
+              "status": "Student",
+              "partA": 65,
+              "partB": 80
+            }
+          ]
+        },
+        {
+          "id": "staff_1_1",
+          "name": "Dr. Rita Okello",
+          "position": "General Physician",
+          "marital_status": "Married",
+          "scores": {
+            "partA": 82,
+            "partB": 89
+          },
+          "family": [
+            {
+              "first_name": "Emily",
+              "last_name": "Nabirye",
+              "gender": "Female",
+              "age": 55,
+              "status": "Working",
+              "partA": 58,
+              "partB": 93
+            },
+            {
+              "first_name": "Emily",
+              "last_name": "Ouma",
+              "gender": "Female",
+              "age": 43,
+              "status": "Student",
+              "partA": 94,
+              "partB": 62
+            },
+            {
+              "first_name": "Samuel",
+              "last_name": "Waiswa",
+              "gender": "Male",
+              "age": 32,
+              "status": "Student",
+              "partA": 72,
+              "partB": 58
+            }
+          ]
+        },
+        {
+          "id": "staff_1_2",
+          "name": "Dr. Faith Okello",
+          "position": "Rehab Therapist",
+          "marital_status": "Married",
+          "scores": {
+            "partA": 90,
+            "partB": 56
+          },
+          "family": [
+            {
+              "first_name": "Moses",
+              "last_name": "Nakyambadde",
+              "gender": "Male",
+              "age": 38,
+              "status": "Student",
+              "partA": 92,
+              "partB": 80
+            },
+            {
+              "first_name": "Moses",
+              "last_name": "Atwine",
+              "gender": "Male",
+              "age": 22,
+              "status": "Student",
+              "partA": 52,
+              "partB": 31
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Internal Medicine Department",
+      "icon": "fa-stethoscope",
+      "staff": [
+        {
+          "id": "staff_2_0",
+          "name": "Dr. Clara Atwine",
+          "position": "General Physician",
+          "marital_status": "Married",
+          "scores": {
+            "partA": 78,
+            "partB": 72
+          },
+          "family": [
+            {
+              "first_name": "Emily",
+              "last_name": "Nakyambadde",
+              "gender": "Female",
+              "age": 30,
+              "status": "Student",
+              "partA": 93,
+              "partB": 34
+            },
+            {
+              "first_name": "Emily",
+              "last_name": "Waiswa",
+              "gender": "Female",
+              "age": 35,
+              "status": "Working",
+              "partA": 40,
+              "partB": 65
+            },
+            {
+              "first_name": "Anna",
+              "last_name": "Kato",
+              "gender": "Female",
+              "age": 52,
+              "status": "Student",
+              "partA": 70,
+              "partB": 78
+            },
+            {
+              "first_name": "Faith",
+              "last_name": "Mukasa",
+              "gender": "Female",
+              "age": 47,
+              "status": "Student",
+              "partA": 74,
+              "partB": 31
+            }
+          ]
+        },
+        {
+          "id": "staff_2_1",
+          "name": "Dr. Emily Kato",
+          "position": "Rehab Therapist",
+          "marital_status": "Divorced",
+          "scores": {
+            "partA": 88,
+            "partB": 59
+          },
+          "family": [
+            {
+              "first_name": "Moses",
+              "last_name": "Okello",
+              "gender": "Male",
+              "age": 23,
+              "status": "Student",
+              "partA": 64,
+              "partB": 62
+            },
+            {
+              "first_name": "Grace",
+              "last_name": "Nakyambadde",
+              "gender": "Female",
+              "age": 50,
+              "status": "Student",
+              "partA": 67,
+              "partB": 55
+            }
+          ]
+        },
+        {
+          "id": "staff_2_2",
+          "name": "Dr. Anna Ouma",
+          "position": "Clinical Nutritionist",
+          "marital_status": "Single",
+          "scores": {
+            "partA": 73,
+            "partB": 90
+          },
+          "family": [
+            {
+              "first_name": "Grace",
+              "last_name": "Nakyambadde",
+              "gender": "Female",
+              "age": 36,
+              "status": "Student",
+              "partA": 72,
+              "partB": 55
+            },
+            {
+              "first_name": "Faith",
+              "last_name": "Nabirye",
+              "gender": "Female",
+              "age": 58,
+              "status": "Working",
+              "partA": 63,
+              "partB": 86
+            },
+            {
+              "first_name": "Joseph",
+              "last_name": "Waiswa",
+              "gender": "Male",
+              "age": 48,
+              "status": "Working",
+              "partA": 71,
+              "partB": 50
+            },
+            {
+              "first_name": "Peter",
+              "last_name": "Nakyambadde",
+              "gender": "Male",
+              "age": 60,
+              "status": "Student",
+              "partA": 41,
+              "partB": 75
+            }
+          ]
+        },
+        {
+          "id": "staff_2_3",
+          "name": "Dr. Grace Kato",
+          "position": "Outreach Coordinator",
+          "marital_status": "Divorced",
+          "scores": {
+            "partA": 94,
+            "partB": 59
+          },
+          "family": [
+            {
+              "first_name": "Rita",
+              "last_name": "Waiswa",
+              "gender": "Female",
+              "age": 21,
+              "status": "Student",
+              "partA": 86,
+              "partB": 66
+            },
+            {
+              "first_name": "Emily",
+              "last_name": "Atwine",
+              "gender": "Female",
+              "age": 54,
+              "status": "Student",
+              "partA": 42,
+              "partB": 43
+            },
+            {
+              "first_name": "Moses",
+              "last_name": "Waiswa",
+              "gender": "Male",
+              "age": 49,
+              "status": "Working",
+              "partA": 95,
+              "partB": 82
+            },
+            {
+              "first_name": "Anna",
+              "last_name": "Waiswa",
+              "gender": "Female",
+              "age": 43,
+              "status": "Student",
+              "partA": 83,
+              "partB": 50
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Rehabilitation Services Department",
+      "icon": "fa-wheelchair",
+      "staff": [
+        {
+          "id": "staff_3_0",
+          "name": "Dr. Grace Nabirye",
+          "position": "Rehab Therapist",
+          "marital_status": "Single",
+          "scores": {
+            "partA": 89,
+            "partB": 76
+          },
+          "family": [
+            {
+              "first_name": "Peter",
+              "last_name": "Mukasa",
+              "gender": "Male",
+              "age": 38,
+              "status": "Student",
+              "partA": 82,
+              "partB": 31
+            },
+            {
+              "first_name": "Clara",
+              "last_name": "Okello",
+              "gender": "Female",
+              "age": 18,
+              "status": "Student",
+              "partA": 65,
+              "partB": 86
+            }
+          ]
+        },
+        {
+          "id": "staff_3_1",
+          "name": "Dr. Rita Atwine",
+          "position": "Clinical Nutritionist",
+          "marital_status": "Divorced",
+          "scores": {
+            "partA": 74,
+            "partB": 55
+          },
+          "family": [
+            {
+              "first_name": "David",
+              "last_name": "Okello",
+              "gender": "Male",
+              "age": 26,
+              "status": "Student",
+              "partA": 54,
+              "partB": 31
+            },
+            {
+              "first_name": "Clara",
+              "last_name": "Nabirye",
+              "gender": "Female",
+              "age": 40,
+              "status": "Student",
+              "partA": 68,
+              "partB": 66
+            }
+          ]
+        },
+        {
+          "id": "staff_3_2",
+          "name": "Dr. Moses Waiswa",
+          "position": "Outreach Coordinator",
+          "marital_status": "Single",
+          "scores": {
+            "partA": 92,
+            "partB": 67
+          },
+          "family": [
+            {
+              "first_name": "John",
+              "last_name": "Waiswa",
+              "gender": "Male",
+              "age": 28,
+              "status": "Working",
+              "partA": 75,
+              "partB": 38
+            }
+          ]
+        },
+        {
+          "id": "staff_3_3",
+          "name": "John Okello",
+          "position": "Surgeon",
+          "marital_status": "Widowed",
+          "scores": {
+            "partA": 66,
+            "partB": 78
+          },
+          "family": [
+            {
+              "first_name": "John",
+              "last_name": "Kato",
+              "gender": "Male",
+              "age": 30,
+              "status": "Student",
+              "partA": 62,
+              "partB": 55
+            },
+            {
+              "first_name": "Isaac",
+              "last_name": "Okello",
+              "gender": "Male",
+              "age": 47,
+              "status": "Working",
+              "partA": 59,
+              "partB": 85
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Nutrition & Dietetics Department",
+      "icon": "fa-apple-alt",
+      "staff": [
+        {
+          "id": "staff_4_0",
+          "name": "Dr. David Mukasa",
+          "position": "Clinical Nutritionist",
+          "marital_status": "Widowed",
+          "scores": {
+            "partA": 81,
+            "partB": 67
+          },
+          "family": [
+            {
+              "first_name": "Joan",
+              "last_name": "Atwine",
+              "gender": "Female",
+              "age": 52,
+              "status": "Student",
+              "partA": 81,
+              "partB": 92
+            },
+            {
+              "first_name": "Grace",
+              "last_name": "Nabirye",
+              "gender": "Female",
+              "age": 44,
+              "status": "Working",
+              "partA": 45,
+              "partB": 49
+            },
+            {
+              "first_name": "Emily",
+              "last_name": "Nakyambadde",
+              "gender": "Female",
+              "age": 45,
+              "status": "Working",
+              "partA": 67,
+              "partB": 44
+            }
+          ]
+        },
+        {
+          "id": "staff_4_1",
+          "name": "David Mukasa",
+          "position": "Outreach Coordinator",
+          "marital_status": "Single",
+          "scores": {
+            "partA": 73,
+            "partB": 83
+          },
+          "family": [
+            {
+              "first_name": "Emily",
+              "last_name": "Nakyambadde",
+              "gender": "Female",
+              "age": 32,
+              "status": "Working",
+              "partA": 76,
+              "partB": 51
+            },
+            {
+              "first_name": "David",
+              "last_name": "Ouma",
+              "gender": "Male",
+              "age": 54,
+              "status": "Working",
+              "partA": 82,
+              "partB": 83
+            }
+          ]
+        },
+        {
+          "id": "staff_4_2",
+          "name": "Dr. Peter Nakyambadde",
+          "position": "Surgeon",
+          "marital_status": "Married",
+          "scores": {
+            "partA": 65,
+            "partB": 62
+          },
+          "family": [
+            {
+              "first_name": "Samuel",
+              "last_name": "Nakyambadde",
+              "gender": "Male",
+              "age": 52,
+              "status": "Working",
+              "partA": 49,
+              "partB": 81
+            },
+            {
+              "first_name": "Lillian",
+              "last_name": "Kato",
+              "gender": "Female",
+              "age": 20,
+              "status": "Student",
+              "partA": 40,
+              "partB": 86
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Public Health & Community Outreach",
+      "icon": "fa-bullhorn",
+      "staff": [
+        {
+          "id": "staff_5_0",
+          "name": "Dr. David Atwine",
+          "position": "Outreach Coordinator",
+          "marital_status": "Widowed",
+          "scores": {
+            "partA": 76,
+            "partB": 78
+          },
+          "family": [
+            {
+              "first_name": "Faith",
+              "last_name": "Nakyambadde",
+              "gender": "Female",
+              "age": 17,
+              "status": "Student",
+              "partA": 57,
+              "partB": 71
+            },
+            {
+              "first_name": "Moses",
+              "last_name": "Nabirye",
+              "gender": "Male",
+              "age": 60,
+              "status": "Working",
+              "partA": 40,
+              "partB": 37
+            }
+          ]
+        },
+        {
+          "id": "staff_5_1",
+          "name": "Dr. Anna Nakyambadde",
+          "position": "Surgeon",
+          "marital_status": "Divorced",
+          "scores": {
+            "partA": 79,
+            "partB": 72
+          },
+          "family": [
+            {
+              "first_name": "Daniel",
+              "last_name": "Okello",
+              "gender": "Male",
+              "age": 48,
+              "status": "Working",
+              "partA": 88,
+              "partB": 32
+            },
+            {
+              "first_name": "Moses",
+              "last_name": "Okello",
+              "gender": "Male",
+              "age": 60,
+              "status": "Working",
+              "partA": 68,
+              "partB": 45
+            }
+          ]
+        },
+        {
+          "id": "staff_5_2",
+          "name": "Dr. Samuel Waiswa",
+          "position": "Radiologist",
+          "marital_status": "Widowed",
+          "scores": {
+            "partA": 76,
+            "partB": 66
+          },
+          "family": [
+            {
+              "first_name": "Clara",
+              "last_name": "Mukasa",
+              "gender": "Female",
+              "age": 37,
+              "status": "Working",
+              "partA": 50,
+              "partB": 75
+            },
+            {
+              "first_name": "Moses",
+              "last_name": "Atwine",
+              "gender": "Male",
+              "age": 50,
+              "status": "Working",
+              "partA": 59,
+              "partB": 39
+            },
+            {
+              "first_name": "Peter",
+              "last_name": "Atwine",
+              "gender": "Male",
+              "age": 56,
+              "status": "Student",
+              "partA": 91,
+              "partB": 60
+            }
+          ]
+        },
+        {
+          "id": "staff_5_3",
+          "name": "David Nakyambadde",
+          "position": "Anesthesiologist",
+          "marital_status": "Divorced",
+          "scores": {
+            "partA": 72,
+            "partB": 77
+          },
+          "family": [
+            {
+              "first_name": "Lillian",
+              "last_name": "Okello",
+              "gender": "Female",
+              "age": 40,
+              "status": "Working",
+              "partA": 95,
+              "partB": 65
+            }
+          ]
+        },
+        {
+          "id": "staff_5_4",
+          "name": "Dr. Grace Kato",
+          "position": "Dental Specialist",
+          "marital_status": "Single",
+          "scores": {
+            "partA": 63,
+            "partB": 87
+          },
+          "family": [
+            {
+              "first_name": "Faith",
+              "last_name": "Ouma",
+              "gender": "Female",
+              "age": 15,
+              "status": "Student",
+              "partA": 43,
+              "partB": 48
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Surgical Department",
+      "icon": "fa-user-md",
+      "staff": [
+        {
+          "id": "staff_6_0",
+          "name": "Dr. Grace Kato",
+          "position": "Surgeon",
+          "marital_status": "Single",
+          "scores": {
+            "partA": 66,
+            "partB": 82
+          },
+          "family": [
+            {
+              "first_name": "Lillian",
+              "last_name": "Mukasa",
+              "gender": "Female",
+              "age": 29,
+              "status": "Working",
+              "partA": 68,
+              "partB": 74
+            },
+            {
+              "first_name": "Isaac",
+              "last_name": "Atwine",
+              "gender": "Male",
+              "age": 35,
+              "status": "Working",
+              "partA": 57,
+              "partB": 42
+            },
+            {
+              "first_name": "Rita",
+              "last_name": "Nakyambadde",
+              "gender": "Female",
+              "age": 18,
+              "status": "Student",
+              "partA": 41,
+              "partB": 60
+            }
+          ]
+        },
+        {
+          "id": "staff_6_1",
+          "name": "Joseph Waiswa",
+          "position": "Radiologist",
+          "marital_status": "Divorced",
+          "scores": {
+            "partA": 80,
+            "partB": 74
+          },
+          "family": [
+            {
+              "first_name": "Moses",
+              "last_name": "Mukasa",
+              "gender": "Male",
+              "age": 55,
+              "status": "Working",
+              "partA": 55,
+              "partB": 64
+            },
+            {
+              "first_name": "Emily",
+              "last_name": "Mukasa",
+              "gender": "Female",
+              "age": 44,
+              "status": "Student",
+              "partA": 89,
+              "partB": 94
+            },
+            {
+              "first_name": "Clara",
+              "last_name": "Mukasa",
+              "gender": "Female",
+              "age": 19,
+              "status": "Student",
+              "partA": 86,
+              "partB": 95
+            },
+            {
+              "first_name": "Faith",
+              "last_name": "Kato",
+              "gender": "Female",
+              "age": 21,
+              "status": "Student",
+              "partA": 67,
+              "partB": 80
+            }
+          ]
+        },
+        {
+          "id": "staff_6_2",
+          "name": "Dr. Joseph Waiswa",
+          "position": "Anesthesiologist",
+          "marital_status": "Widowed",
+          "scores": {
+            "partA": 94,
+            "partB": 87
+          },
+          "family": [
+            {
+              "first_name": "Joseph",
+              "last_name": "Waiswa",
+              "gender": "Male",
+              "age": 47,
+              "status": "Student",
+              "partA": 81,
+              "partB": 66
+            },
+            {
+              "first_name": "Faith",
+              "last_name": "Kato",
+              "gender": "Female",
+              "age": 55,
+              "status": "Working",
+              "partA": 59,
+              "partB": 72
+            },
+            {
+              "first_name": "Clara",
+              "last_name": "Nakyambadde",
+              "gender": "Female",
+              "age": 25,
+              "status": "Student",
+              "partA": 90,
+              "partB": 86
+            },
+            {
+              "first_name": "Lillian",
+              "last_name": "Mukasa",
+              "gender": "Female",
+              "age": 20,
+              "status": "Student",
+              "partA": 72,
+              "partB": 90
+            }
+          ]
+        },
+        {
+          "id": "staff_6_3",
+          "name": "Dr. Emily Okello",
+          "position": "Dental Specialist",
+          "marital_status": "Single",
+          "scores": {
+            "partA": 71,
+            "partB": 66
+          },
+          "family": [
+            {
+              "first_name": "Clara",
+              "last_name": "Okello",
+              "gender": "Female",
+              "age": 38,
+              "status": "Working",
+              "partA": 90,
+              "partB": 77
+            }
+          ]
+        },
+        {
+          "id": "staff_6_4",
+          "name": "Dr. Rita Atwine",
+          "position": "Pediatrician",
+          "marital_status": "Single",
+          "scores": {
+            "partA": 85,
+            "partB": 85
+          },
+          "family": [
+            {
+              "first_name": "Emily",
+              "last_name": "Okello",
+              "gender": "Female",
+              "age": 45,
+              "status": "Working",
+              "partA": 77,
+              "partB": 42
+            },
+            {
+              "first_name": "Emily",
+              "last_name": "Kato",
+              "gender": "Female",
+              "age": 31,
+              "status": "Student",
+              "partA": 43,
+              "partB": 67
+            },
+            {
+              "first_name": "Moses",
+              "last_name": "Kato",
+              "gender": "Male",
+              "age": 20,
+              "status": "Student",
+              "partA": 75,
+              "partB": 68
+            },
+            {
+              "first_name": "Isaac",
+              "last_name": "Nabirye",
+              "gender": "Male",
+              "age": 29,
+              "status": "Working",
+              "partA": 59,
+              "partB": 35
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Radiology Department",
+      "icon": "fa-x-ray",
+      "staff": [
+        {
+          "id": "staff_7_0",
+          "name": "Dr. Peter Nakyambadde",
+          "position": "Radiologist",
+          "marital_status": "Married",
+          "scores": {
+            "partA": 92,
+            "partB": 82
+          },
+          "family": [
+            {
+              "first_name": "Clara",
+              "last_name": "Kato",
+              "gender": "Female",
+              "age": 27,
+              "status": "Student",
+              "partA": 94,
+              "partB": 30
+            },
+            {
+              "first_name": "Grace",
+              "last_name": "Ouma",
+              "gender": "Female",
+              "age": 56,
+              "status": "Student",
+              "partA": 52,
+              "partB": 67
+            },
+            {
+              "first_name": "John",
+              "last_name": "Kato",
+              "gender": "Male",
+              "age": 40,
+              "status": "Student",
+              "partA": 73,
+              "partB": 40
+            }
+          ]
+        },
+        {
+          "id": "staff_7_1",
+          "name": "Dr. Clara Atwine",
+          "position": "Anesthesiologist",
+          "marital_status": "Divorced",
+          "scores": {
+            "partA": 78,
+            "partB": 56
+          },
+          "family": [
+            {
+              "first_name": "Moses",
+              "last_name": "Ouma",
+              "gender": "Male",
+              "age": 14,
+              "status": "Student",
+              "partA": 87,
+              "partB": 31
+            },
+            {
+              "first_name": "Joan",
+              "last_name": "Waiswa",
+              "gender": "Female",
+              "age": 19,
+              "status": "Student",
+              "partA": 71,
+              "partB": 56
+            },
+            {
+              "first_name": "Clara",
+              "last_name": "Nabirye",
+              "gender": "Female",
+              "age": 16,
+              "status": "Student",
+              "partA": 91,
+              "partB": 80
+            },
+            {
+              "first_name": "Joan",
+              "last_name": "Atwine",
+              "gender": "Female",
+              "age": 34,
+              "status": "Working",
+              "partA": 60,
+              "partB": 57
+            }
+          ]
+        },
+        {
+          "id": "staff_7_2",
+          "name": "Dr. Clara Mukasa",
+          "position": "Dental Specialist",
+          "marital_status": "Single",
+          "scores": {
+            "partA": 63,
+            "partB": 62
+          },
+          "family": [
+            {
+              "first_name": "Moses",
+              "last_name": "Kato",
+              "gender": "Male",
+              "age": 43,
+              "status": "Student",
+              "partA": 44,
+              "partB": 59
+            },
+            {
+              "first_name": "Lillian",
+              "last_name": "Okello",
+              "gender": "Female",
+              "age": 55,
+              "status": "Working",
+              "partA": 73,
+              "partB": 78
+            },
+            {
+              "first_name": "David",
+              "last_name": "Atwine",
+              "gender": "Male",
+              "age": 21,
+              "status": "Student",
+              "partA": 86,
+              "partB": 39
+            },
+            {
+              "first_name": "David",
+              "last_name": "Kato",
+              "gender": "Male",
+              "age": 15,
+              "status": "Student",
+              "partA": 87,
+              "partB": 40
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Anesthesiology Department",
+      "icon": "fa-lungs",
+      "staff": [
+        {
+          "id": "staff_8_0",
+          "name": "Dr. Grace Mukasa",
+          "position": "Anesthesiologist",
+          "marital_status": "Divorced",
+          "scores": {
+            "partA": 66,
+            "partB": 74
+          },
+          "family": [
+            {
+              "first_name": "John",
+              "last_name": "Ouma",
+              "gender": "Male",
+              "age": 37,
+              "status": "Working",
+              "partA": 95,
+              "partB": 84
+            },
+            {
+              "first_name": "Joan",
+              "last_name": "Okello",
+              "gender": "Female",
+              "age": 51,
+              "status": "Working",
+              "partA": 61,
+              "partB": 50
+            },
+            {
+              "first_name": "Peter",
+              "last_name": "Nakyambadde",
+              "gender": "Male",
+              "age": 32,
+              "status": "Working",
+              "partA": 46,
+              "partB": 54
+            }
+          ]
+        },
+        {
+          "id": "staff_8_1",
+          "name": "Joseph Atwine",
+          "position": "Dental Specialist",
+          "marital_status": "Widowed",
+          "scores": {
+            "partA": 64,
+            "partB": 73
+          },
+          "family": [
+            {
+              "first_name": "Peter",
+              "last_name": "Mukasa",
+              "gender": "Male",
+              "age": 21,
+              "status": "Student",
+              "partA": 89,
+              "partB": 85
+            },
+            {
+              "first_name": "Lillian",
+              "last_name": "Mukasa",
+              "gender": "Female",
+              "age": 34,
+              "status": "Working",
+              "partA": 91,
+              "partB": 30
+            },
+            {
+              "first_name": "Joseph",
+              "last_name": "Kato",
+              "gender": "Male",
+              "age": 27,
+              "status": "Student",
+              "partA": 69,
+              "partB": 36
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dental Department",
+      "icon": "fa-tooth",
+      "staff": [
+        {
+          "id": "staff_9_0",
+          "name": "Dr. David Nakyambadde",
+          "position": "Dental Specialist",
+          "marital_status": "Married",
+          "scores": {
+            "partA": 79,
+            "partB": 80
+          },
+          "family": [
+            {
+              "first_name": "Joseph",
+              "last_name": "Atwine",
+              "gender": "Male",
+              "age": 33,
+              "status": "Working",
+              "partA": 52,
+              "partB": 63
+            }
+          ]
+        },
+        {
+          "id": "staff_9_1",
+          "name": "Isaac Ouma",
+          "position": "Pediatrician",
+          "marital_status": "Divorced",
+          "scores": {
+            "partA": 71,
+            "partB": 59
+          },
+          "family": [
+            {
+              "first_name": "Isaac",
+              "last_name": "Atwine",
+              "gender": "Male",
+              "age": 51,
+              "status": "Working",
+              "partA": 74,
+              "partB": 88
+            },
+            {
+              "first_name": "Samuel",
+              "last_name": "Nabirye",
+              "gender": "Male",
+              "age": 60,
+              "status": "Working",
+              "partA": 58,
+              "partB": 63
+            }
+          ]
+        },
+        {
+          "id": "staff_9_2",
+          "name": "Dr. Peter Nakyambadde",
+          "position": "Trauma Specialist",
+          "marital_status": "Single",
+          "scores": {
+            "partA": 74,
+            "partB": 59
+          },
+          "family": [
+            {
+              "first_name": "Emily",
+              "last_name": "Kato",
+              "gender": "Female",
+              "age": 20,
+              "status": "Student",
+              "partA": 42,
+              "partB": 66
+            }
+          ]
+        },
+        {
+          "id": "staff_9_3",
+          "name": "David Nakyambadde",
+          "position": "General Physician",
+          "marital_status": "Married",
+          "scores": {
+            "partA": 86,
+            "partB": 81
+          },
+          "family": [
+            {
+              "first_name": "Joan",
+              "last_name": "Ouma",
+              "gender": "Female",
+              "age": 49,
+              "status": "Working",
+              "partA": 60,
+              "partB": 90
+            },
+            {
+              "first_name": "Peter",
+              "last_name": "Ouma",
+              "gender": "Male",
+              "age": 34,
+              "status": "Student",
+              "partA": 58,
+              "partB": 49
+            }
+          ]
+        },
+        {
+          "id": "staff_9_4",
+          "name": "Dr. John Okello",
+          "position": "Rehab Therapist",
+          "marital_status": "Widowed",
+          "scores": {
+            "partA": 82,
+            "partB": 57
+          },
+          "family": [
+            {
+              "first_name": "Peter",
+              "last_name": "Ouma",
+              "gender": "Male",
+              "age": 59,
+              "status": "Student",
+              "partA": 54,
+              "partB": 95
+            },
+            {
+              "first_name": "Isaac",
+              "last_name": "Nakyambadde",
+              "gender": "Male",
+              "age": 29,
+              "status": "Student",
+              "partA": 43,
+              "partB": 57
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

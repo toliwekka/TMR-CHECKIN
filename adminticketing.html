@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TMR Mental Well-Being Support Portal</title>
+  <link rel="icon" type="image/png" href="./logo.png" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #eef5f9;
+    }
+    .tmr-header {
+      background-color: #004080;
+      color: white;
+      padding: 1rem;
+    }
+    .tmr-logo {
+      height: 40px;
+      margin-right: 10px;
+    }
+    .ticket-card {
+      border-left: 5px solid #004080;
+    }
+    .priority-high {
+      color: #dc3545;
+    }
+    .priority-medium {
+      color: #ffc107;
+    }
+    .priority-low {
+      color: #198754;
+    }
+    .kanban-board {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+    }
+    .kanban-column {
+      min-width: 300px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 1rem;
+    }
+    .kanban-header {
+      font-weight: bold;
+      border-bottom: 2px solid #ccc;
+      margin-bottom: 1rem;
+    }
+    .staff-card {
+      background-color: #e0f7fa;
+      border-left: 4px solid #00796b;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="tmr-header d-flex align-items-center">
+  <img src="logo.png" alt="TMR Logo" class="tmr-logo">
+  <h3 class="mb-0">TMR Mental Health Support Portal</h3>
+</div>
+
+<div class="container py-5">
+
+  <!-- Staff On Duty -->
+  <div class="mb-5">
+    <h4><i class="bi bi-person-check me-2"></i>Available Mental Health Staff</h4>
+    <div class="row" id="staffList">
+      <div class="col-md-4">
+        <div class="card staff-card p-3 mb-3">
+          <h5 class="mb-1">Dr. Sandra Lee</h5>
+          <p class="mb-1"><i class="bi bi-clock-history me-1"></i> 8:00 AM - 4:00 PM</p>
+          <span class="badge bg-success">Available</span>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card staff-card p-3 mb-3">
+          <h5 class="mb-1">Counselor Mark Jansen</h5>
+          <p class="mb-1"><i class="bi bi-clock-history me-1"></i> 12:00 PM - 8:00 PM</p>
+          <span class="badge bg-warning text-dark">On Break</span>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card staff-card p-3 mb-3">
+          <h5 class="mb-1">Nurse Alicia Gomez</h5>
+          <p class="mb-1"><i class="bi bi-clock-history me-1"></i> 9:00 AM - 5:00 PM</p>
+          <span class="badge bg-success">Available</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ticket Form -->
+  <div class="card mb-5">
+    <div class="card-header bg-primary text-white">
+      Report a Client or IT Concern
+    </div>
+    <div class="card-body">
+      <form id="ticketForm">
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label for="ticketTitle" class="form-label">Subject</label>
+            <input type="text" class="form-control" id="ticketTitle" placeholder="e.g. Client in distress" required>
+          </div>
+          <div class="col-md-4">
+            <label for="ticketPriority" class="form-label">Urgency</label>
+            <select class="form-select" id="ticketPriority" required>
+              <option value="">Select</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="ticketReason" class="form-label">Reason</label>
+            <select class="form-select" id="ticketReason" required>
+              <option value="">Select</option>
+              <option value="Client distress">Client distress</option>
+              <option value="Medication issue">Medication issue</option>
+              <option value="Staff coordination">Staff coordination</option>
+              <option value="Schedule change">Schedule change</option>
+              <option value="IT - Telehealth access">IT - Telehealth access</option>
+              <option value="IT - System not responding">IT - System not responding</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="ticketDescription" class="form-label">Detailed Description</label>
+          <textarea class="form-control" id="ticketDescription" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane me-1"></i>Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Kanban Board -->
+  <h4 class="mb-3"><i class="bi bi-kanban me-2"></i>Care & IT Tickets Board</h4>
+  <div class="kanban-board" id="kanbanBoard">
+    <div class="kanban-column" id="column-high">
+      <div class="kanban-header text-danger">High Urgency</div>
+    </div>
+    <div class="kanban-column" id="column-medium">
+      <div class="kanban-header text-warning">Medium Urgency</div>
+    </div>
+    <div class="kanban-column" id="column-low">
+      <div class="kanban-header text-success">Low Urgency</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ticketForm = document.getElementById("ticketForm");
+
+  ticketForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const title = document.getElementById("ticketTitle").value;
+    const priority = document.getElementById("ticketPriority").value;
+    const reason = document.getElementById("ticketReason").value;
+    const description = document.getElementById("ticketDescription").value;
+
+    const card = document.createElement("div");
+    card.className = "card mb-3";
+    card.innerHTML = `
+      <div class="card-body">
+        <h6 class="card-title">${title}</h6>
+        <p class="text-muted mb-1">${reason}</p>
+        <p class="mb-2">${description}</p>
+        <span class="badge bg-secondary">${priority}</span>
+      </div>`;
+
+    const targetColumn = document.getElementById(`column-${priority.toLowerCase()}`);
+    targetColumn.appendChild(card);
+    ticketForm.reset();
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

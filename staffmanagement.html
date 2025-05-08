@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TMR Mental Health Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/gridjs/6.0.6/theme/mermaid.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gridjs/6.0.6/gridjs.umd.js"></script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background-color: #f4f9ff; }
+    .tmr-header { background-color: #004080; color: white; padding: 15px; display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .tmr-header img { height: 50px; margin-right: 20px; }
+    .staff-card { background-color: #e6f0ff; border: 1px solid #004080; border-radius: 0.75rem; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .kanban-board { display: flex; gap: 1rem; overflow-x: auto; padding: 20px; }
+    .kanban-column { background: #fff; border-radius: 0.75rem; border: 1px solid #dee2e6; width: 300px; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .kanban-header { background: #004080; color: #fff; padding: 10px; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; font-weight: 500; }
+    .kanban-task { padding: 10px; border-bottom: 1px solid #dee2e6; }
+    .accordion-button:not(.collapsed) { background-color: #0056b3; color: #fff; }
+    .badge-score { border-radius: 0.5rem; padding: 0.25rem 0.5rem; color: #000; }
+  </style>
+</head>
+<body>
+  <div class="tmr-header">
+    <img src="logo.png" alt="TMR Logo">
+    <h1 class="h4 mb-0">TMR ConnectedCare – Departmental/Staff Mental Well-Being Dashboard</h1>
+  </div>
+
+  <div class="container my-4">
+    <div class="accordion" id="departmentsAccordion"></div>
+  </div>
+
+  <div id="kanban" class="container my-5">
+    <h3 class="mb-3">Session Tracker</h3>
+    <div class="kanban-board">
+      <div class="kanban-column">
+        <div class="kanban-header">To Do</div>
+        <div class="kanban-task">Review Dr. Kato's Part B score</div>
+      </div>
+      <div class="kanban-column">
+        <div class="kanban-header">In Progress</div>
+        <div class="kanban-task">Prepare family reports</div>
+      </div>
+      <div class="kanban-column">
+        <div class="kanban-header">Completed</div>
+        <div class="kanban-task">Completed Peter Waiswa's evaluation</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    google.charts.load('current', { packages: ['corechart', 'bar'] });
+
+    function getColorForPart(score, type) {
+      const ranges = type === 'A'
+        ? [[0,57,'#FF0000'],[57,63,'#FF8C00'],[63,86,'#FFFC00'],[86,100.01,'#00FF00']]
+        : [[0,29,'#FF0000'],[29,54,'#FF8C00'],[54,79,'#FFFC00'],[79,100.01,'#00FF00']];
+      return ranges.find(([min, max]) => score >= min && score < max)[2];
+    }
+
+    function scheduleAppointment(name) {
+      alert('Appointment scheduled for ' + name);
+    }
+
+    fetch('https://run.mocky.io/v3/bc4f40bc-a606-458c-9e24-276293d5f5bc')
+      .then(res => res.json())
+      .then(data => {
+        const accordion = document.getElementById('departmentsAccordion');
+        data.departments.forEach((dept, deptIndex) => {
+          const deptId = `dept_${deptIndex}`;
+          const accordionItem = document.createElement('div');
+          accordionItem.className = 'accordion-item';
+
+          accordionItem.innerHTML = `
+            <h2 class="accordion-header" id="heading_${deptId}">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_${deptId}">
+                <i class="fas ${dept.icon || 'fa-user-md'} me-2"></i> ${dept.name}
+              </button>
+            </h2>
+            <div id="collapse_${deptId}" class="accordion-collapse collapse" data-bs-parent="#departmentsAccordion">
+              <div class="accordion-body" id="body_${deptId}"></div>
+            </div>
+          `;
+
+          accordion.appendChild(accordionItem);
+
+          const body = accordionItem.querySelector(`#body_${deptId}`);
+
+          dept.staff.forEach((staff, i) => {
+            const chartId = `chart_${deptId}_${i}`;
+            const modalId = `modal_${deptId}_${i}`;
+
+            const card = document.createElement('div');
+            card.className = 'staff-card';
+            card.innerHTML = `
+              <div class="d-flex justify-content-between">
+                <div>
+                  <h5>${staff.name}</h5>
+                  <p>${staff.position}</p>
+                  <p>Marital Status: ${staff.marital_status}</p>
+                  <p>Part A: <span class="badge-score" style="background:${getColorForPart(staff.scores.partA, 'A')}">${staff.scores.partA}%</span></p>
+                  <p>Part B: <span class="badge-score" style="background:${getColorForPart(staff.scores.partB, 'B')}">${staff.scores.partB}%</span></p>
+                </div>
+                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#${modalId}"><i class="fas fa-cog"></i></button>
+              </div>
+              <div id="${chartId}" style="height: 300px;"></div>
+            `;
+            body.appendChild(card);
+
+            // MODAL setup
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.id = modalId;
+            modal.tabIndex = -1;
+            modal.innerHTML = `
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">${staff.name}'s Family</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div id="grid_${modalId}"></div>
+                  </div>
+                </div>
+              </div>
+            `;
+            document.body.appendChild(modal);
+
+            // Chart Rendering on Expand
+            document.getElementById(`collapse_${deptId}`).addEventListener('shown.bs.collapse', () => {
+              const chartData = new google.visualization.DataTable();
+              chartData.addColumn('string', 'Name');
+              chartData.addColumn('number', 'Part A');
+              chartData.addColumn({ type: 'string', role: 'style' });
+              chartData.addColumn('number', 'Part B');
+              chartData.addColumn({ type: 'string', role: 'style' });
+
+              chartData.addRow([
+                staff.name,
+                staff.scores.partA,
+                `color:${getColorForPart(staff.scores.partA, 'A')}`,
+                staff.scores.partB,
+                `color:${getColorForPart(staff.scores.partB, 'B')}`
+              ]);
+
+              (staff.family || []).forEach(member => {
+                chartData.addRow([
+                  member.first_name,
+                  member.partA,
+                  `color:${getColorForPart(member.partA, 'A')}`,
+                  member.partB,
+                  `color:${getColorForPart(member.partB, 'B')}`
+                ]);
+              });
+
+              const chart = new google.visualization.BarChart(document.getElementById(chartId));
+              chart.draw(chartData, {
+                title: 'Scores Comparison',
+                chartArea: { width: '60%' },
+                hAxis: { minValue: 0, maxValue: 100 }
+              });
+
+              const grid = document.getElementById(`grid_${modalId}`);
+              grid.innerHTML = '';
+              if (staff.family && staff.family.length > 0) {
+                new gridjs.Grid({
+                  columns: ['First Name', 'Last Name', 'Gender', 'Age', 'Status', 'Part A', 'Part B', 'Appointment'],
+                  data: staff.family.map(m => [
+                    m.first_name,
+                    m.last_name,
+                    m.gender,
+                    m.age,
+                    m.status,
+                    m.partA + '%',
+                    m.partB + '%',
+                    gridjs.html(`<button class='btn btn-sm btn-outline-primary' onclick=\"scheduleAppointment('${m.first_name} ${m.last_name}')\">Book</button>`)
+                  ])
+                }).render(grid);
+              } else {
+                grid.innerHTML = '<div class="alert alert-warning">No family members registered.</div>';
+              }
+            }, { once: true });
+          });
+        });
+      });
+  </script>
+</body>
+</html>

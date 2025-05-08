@@ -117,13 +117,13 @@
 </head>
 <body id="body" class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen flex flex-col items-center justify-center text-white p-4 relative touch-none">
 
-  <audio id="soundSelect" src="Surrender_To_Love.mp3"></audio>
+  <audio id="soundSelect" src="Aaliyah - At Your Best (You Are Love) Instrumental.m4a"></audio>
   <audio id="soundFinish" src="https://assets.mixkit.co/sfx/preview/mixkit-game-level-completed-2059.mp3"></audio>
-  <audio id="soundBG" src="smooth-chill-jazzy.mp3" loop></audio>
+  <audio id="soundBG" src="Mariah Carey - Touch My Body Instrumental.m4a" loop></audio>
 
   <div class="absolute top-4 right-4 flex items-center gap-4">
     <select id="themeSelector" class="bg-white text-black px-3 py-1 rounded shadow">
-      <option value="default" selected>🌿 TMR Fresh</option>
+      <option value="default" selected>🌿 Mint Fresh</option>
       <option value="fieryRed">🔥 Fiery Red</option>
       <option value="blushRose">🌸 Blush Rose</option>
       <option value="midnightDark">🌚 Midnight Dark</option>
@@ -155,30 +155,38 @@
   </div>
 
   <script>
-    const questions = [
-      "I’ve been feeling optimistic about the future.",
-      "I’ve been feeling useful",
-      "I’ve been feeling relaxed",
-      "I’ve been feeling interested in other people",
-      "I’ve had energy to spare",
-      "I’ve been dealing with problems well",
-      "I’ve been thinking clearly",
-      "I’ve been feeling good about myself",
-      "I’ve been feeling close to other people",
-      "I’ve been feeling confident",
-      "I’ve been able to make up my own mind about things",
-      "I’ve been feeling loved",
-      "I’ve been interested in new things",
-      "I've been feeling cheerful"
-    ];
+function shuffleArray(array) {
+  return array
+    .map(item => ({ item, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ item }) => item);
+}
 
-    const options = [
+const questions = shuffleArray([
+  "I’ve been feeling optimistic about the future.",
+  "I’ve been feeling useful",
+  "I’ve been feeling relaxed",
+  "I’ve been feeling interested in other people",
+  "I’ve had energy to spare",
+  "I’ve been dealing with problems well",
+  "I’ve been thinking clearly",
+  "I’ve been feeling good about myself",
+  "I’ve been feeling close to other people",
+  "I’ve been feeling confident",
+  "I’ve been able to make up my own mind about things",
+  "I’ve been feeling loved",
+  "I’ve been interested in new things",
+  "I've been feeling cheerful"
+]);
+
+
+const options = shuffleArray([
       { label: "Not at All", emoji: "😞", color: "bg-red-500", score: 1 },
       { label: "Rarely", emoji: "😕", color: "bg-orange-400", score: 2 },
       { label: "Some of the Time", emoji: "😐", color: "bg-yellow-300 text-black", score: 3 },
       { label: "Often", emoji: "🙂", color: "bg-green-400", score: 4 },
       { label: "All the Time", emoji: "😄", color: "bg-blue-500", score: 5 }
-    ];
+]);
 
     const themes = [
       { border: 'border-red-400', anim: 'animate-pulse' },
@@ -189,7 +197,7 @@
     ];
 
     const themePresets = {
-      default: ['from-[#006c9c]', 'to-[#003d5b]'],
+      default: ['from-slate-900', 'to-slate-800'],
       fieryRed: ['from-red-700', 'to-red-900'],
       blushRose: ['from-pink-300', 'to-pink-500'],
       midnightDark: ['from-gray-900', 'to-black'],
@@ -233,6 +241,59 @@
 
     function renderQuestion(idx) {
       const theme = themes[idx % themes.length];
+
+
+const Xoptions = shuffleArray([
+      { label: "Not at All", emoji: "😞", color: "bg-red-500", score: 1 },
+      { label: "Rarely", emoji: "😕", color: "bg-orange-400", score: 2 },
+      { label: "Some of the Time", emoji: "😐", color: "bg-yellow-300 text-black", score: 3 },
+      { label: "Often", emoji: "🙂", color: "bg-green-400", score: 4 },
+      { label: "All the Time", emoji: "😄", color: "bg-blue-500", score: 5 }
+]);
+
+
+
+
+function XshuffleArray(array) {
+  return array
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+}
+
+// Base options without colors
+const baseOptions = XshuffleArray([
+  { label: "Not at All", emoji: "😞", score: 1 },
+  { label: "Rarely", emoji: "😕", score: 2 },
+  { label: "Some of the Time", emoji: "😐", score: 3 },
+  { label: "Often", emoji: "🙂", score: 4 },
+  { label: "All the Time", emoji: "😄", score: 5 }
+]);
+
+// Possible colors (add more if desired)
+const colorPalette = [
+  "bg-red-500",
+  "bg-orange-400",
+  "bg-yellow-300 text-black",
+  "bg-green-400",
+  "bg-blue-500"
+];
+
+// Shuffle colors and assign them to the base options
+const shuffledColors = shuffleArray(colorPalette);
+
+const options = baseOptions.map((opt, index) => ({
+  ...opt,
+  color: shuffledColors[index]
+}));
+
+
+
+
+
+
+
+
       counterCircle.innerText = idx + 1;
       counterCircle.className = `question-counter-circle ${theme.border} ${theme.anim}`;
       const questionP = questionContainer.querySelector('p');
@@ -275,6 +336,8 @@
           updateAvatar(totalScore);
         } else {
 
+
+  localStorage.setItem('assessmentResults', JSON.stringify(responses));
   questionContainer.innerHTML = '';
   moodOptionsEl.innerHTML = '';
   feedback.innerText = '';
