@@ -3,423 +3,2208 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>TMR International | T-Check Portal</title>
-        <link rel="icon" type="image/png" href="./logo.png" />
+        <title>TMR International Hospital | Staff Portal</title>
+        <link rel="icon" type="image/png" href="logo.png" />
 
+        <!-- Bootstrap & Fonts -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
-
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <!-- FullCalendar -->
         <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-
-        <!-- Toastify -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
-        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+
         <style>
             :root {
-                --mint-green: #006c9c; /* TMR Deep Blue replacing Mint Green */
-                --light-gray: #e6f4f9; /* Light blue-tinted background */
-                --dark-gray: #003d5b; /* Deep TMR Header/Text color */
-                --text-color: #004c74; /* Mid-tone TMR Blue for regular text */
+                --tmr-primary: #0f2f5f;
+                --tmr-accent: #1f6aa5;
+                --tmr-light: #f0f8ff;
             }
-
             body {
                 font-family: "Poppins", sans-serif;
+                background-color: var(--bs-body-bg);
+                transition: background-color 0.3s, color 0.3s;
             }
-
-            /* Sidebar Styling */
-            .sidebar {
-                background-color: var(--mint-green);
-                color: white;
-                height: 100%;
-                width: 250px;
-                padding-top: 20px;
-            }
-
-            .sidebar-item:hover {
-                background-color: rgba(46, 190, 142, 0.2);
-                transition: background-color 0.3s ease;
-            }
-
-            .sidebar-icon {
-                width: 20px;
-                height: 20px;
-                margin-right: 12px;
-            }
-
-            /* Card Styling */
-            .card {
-                background-color: white;
+            .card-custom {
                 border-radius: 15px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                padding: 24px;
-                transition: box-shadow 0.3s ease;
+            }
+            .sidebar {
+                min-height: 100vh;
+                background-color: var(--tmr-primary);
+            }
+            .theme-toggle {
+                cursor: pointer;
+            }
+            .dark-theme {
+                --bs-body-bg: #121212;
+                --bs-body-color: #f8f9fa;
+                background-color: #121212 !important;
+                color: #f8f9fa !important;
+            }
+            .tab-content-section {
+                display: none;
+            }
+            .tab-content-section.active {
+                display: block;
+            }
+            .header-highlight {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: var(--tmr-accent);
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            }
+        </style>
+        <style>
+            /* Base styling for the navigation menu */
+            .nav-item {
+                list-style: none;
             }
 
-            .card:hover {
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            }
-
-            /* Progress Circle */
-            .progress-circle {
-                background: conic-gradient(#34d399 0% 50%, #f87171 50% 100%);
-                border-radius: 50%;
-                width: 120px;
-                height: 120px;
+            .nav-link {
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                font-size: 24px;
-                color: #1f2937;
+                text-decoration: none;
+                padding: 10px 15px;
+                border-radius: 8px;
+                font-size: 1rem;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            .nav-link:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+                color: #ffc107;
+            }
+
+            .nav-link i {
+                font-size: 1.2rem;
+            }
+
+            /* Submenu styles */
+            .submenu {
+                list-style: none;
+                padding-left: 0;
+                margin-left: 15px;
+                border-left: 2px solid rgba(255, 255, 255, 0.2);
+                display: none;
+            }
+
+            .submenu .nav-link {
+                font-size: 0.9rem;
+                padding: 8px 15px;
+            }
+
+            .submenu .nav-link:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            /* Active submenu indicator */
+            .nav-item.open > .submenu {
+                display: block;
+            }
+
+            .nav-item.open > .nav-link .chevron {
+                transform: rotate(180deg);
+            }
+
+            /* Chevron animation */
+            .chevron {
+                transition: transform 0.3s ease;
+            }
+
+            /* Additional icons styling */
+            .nav-link i {
+                color: #ffc107;
+            }
+
+            .nav-link:hover i {
+                color: white;
+            }
+
+            .chart-container {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin: 20px 0;
+            }
+
+            .bar {
+                height: 25px;
+                background-color: #4caf50;
+                color: #fff;
+                text-align: right;
+                padding-right: 5px;
+                line-height: 25px;
+            }
+
+            .timeline-container {
+                position: relative;
+                height: 50px;
+                border-top: 2px solid #ccc;
+            }
+
+            .timeline-point {
+                position: absolute;
+                top: -10px;
+                transform: translateX(-50%);
+                background: #2196f3;
+                color: #fff;
+                padding: 5px;
+                border-radius: 50%;
+                font-size: 12px;
+                text-align: center;
             }
         </style>
 
         <style>
-            /* Full CSS (Styling, Glass, Animations) */
-            h1 {
-                text-align: center;
-                margin-top: 20px;
-                font-weight: 600;
-                font-size: 28px;
-            }
-            #calendar {
-                margin: 20px auto;
-                max-width: 1100px;
-                background: rgba(255, 255, 255, 0.6);
-                backdrop-filter: blur(14px);
-                border-radius: 20px;
-                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-                padding: 20px;
-                animation: fadeIn 1s ease;
-            }
-            .fab {
-                position: fixed;
-                bottom: 30px;
-                right: 30px;
-                width: 60px;
-                height: 60px;
-                background: #34d399;
-                border-radius: 50%;
-                color: white;
-                font-size: 32px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-                z-index: 1000;
-                transition: background 0.3s ease;
-            }
-            .fab:hover {
-                background: #059669;
-            }
-            .modal {
-                display: none;
-                position: fixed;
-                z-index: 2000;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                overflow-y: auto;
-                animation: fadeIn 0.5s ease;
-            }
-            .modal-content {
-                background: #fff;
-                margin: 50px auto;
-                padding: 20px;
-                width: 400px;
-                border-radius: 16px;
-                animation: slideDown 0.5s ease;
-            }
-            .modal-content input,
-            .modal-content textarea,
-            .modal-content select {
-                width: 100%;
-                margin-bottom: 12px;
-                padding: 10px;
-                border-radius: 8px;
-                border: 1px solid #ccc;
-                font-size: 14px;
-            }
-            button {
-                background: #34d399;
-                color: white;
-                padding: 10px 20px;
+            .card-custom {
+                background-color: #6a1b9a;
+                border-radius: 15px;
                 border: none;
-                border-radius: 10px;
-                cursor: pointer;
+                box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .timer-display {
+                font-size: 2rem;
                 font-weight: bold;
-                margin-top: 10px;
+                display: inline-block;
                 width: 100%;
+                text-align: center;
+                background-color: #343a40;
+                color: #fff;
+                border-radius: 8px;
+                padding: 15px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
             }
-            button:hover {
-                background: #059669;
+
+            .shadow-sm {
+                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
             }
-            #deleteTask {
-                background: #f87171;
+
+            .text-primary {
+                color: #007bff !important;
             }
-            #deleteTask:hover {
-                background: #dc2626;
+
+            .fs-5 {
+                font-size: 1.25rem;
             }
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
-                }
+
+            .btn-lg {
+                font-size: 1.125rem;
+                padding: 10px 20px;
             }
-            @keyframes slideDown {
-                from {
-                    transform: translateY(-50px);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateY(0);
-                    opacity: 1;
-                }
+
+            #reflectionArea {
+                background-color: #f1f5f8;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
         </style>
+        <style>
+            .card-custom {
+                background-color: #1e3a8a; /* Navy blue */
+                border-radius: 15px;
+                border: none;
+                box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
+                color: #ffffff; /* White text for readability */
+            }
+
+            .timer-display {
+                font-size: 2rem;
+                font-weight: bold;
+                display: inline-block;
+                width: 100%;
+                text-align: center;
+                background-color: #2563eb; /* Medium blue */
+                color: #ffffff; /* White text */
+                border-radius: 8px;
+                padding: 15px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+            }
+
+            .shadow-sm {
+                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .text-primary {
+                color: #38bdf8 !important; /* Light blue */
+            }
+
+            .fs-5 {
+                font-size: 1.25rem;
+            }
+
+            .btn-lg {
+                font-size: 1.125rem;
+                padding: 10px 20px;
+                background-color: #2563eb; /* Consistent blue tone for buttons */
+                color: #ffffff; /* White text for buttons */
+                border: none;
+                border-radius: 5px;
+            }
+
+            #reflectionArea {
+                background-color: #f3f4f6; /* Light gray for contrast */
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                color: #1e293b; /* Dark gray for text */
+            }
+        </style>
+
+        <style>
+            .card-custom {
+                background-color: #4b5563; /* Slate gray */
+                border-radius: 15px;
+                border: none;
+                box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
+                color: #f9fafb; /* Light gray text for readability */
+            }
+
+            .timer-display {
+                font-size: 2rem;
+                font-weight: bold;
+                display: inline-block;
+                width: 100%;
+                text-align: center;
+                background-color: #f59e0b; /* Amber */
+                color: #ffffff; /* White text */
+                border-radius: 8px;
+                padding: 15px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+            }
+
+            .shadow-sm {
+                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .text-primary {
+                color: #facc15 !important; /* Yellow for accents */
+            }
+
+            .fs-5 {
+                font-size: 1.25rem;
+            }
+
+            .btn-lg {
+                font-size: 1.125rem;
+                padding: 10px 20px;
+                background-color: #f59e0b; /* Amber for buttons */
+                color: #ffffff; /* White text for buttons */
+                border: none;
+                border-radius: 5px;
+            }
+
+            #reflectionArea {
+                background-color: #e5e7eb; /* Light neutral gray */
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                color: #111827; /* Almost black for text */
+            }
+
+
+
+/* Add this CSS to handle dynamic text color */
+.dynamic-text {
+    transition: color 0.3s ease;
+}
+
+/* For light backgrounds */
+.dynamic-text.light-bg {
+    color: #111827; /* Dark text */
+}
+
+/* For dark backgrounds */
+.dynamic-text.dark-bg {
+    color: #f9fafb; /* Light text */
+}
+
+
+
+
+.card.card-custom.p-3 {
+    color: #2f4f2f; /* Olive green text color for visibility */
+}
+
+
+
+.staff-title {
+    font-family: 'Georgia', 'Times New Roman', serif; /* Fallback serif fonts */
+    font-weight: 700; /* Bold to match the logo style */
+    letter-spacing: 0.5px; /* Adjust letter spacing for similar aesthetics */
+    color: #ffffff; /* White color to match the logo text */
+    text-transform: uppercase; /* Ensures consistency with the logo's uppercase text */
+}
+
+#calendar {
+    width: 100%; /* Makes the calendar take the full width of its container */
+    height: auto; /* Automatically adjusts the height */
+    min-height: 500px; /* Ensures the calendar is always at least 500px tall */
+    max-width: 1200px; /* Optional: Restricts maximum width if needed */
+    margin: 0 auto; /* Centers the calendar */
+}
+
+
+#checkin {
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+
+        </style>
+<script>
+/**
+ * Determines if a color is light or dark.
+ * @param {string} color - The background color in hex, rgb, or rgba.
+ * @returns {boolean} - True if light, false if dark.
+ */
+function isColorLight(color) {
+    let r, g, b;
+
+    // If color is in hex format
+    if (color.startsWith("#")) {
+        const bigint = parseInt(color.slice(1), 16);
+        r = (bigint >> 16) & 255;
+        g = (bigint >> 8) & 255;
+        b = bigint & 255;
+    } else if (color.startsWith("rgb")) {
+        // If color is in rgb/rgba format
+        const rgbValues = color.match(/\d+/g);
+        [r, g, b] = rgbValues.map(Number);
+    } else {
+        console.warn("Unsupported color format:", color);
+        return false; // Default to dark
+    }
+
+    // Calculate brightness using the formula
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness > 128; // Threshold for light/dark
+}
+
+/**
+ * Adjusts text color based on the background color.
+ */
+function adjustTextColors() {
+    const elements = document.querySelectorAll(".dynamic-text");
+    elements.forEach((element) => {
+        const bgColor = window.getComputedStyle(element.parentElement).backgroundColor;
+        if (isColorLight(bgColor)) {
+            element.classList.add("light-bg");
+            element.classList.remove("dark-bg");
+        } else {
+            element.classList.add("dark-bg");
+            element.classList.remove("light-bg");
+        }
+    });
+}
+
+// Adjust text colors on DOM load and whenever the theme changes
+document.addEventListener("DOMContentLoaded", adjustTextColors);
+
+// Example: Re-run this function after a theme switch or content update
+// adjustTextColors();
+
+</script>
+
     </head>
-    <body class="bg-light-gray font-sans">
-        <div class="flex">
-            <!-- Sidebar -->
-            <aside class="sidebar p-6">
-                <div class="mb-8">
-                    <h1 class="text-2xl font-bold text-white">TMR Staff</h1>
-                </div>
-                <nav>
-                    <ul>
-                        <li class="sidebar-item flex items-center py-3">
-                            <span class="sidebar-icon">📝</span>
-                            <a href="assessmentintroa.html" class="text-lg text-white">Start Your Check-In</a>
+    <body class="light-theme">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                <nav class="col-md-2 sidebar text-white p-3">
+                    <div class="text-center mb-4 d-flex justify-content-center align-items-center">
+    <img src="logo.png" alt="TMR Logo" class="img-fluid" style="max-width: 100px; margin-right: 10px;" />
+    <h2 class="fw-bold mt-2 staff-title">STAFF</h2>
+                    </div>
+                    <ul class="nav flex-column mt-4">
+                        <li class="nav-item mb-2">
+                            <a class="nav-link text-white" onclick="switchTab('dashboard')"><i class="fas fa-home me-2"></i>Dashboard</a>
                         </li>
-                        <li class="sidebar-item flex items-center py-3">
-                            <span class="sidebar-icon">📊</span>
-                            <a href="#" class="text-lg text-white">System Overview</a>
-                        </li>
-                        <li class="sidebar-item flex items-center py-3 opacity-20 cursor-not-allowed">
-                            <span class="sidebar-icon">⚠️</span>
-                            <a href="#" class="text-lg text-white">Risk Monitor</a>
-                        </li>
-                        <li class="sidebar-item flex items-center py-3 opacity-20 cursor-not-allowed">
-                            <span class="sidebar-icon">🔗</span>
-                            <a href="#" class="text-lg text-white">System Integrations</a>
-                        </li>
-                        <li class="sidebar-item flex items-center py-3 opacity-20 cursor-not-allowed">
-                            <span class="sidebar-icon">📝</span>
-                            <span class="text-lg text-white">Health Reports</span>
-                            <ul class="pl-6 mt-2">
-                                <li><a href="#" class="text-white">Environment Pulse</a></li>
-                                <li><a href="#" class="text-white">Cognitive Load</a></li>
-                                <li><a href="#" class="text-white">Life-Work Balance</a></li>
-                                <li><a href="#" class="text-white">Resilience Gauge</a></li>
-                                <li><a href="#" class="text-white">Stress Level</a></li>
+<!-- Navigation Item -->
+<li class="nav-item mb-2">
+    <a 
+        class="nav-link text-white" 
+        href="#" 
+        onclick="loadCheckinSection('https://toliwekka.github.io/TMR-CHECKIN/assessmentintroa.html')">
+        <i class="fas fa-pencil-alt me-2"></i>Start Check-In
+    </a>
+</li>                        <li class="nav-item">
+                            <a class="nav-link text-white d-flex align-items-center" onclick="toggleSubmenu(this)"><i class="fas fa-chart-bar me-2"></i>Performance Analytics<i class="fas fa-chevron-down ms-auto chevron"></i></a>
+                            <ul class="submenu">
+                                <li class="nav-item mb-2">
+                                    <a class="nav-link text-white" onclick="switchTab('charts')"><i class="fas fa-chart-line me-2"></i>Timeline Charts</a>
+                                </li>
+                                <li class="nav-item mb-2">
+                                    <a class="nav-link text-white" onclick="switchTab('goals')"><i class="fas fa-bullseye me-2"></i>SMART Goals</a>
+                                </li>
+                                <li class="nav-item mb-2">
+                                    <a class="nav-link text-white" onclick="switchTab('reports')"><i class="fas fa-magnifying-glass-chart me-2"></i>Reports</a>
+                                </li>
+                                <li class="nav-item mb-2">
+                                    <a class="nav-link text-white" onclick="switchTab('kpis')"><i class="fas fa-tachometer-alt me-2"></i>Key Performance Indicators</a>
+                                </li>
+                                <li class="nav-item mb-2">
+                                    <a class="nav-link text-white" onclick="switchTab('progress-tracking')"><i class="fas fa-stream me-2"></i>Progress Tracking</a>
+                                </li>
                             </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white d-flex align-items-center" onclick="toggleSubmenu(this)"><i class="fas fa-brain me-2"></i>Mental Wellness Planner<i class="fas fa-chevron-down ms-auto chevron"></i></a>
+                            <ul class="submenu">
+                                <li class="nav-item">
+                                    <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('scheduler')"><i class="fas fa-calendar-check me-2"></i>Daily Scheduler</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('kanban')"><i class="fas fa-columns me-2"></i>Task Kanban Board</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('timelines')"><i class="fas fa-stream me-2"></i>Progress Timelines</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('journaling')"><i class="fas fa-book me-2"></i>Mood Journaling</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('wellness-goals')"><i class="fas fa-bullseye me-2"></i>Wellness Goals Tracker</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('reflection-time')"><i class="fas fa-hourglass-half me-2"></i>Reflection & Downtime</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white d-flex align-items-center" onclick="toggleSubmenu(this)"><i class="fas fa-user-cog me-2"></i>Profile<i class="fas fa-chevron-down ms-auto chevron"></i></a>
+                            <ul class="submenu">
+                                <li class="nav-item mb-2">
+                                    <a class="nav-link text-white" onclick="switchTab('family')"><i class="fas fa-users me-2"></i>Family Circle</a>
+                                </li>
+                                <li class="nav-item mb-2">
+                                    <a class="nav-link text-white" onclick="switchTab('settings')"><i class="fas fa-cog me-2"></i>Settings</a>
+                                </li>
+                                <li class="nav-item mb-2">
+                                    <a class="nav-link text-white" onclick="switchTab('notifications')"><i class="fas fa-bell me-2"></i>Notifications</a>
+                                </li>
+                                <li class="nav-item mb-2">
+                                    <a class="nav-link text-white" onclick="switchTab('preferences')"><i class="fas fa-sliders-h me-2"></i>Preferences</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a class="nav-link text-white" href="#" onclick="toggleTheme()"><i class="fas fa-adjust me-2"></i>Toggle Theme</a>
+                        </li>
+                        <li class="nav-item mt-4">
+                            <a class="nav-link text-white" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
                         </li>
                     </ul>
                 </nav>
-                <div class="mt-6">
-                    <h2 class="text-sm font-semibold text-white">Support Hub</h2>
-                    <ul class="mt-4">
-                        <li class="sidebar-item flex items-center py-3 opacity-20 cursor-not-allowed">
-                            <span class="sidebar-icon">📱</span>
-                            <a href="#" class="text-white">App Support</a>
-                        </li>
-                        <li class="sidebar-item flex items-center py-3">
-                            <span class="sidebar-icon">📈</span>
-                            <a href="#" class="text-white">Data Insights</a>
-                        </li>
-                        <li class="sidebar-item flex items-center py-3">
-                            <span class="sidebar-icon">📅</span>
-                            <a href="#" class="text-white">Well-being Scheduler</a>
-                        </li>
-                        <li class="sidebar-item flex items-center py-3 opacity-20 cursor-not-allowed">
-                            <span class="sidebar-icon">💼</span>
-                            <a href="#" class="text-white">Service Offerings</a>
-                        </li>
-                    </ul>
-                </div>
-            </aside>
 
-            <!-- Main Content -->
-            <main class="flex-1 p-8">
-                <header class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl font-bold text-#8f4141">TMR Staff Dashboard</h2>
-                    <div class="flex space-x-4"></div>
-                </header>
-
-                <!-- Health Score Section -->
-                <section class="card mb-6">
-                    <h3 class="text-lg font-semibold text-#8f4141"><span id="userName"></span>, your journey so far has led to these results. Let’s see what they reveal!</h3>
-
-                    <div class="mt-4 flex justify-center items-center">
-                        <section class="card mb-6">
-                            <h2>🧠 Mental Well-Being Snapshot</h2>
-                            <p><strong>Raw Score:</strong> <span id="partA-raw">--</span> / 70</p>
-                            <p><strong>Percentage:</strong> <span id="partA-percent">--</span></p>
-                            <p><strong>Status:</strong> <span id="partA-status">--</span></p>
-                            <em id="partA-comment">Awaiting analysis...</em>
-                        </section>
-                        <section class="card mb-6">
-                            <h2>🎯 Behavioral Evaluation</h2>
-                            <p><strong>Raw Score:</strong> <span id="partB-raw">--</span> / 240</p>
-                            <p><strong>Percentage:</strong> <span id="partB-percent">--</span></p>
-                            <p><strong>Status:</strong> <span id="partB-status">--</span></p>
-                            <em id="partB-comment">Awaiting data...</em>
-                        </section>
-                    </div>
-                    <div class="mt-4 flex justify-center items-center">
-                        <div class="chart-area">
-                            <div id="gaugeA"></div>
+                <!-- Main Content -->
+                <main class="col-md-10 ms-sm-auto p-4">
+                    <!-- Main header -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h2 class="header-highlight">Welcome, Dr. Grace Namakula | Pediatrics Department</h2>
+                            <p class="text-muted">Your personalized dashboard for tracking well-being, goals, and progress.</p>
                         </div>
-                        <div class="chart-area">
-                            <div id="gaugeB"></div>
+                        <div>
+                            <button class="btn btn-outline-primary"><i class="fas fa-sign-out-alt"></i> Logout</button>
                         </div>
                     </div>
-                </section>
 
-                <!-- Appointment Incoming -->
-                <section class="card mb-6">
-                    <h3 class="text-lg font-semibold text-#8f4141">Appointment Incoming, It’s On the Calendar</h3>
-                    <ul class="mt-4 text-sm text-gray-500">
-                        <div id="calendar" style="width: 100vw; height: 50vh; margin: 40px auto; overflow: hidden;"></div>
-                        <!-- Modal -->
-
-                        <div id="taskModal" class="modal">
-                            <div class="modal-content">
-                                <h3>Add / Edit Task</h3>
-                                <input type="text" id="taskTitle" placeholder="Task Title" />
-                                <textarea id="taskDescription" placeholder="Description"></textarea>
-                                <select id="taskIcon">
-                                    <option value="">Choose Icon</option>
-                                    <option>🧘 Meditation</option>
-                                    <option>🎨 Art Therapy</option>
-                                    <option>📝 Journaling</option>
-                                    <option>🎧 Music Relaxation</option>
-                                    <option>🚶 Mindful Walk</option>
-                                    <option>📚 Reading Therapy</option>
-                                    <option>💬 Talk Therapy</option>
-                                    <option>🏥 T|Check-Point</option>
-                                    <option>📆 Book Session</option>
-                                </select>
-                                <select id="taskMood">
-                                    <option value="">Mood</option>
-                                    <option>Happy</option>
-                                    <option>Calm</option>
-                                    <option>Motivated</option>
-                                    <option>Stressed</option>
-                                    <option>Sad</option>
-                                </select>
-                                <select id="taskPriority">
-                                    <option value="">Priority</option>
-                                    <option>High</option>
-                                    <option>Medium</option>
-                                    <option>Low</option>
-                                </select>
-                                <input type="date" id="taskDate" />
-                                <input type="time" id="taskStartTime" />
-                                <input type="time" id="taskEndTime" />
-                                <button id="saveTask">Save Task</button>
-                                <button id="deleteTask">Delete Task</button>
-                                <button onclick="closeModal()">Cancel</button>
+                    <!-- Tab Content Sections -->
+                    <div id="dashboard" class="tab-content-section active">
+                        <!-- Mental Well-being and Behavioral Score Cards -->
+                        <h3 class="mb-4"><i class="fas fa-heartbeat text-primary me-2"></i> Affection and Functional Mental Well-Being</h3>
+                        <div class="row my-4">
+                            <div class="col-md-6">
+                                <div class="card card-custom p-3">
+                                    <h5><i class="fas fa-brain"></i> Affective Mental Well-Being Scale</h5>
+                                    <canvas id="mentalChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-custom p-3">
+                                    <h5><i class="fas fa-bullseye"></i> Functional Mental Well-Being Scale</h5>
+                                    <canvas id="behaviorChart"></canvas>
+                                </div>
                             </div>
                         </div>
-                    </ul>
-                    <button class="mt-4 bg-mint-green text-white px-4 py-2 rounded shadow">Download Results</button>
-                </section>
-            </main>
+
+                        <!-- Mood Timeline Carousel -->
+                        <h3 class="mb-4"><i class="fas fa-calendar-alt text-primary me-2"></i> Mood Timeline</h3>
+                        <div class="card card-custom p-4 mb-4">
+                            <div id="moodCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active text-center">
+                                        <i class="fas fa-smile fa-2x text-success"></i>
+                                        <p>Monday - Happy</p>
+                                    </div>
+                                    <div class="carousel-item text-center">
+                                        <i class="fas fa-meh fa-2x text-warning"></i>
+                                        <p>Tuesday - Neutral</p>
+                                    </div>
+                                    <div class="carousel-item text-center">
+                                        <i class="fas fa-frown fa-2x text-danger"></i>
+                                        <p>Wednesday - Sad</p>
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#moodCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#moodCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Notifications Section -->
+                        <h3 class="mb-4"><i class="fas fa-bell text-primary me-2"></i> Notifications</h3>
+                        <div class="card card-custom p-4 mb-4">
+                            <ul class="list-group" id="notificationList"></ul>
+                        </div>
+
+                        <!-- Upcoming Tasks and Events Section -->
+                        <h3 class="mb-4"><i class="fas fa-calendar-check text-primary me-2"></i> Upcoming Tasks and Events</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card card-custom p-3">
+                                    <h5><i class="fas fa-calendar-day"></i> Upcoming Tasks</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><i class="fas fa-check-circle me-2 text-success"></i> Complete daily mental wellness check-in</li>
+                                        <li class="list-group-item"><i class="fas fa-check-circle me-2 text-success"></i> Review and set new SMART goals</li>
+                                        <li class="list-group-item"><i class="fas fa-check-circle me-2 text-success"></i> Update mood tracking for the week</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-custom p-3">
+                                    <h5><i class="fas fa-calendar-alt"></i> Upcoming Events</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><i class="fas fa-calendar-week me-2 text-primary"></i> Mental Wellness Seminar | May 15, 2025</li>
+                                        <li class="list-group-item"><i class="fas fa-calendar-week me-2 text-primary"></i> Pediatric Conference | June 2, 2025</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <footer class="mt-5">
+                            <p class="text-muted text-center">&copy; 2025 TMR Well-Being Dashboard</p>
+                        </footer>
+                    </div>
+                    <!-- T|Checkin Section -->
+<!-- T|Checkin Section -->
+<div id="checkin" class="tab-content-section" style="display: none;">
+    <h3 class="mb-4">
+        <i class="fas fa-chart-line text-primary me-2"></i> T|Check
+    </h3>
+    <div id="tcheck-content">
+        <!-- Content from the URL will load here -->
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    function loadCheckinSection(url) {
+
+        const sections = document.querySelectorAll('.tab-content-section');
+        sections.forEach(section => section.style.display = 'none');
+
+        const checkinSection = document.getElementById('checkin');
+        checkinSection.style.display = 'block';
+
+        const content = document.getElementById('tcheck-content');
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                content.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error loading T|Check content:', error);
+                content.innerHTML = "<p class='text-danger'>Error loading content. Please try again later.</p>";
+            });
+
+        checkinSection.scrollIntoView({ behavior: 'smooth' });
+       
+    }
+</script>
+
+
+                    <!-- Timeline Charts Section -->
+                    <div id="charts" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-chart-line text-primary me-2"></i> Timeline Charts</h3>
+                        <div class="card card-custom p-3">
+                            <canvas id="timelineChart"></canvas>
+                        </div>
+                        <p class="mt-3 text-muted">This chart shows the overall progress trends over the timeline. Use this to analyze how metrics have improved or declined over time.</p>
+                    </div>
+
+                    <!-- SMART Goals Section -->
+                    <!-- SMART Goals Section -->
+                    <div id="goals" class="tab-content-section py-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="text-primary mb-0"><i class="fas fa-brain me-2"></i> Mental Health SMART Goals</h3>
+                            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addGoalModal"><i class="fas fa-plus me-1"></i> Add Goal</button>
+                        </div>
+
+                        <div class="row g-4" id="goalCardsContainer">
+                            <!-- Goals will be dynamically inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- SMART Goal Modal Form -->
+                    <div class="modal fade" id="addGoalModal" tabindex="-1" aria-labelledby="addGoalModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title" id="addGoalModalLabel"><i class="fas fa-plus me-2"></i>Add/Edit SMART Goal</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="smartGoalForm">
+                                        <input type="hidden" id="goalId" />
+                                        <!-- Hidden field for goal ID -->
+                                        <div class="mb-3">
+                                            <label for="goalCategory" class="form-label">Category</label>
+                                            <select class="form-select" id="goalCategory" required>
+                                    <option value="Emotional Wellness">Emotional Wellness</option>
+                                    <option value="Mindfulness & Sleep">Mindfulness & Sleep</option>
+                                    <option value="Spiritual Health (e.g., prayer, fellowship)">Spiritual Health (e.g., prayer, fellowship)</option>
+                                    <option value="Family & Community">Family & Community</option>
+                                    <option value="Economic Stability (Savings, Side Hustle)">Economic Stability (Savings, Side Hustle)</option>
+                                    <option value="Physical Health & Nutrition">Physical Health & Nutrition</option>
+                                    <option value="Academic or Skill Goals">Academic or Skill Goals</option>
+                                    <option value="Therapy & Self-Reflection">Therapy & Self-Reflection</option>
+                                    <option value="Substance Use & Recovery">Substance Use & Recovery</option>
+                                    <option value="Gender-Based Wellness">Gender-Based Wellness</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="goalDescription" class="form-label">Goal Description</label>
+                                            <textarea class="form-control" id="goalDescription" rows="3" required></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="goalStatus" class="form-label">Status</label>
+<select class="form-select" id="goalStatus" required>
+  <option value="Not Started">Not Started</option>
+  <option value="In Progress">In Progress</option>
+  <option value="Scheduled">Scheduled</option>
+  <option value="Achieved">Achieved</option>
+  <option value="Needs Review">Needs Review</option>
+  <option value="Missed Deadline">Missed Deadline</option>
+  <option value="Deferred">Deferred</option>
+  <option value="On Hold">On Hold</option>
+  <option value="Cancelled">Cancelled</option>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="goalStartDate" class="form-label">Start Date</label>
+                                            <input type="date" class="form-control" id="goalStartDate" required />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="goalDueDate" class="form-label">Due Date</label>
+                                            <input type="date" class="form-control" id="goalDueDate" required />
+                                        </div>
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary">Save Goal</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Reports Section -->
+                    <div id="reports" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-magnifying-glass-chart text-primary me-2"></i> Reports</h3>
+                        <div class="card card-custom p-3">
+                            <p>View detailed reports by selecting a period below:</p>
+                            <select class="form-select mb-3">
+                                <option value="monthly">Monthly Report</option>
+                                <option value="quarterly">Quarterly Report</option>
+                                <option value="annual">Annual Report</option>
+                            </select>
+                            <button class="btn btn-primary mb-3"><i class="fas fa-file-download me-2"></i> Download Report</button>
+                            <div id="report-summary">
+                                <p><strong>Highlights:</strong></p>
+                                <ul>
+                                    <li>Total Revenue: $120,000</li>
+                                    <li>New Clients: 25</li>
+                                    <li>Project Completion Rate: 90%</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Performance Indicators Section -->
+                    <div id="kpis" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-tachometer-alt text-primary me-2"></i> Key Performance Indicators</h3>
+                        <div class="card card-custom p-3">
+                            <canvas id="kpiMetricsChart"></canvas>
+                        </div>
+                        <p class="mt-3 text-muted">Track your key performance indicators to ensure you’re on track with your organizational goals.</p>
+                    </div>
+
+                    <!-- Progress Tracking Section -->
+                    <div id="progress-tracking" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-stream text-primary me-2"></i> Progress Tracking</h3>
+                        <div class="card card-custom p-3">
+                            <canvas id="progressTrackingChart"></canvas>
+                        </div>
+                        <p class="mt-3 text-muted">This section provides an overview of task progress, milestones, and overall project health.</p>
+                    </div>
+
+                    <!-- Daily Scheduler Section -->
+                    <div id="scheduler" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-calendar-check text-primary me-2"></i> Daily Scheduler</h3>
+                        <div class="card card-custom p-3">
+                            <h5>Plan Your Day</h5>
+                            <p>Schedule tasks and prioritize your day effectively.</p>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="taskName" class="form-label">Task Name</label>
+                                    <input type="text" class="form-control" id="taskName" placeholder="Enter task name" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="taskTime" class="form-label">Time</label>
+                                    <input type="time" class="form-control" id="taskTime" />
+                                </div>
+                                <button type="button" class="btn btn-primary">Add to Schedule</button>
+                            </form>
+                            <div id="calendar"></div>
+                            <!-- FullCalendar container -->
+                        </div>
+                    </div>
+
+                    <!-- Task Kanban Board Section -->
+                    <div id="kanban" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-columns text-primary me-2"></i> Task Kanban Board</h3>
+                        <div class="kanban-board">
+                            <div class="kanban-column">
+                                <h5>To Do</h5>
+                                <ul class="list-group">
+                                    <li class="list-group-item">Example Task 1</li>
+                                </ul>
+                            </div>
+                            <div class="kanban-column">
+                                <h5>In Progress</h5>
+                                <ul class="list-group">
+                                    <li class="list-group-item">Example Task 2</li>
+                                </ul>
+                            </div>
+                            <div class="kanban-column">
+                                <h5>Done</h5>
+                                <ul class="list-group">
+                                    <li class="list-group-item">Example Task 3</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Timelines Section -->
+                    <div id="timelines" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-stream text-primary me-2"></i> Progress Timelines</h3>
+                        <div class="card card-custom p-3">
+                            <canvas id="progressTimelineChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Mood Journaling Section -->
+                    <div id="journaling" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-book text-primary me-2"></i> Mood Journaling</h3>
+                        <div class="card card-custom p-3">
+                            <h5>Write About Your Day</h5>
+                            <textarea class="form-control" rows="5" placeholder="Share your thoughts..."></textarea>
+                            <button class="btn btn-primary mt-3">Save Entry</button>
+                            <ul class="list-group mt-4">
+                                <li class="list-group-item">Previous entries will appear here.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Wellness Goals Tracker Section -->
+                    <div id="wellness-goals" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-bullseye text-primary me-2"></i> Wellness Goals Tracker</h3>
+                        <div class="card card-custom p-3">
+                            <h5>Set and Track Your Goals</h5>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="goalName" class="form-label">Goal Name</label>
+                                    <input type="text" class="form-control" id="goalName" placeholder="Enter goal name" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="goalDeadline" class="form-label">Deadline</label>
+                                    <input type="date" class="form-control" id="goalDeadline" />
+                                </div>
+                                <button type="button" class="btn btn-primary">Add Goal</button>
+                            </form>
+                            <ul class="list-group mt-4" id="goalList">
+                                <li class="list-group-item">No goals set</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Reflection & Downtime Section -->
+                    <div id="reflection-time" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-hourglass-half text-primary me-2"></i> Reflection & Downtime</h3>
+                        <div class="card card-custom p-5 shadow-lg border-0 rounded-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+                            <h5 class="text-white mb-3">Pause & Reflect</h5>
+                            <p class="text-light mb-4">This is your dedicated time to reflect on the day, unwind, and recharge. Embrace the stillness to restore your energy.</p>
+
+                            <!-- Start Timer Button with Animation -->
+                            <button id="startTimer" class="btn btn-lg btn-outline-light d-flex align-items-center gap-2 shadow-sm" onclick="startTimer()"><i class="fas fa-play-circle"></i> Start Reflection Timer</button>
+
+                            <!-- Timer Display -->
+                            <div id="timerSection" class="mt-3 text-center">
+                                <p class="fs-5 mb-2">Time spent today:</p>
+                                <div class="timer-display bg-dark text-white p-3 rounded-2 shadow-lg">
+                                    <span id="timer" class="fs-3">00:00</span>
+                                </div>
+                            </div>
+
+                            <!-- Reflection Area with a Text Area and Save Option -->
+                            <div id="reflectionArea" class="mt-5">
+                                <h6 class="text-white">Write Your Thoughts</h6>
+                                <textarea id="reflectionInput" class="form-control mb-3" rows="5" placeholder="How was your day? Reflect on your thoughts, feelings, and achievements today..."></textarea>
+                                <button class="btn btn-success w-100" onclick="saveReflection()">Save Reflection</button>
+                            </div>
+
+                            <!-- Previous Entries -->
+                            <div id="previousEntries" class="mt-4">
+                                <h6 class="text-white">Previous Entries</h6>
+                                <ul class="list-group list-group-flush bg-transparent" id="entryList">
+                                    <li class="list-group-item text-muted">No previous entries available.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Family Circle Section -->
+<!-- Family Circle Section -->
+<!-- Family Circle Section -->
+<div id="family" class="tab-content-section">
+    <h3 class="mb-4"><i class="fas fa-users text-primary me-2"></i> Family Circle</h3>
+    <div class="card card-custom p-3">
+        <h2>Your Connected Family</h5>
+        <p>Manage your family connections, view detailed bios, and track assessments with visual insights.</p>
+
+        <!-- Family Members Table -->
+        <table class="table table-hover table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Relationship</th>
+                    <th>Age</th>
+                    <th>Location</th>
+                    <th>Assessment Score</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="familyTableBody">
+                <!-- Rows dynamically populated by JavaScript -->
+            </tbody>
+        </table>
+
+        <!-- Add Member Button -->
+        <div class="text-end mt-3">
+            <button class="btn btn-primary btn-sm" onclick="openAddMemberModal()"><i class="fas fa-user-plus me-2"></i>Add New Member</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+
+<!-- Add/Edit Member Modal -->
+<div class="modal fade" id="editMemberModal" tabindex="-1" aria-labelledby="editMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="editMemberModalLabel">Edit Family Member</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editMemberForm">
+                    <input type="hidden" id="editMemberId" />
+                    <div class="mb-3">
+                        <label for="editMemberName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="editMemberName" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editMemberRelationship" class="form-label">Relationship</label>
+                        <select class="form-select" id="editMemberRelationship" required>
+<option value="Mother">Mother / Maama</option>
+<option value="Father">Father / Taata</option>
+<option value="Brother">Brother</option>
+<option value="Sister">Sister</option>
+<option value="Cousin">Cousin</option>
+<option value="Uncle">Uncle</option>
+<option value="Aunt">Aunt</option>
+<option value="Grandmother">Grandmother</option>
+<option value="Grandfather">Grandfather</option>
+<option value="Step-Mother">Step-Mother</option>
+<option value="Step-Father">Step-Father</option>
+<option value="Niece">Niece</option>
+<option value="Nephew">Nephew</option>
+<option value="In-law">In-law</option>
+<option value="Friend">Friend</option>
+<option value="Mentor">Mentor</option>
+<option value="Neighbor">Neighbor</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editMemberAge" class="form-label">Age</label>
+                        <input type="number" class="form-control" id="editMemberAge" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editMemberLocation" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="editMemberLocation" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editMemberScore" class="form-label">Assessment Score (%)</label>
+                        <input type="number" class="form-control" id="editMemberScore" max="100" min="0" required />
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Booking Modal -->
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="bookingModalLabel">Book Task/Appointment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="bookingForm">
+                    <input type="hidden" id="bookingMemberId" />
+                    <div class="mb-3">
+                        <label for="taskName" class="form-label">Task/Appointment Name</label>
+                        <input type="text" class="form-control" id="taskName" placeholder="Enter task name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="taskDate" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskTime" class="form-label">Time</label>
+                        <input type="time" class="form-control" id="taskTime" required />
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Book Task</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="addMemberModalLabel">Add Member</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="addMemberModalBody">
+                <!-- This is where staffregister.html content will be loaded -->
+                <div class="text-center">
+                    <span class="spinner-border text-primary" role="status"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Performance Modal -->
+<div class="modal fade" id="performanceModal" tabindex="-1" aria-labelledby="performanceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="performanceModalLabel">Performance & Schedule</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="performanceContent">
+                    <h5>Performance Insights</h5>
+                    <p>Details for <strong id="performanceMemberName"></strong>:</p>
+                    <!-- Include graphs, schedules, etc. dynamically -->
+                    <p><i>Coming soon: integrated performance graphs and schedules!</i></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const familyData = [
+        { id: "1", name: "Mariam Nakato", relationship: "Mother", age: 58, location: "Kampala", score: 92 },
+        { id: "2", name: "Joshua Muyanja", relationship: "Brother", age: 32, location: "Entebbe", score: 85 },
+    ];
+
+    function renderFamilyTable() {
+        const tableBody = document.getElementById("familyTableBody");
+        tableBody.innerHTML = "";
+        familyData.forEach(member => {
+            tableBody.innerHTML += `
+                <tr>
+                    <td>${member.name}</td>
+                    <td>${member.relationship}</td>
+                    <td>${member.age}</td>
+                    <td>${member.location}</td>
+                    <td>${member.score}%</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger me-2" onclick="removeMember('${member.id}')">Delete</button>
+                        <button class="btn btn-sm btn-secondary me-2" onclick="editMember('${member.id}')">Edit</button>
+                        <button class="btn btn-sm btn-primary me-2" onclick="openBookingModal('${member.id}')"><i class="fas fa-calendar-plus"></i></button>
+                        <button class="btn btn-sm btn-info" onclick="viewPerformance('${member.id}')"><i class="fas fa-chart-line"></i></button>
+                    </td>
+                </tr>`;
+        });
+    }
+
+    function editMember(id) {
+        const member = familyData.find(m => m.id === id);
+        if (!member) return;
+        document.getElementById("editMemberId").value = member.id;
+        document.getElementById("editMemberName").value = member.name;
+        document.getElementById("editMemberRelationship").value = member.relationship;
+        document.getElementById("editMemberAge").value = member.age;
+        document.getElementById("editMemberLocation").value = member.location;
+        document.getElementById("editMemberScore").value = member.score;
+        new bootstrap.Modal(document.getElementById("editMemberModal")).show();
+    }
+
+    function removeMember(id) {
+        const index = familyData.findIndex(m => m.id === id);
+        if (index > -1) {
+            familyData.splice(index, 1);
+            renderFamilyTable();
+        }
+    }
+
+    function openBookingModal(id) {
+        document.getElementById("bookingMemberId").value = id;
+        new bootstrap.Modal(document.getElementById("bookingModal")).show();
+    }
+
+    function viewPerformance(id) {
+        const member = familyData.find(m => m.id === id);
+        if (!member) return;
+        document.getElementById("performanceMemberName").innerText = member.name;
+        new bootstrap.Modal(document.getElementById("performanceModal")).show();
+    }
+
+    document.addEventListener("DOMContentLoaded", renderFamilyTable);
+</script>
+
+                    <div class="modal fade" id="familyMemberModal" tabindex="-1" aria-labelledby="familyMemberModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="familyMemberModalLabel">Family Member Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h3 id="modalMemberName">John Doe</h3>
+
+                                    <!-- Bar Chart -->
+                                    <div id="barChartContainer"></div>
+
+                                    <hr />
+
+                                    <!-- Timeline Chart -->
+                                    <div id="timelineChartContainer"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Section -->
+                    <div id="settings" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-cog text-primary me-2"></i> Settings</h3>
+                        <div class="card card-custom p-3">
+                            <h5>Account Settings</h5>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="username" value="JohnDoe123" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" value="john.doe@example.com" />
+                                </div>
+                                <button type="button" class="btn btn-primary w-100">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Section -->
+                    <div id="notifications" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-bell text-primary me-2"></i> Notifications</h3>
+                        <div class="card card-custom p-3">
+                            <h5>Manage Notifications</h5>
+                            <form>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="emailNotifications" checked />
+                                    <label class="form-check-label" for="emailNotifications">Email Notifications</label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="smsNotifications" />
+                                    <label class="form-check-label" for="smsNotifications">SMS Notifications</label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="pushNotifications" checked />
+                                    <label class="form-check-label" for="pushNotifications">Push Notifications</label>
+                                </div>
+                                <button type="button" class="btn btn-primary w-100">Update Preferences</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Preferences Section -->
+                    <div id="preferences" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-sliders-h text-primary me-2"></i> Preferences</h3>
+                        <div class="card card-custom p-3">
+                            <h5>Customize Your Experience</h5>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="themeSelect" class="form-label">Theme</label>
+                                    <select class="form-select" id="themeSelect">
+                                        <option selected>Light</option>
+                                        <option>Dark</option>
+                                        <option>System Default</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="languageSelect" class="form-label">Language</label>
+                                    <select class="form-select" id="languageSelect">
+                                        <option selected>English</option>
+                                        <option>Spanish</option>
+                                        <option>French</option>
+                                        <option>German</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-primary w-100">Save Preferences</button>
+                            </form>
+                        </div>
+                    </div>
+                </main>
+            </div>
         </div>
 
-        <!-- ✅ Firebase + Firestore Setup and Data Fetch -->
-        <script type="module">
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-            import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
-            const firebaseConfig = {
-                apiKey: "AIzaSyDeDsOiA6QP4qbedd_JmQ9na1hM3sf4y3Q",
-                authDomain: "mentalhealthtracker-15563.firebaseapp.com",
-                projectId: "mentalhealthtracker-15563",
-            };
-
-            const app = initializeApp(firebaseConfig);
-            const db = getFirestore(app);
-
-            let progressChartInstance = null;
-
-            const first = localStorage.getItem("form_005_first-name")?.trim();
-            const last = localStorage.getItem("form_006_surname")?.trim();
-            const email = localStorage.getItem("form_007_email")?.trim()?.toLowerCase();
-
-            if (!first || !last || !email) {
-                alert("Missing user information in localStorage.");
-            } else {
-                const q = query(collection(db, "tmrstaffResponses"), where("form_005_first-name", "==", first), where("form_006_surname", "==", last), where("form_007_email", "==", email));
-
-                getDocs(q)
-                    .then((snapshot) => {
-                        if (snapshot.empty) {
-                            alert("No assessments found for these details.");
-                            return;
-                        }
-
-                        const partA = [];
-                        const partB = [];
-                        const events = [];
-
-                        snapshot.forEach((doc) => {
-                            const data = doc.data();
-                            const scoreA = parseFloat(data.form_062_PartA_Score);
-                            const scoreB = parseFloat(data.form_064_PartB_Score);
-
-                            if (!isNaN(scoreA)) partA.push(scoreA);
-                            if (!isNaN(scoreB)) partB.push(scoreB);
-
-                            if (data.form_000_evaluationDate) {
-                                const firstName = data["form_005_first-name"]?.trim() || "";
-                                const lastName = data["form_006_surname"]?.trim() || "";
-                                const fullName = `${firstName} ${lastName}`.trim() || "Assessment Taken";
-
-                                const userNameElement = document.getElementById("userName");
-                                if (userNameElement) userNameElement.textContent = fullName;
-
-                                localStorage.setItem("lastFullName", fullName);
-
-                                events.push({
-                                    title: "📝 Assessment",
-                                    start: data.form_000_evaluationDate,
-                                    extendedProps: {
-                                        scoreA: !isNaN(scoreA) ? scoreA : null,
-                                        scoreB: !isNaN(scoreB) ? scoreB : null,
-                                        fullName: fullName,
-                                    },
-                                });
-                            }
-                        });
-
-                        if (window.Chart) {
-                        }
-                    })
-                    .catch((err) => {
-                        console.error("Error fetching Firestore data:", err);
-                    });
-            }
-
-            function average(arr1, arr2) {
-                const all = [...arr1, ...arr2];
-                if (!all.length) return 0;
-                return all.reduce((a, b) => a + b, 0) / all.length;
+        <script>
+            function toggleSubmenu(element) {
+                const parent = element.parentElement;
+                parent.classList.toggle("open");
             }
         </script>
-          <script src="staffportal.js"></script>
+
+<script>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDeDsOiA6QP4qbedd_JmQ9na1hM3sf4y3Q",
+    authDomain: "mentalhealthtracker-15563.firebaseapp.com",
+    projectId: "mentalhealthtracker-15563",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const first = localStorage.getItem("form_005_first-name")?.trim();
+const last = localStorage.getItem("form_006_surname")?.trim();
+const email = localStorage.getItem("form_007_email")?.trim()?.toLowerCase();
+
+const welcomeMessageElement = document.getElementById("welcome-message");
+
+if (!first || !last || !email) {
+    alert("Missing user information in localStorage.");
+    welcomeMessageElement.textContent = "Welcome, Guest";
+} else {
+    const userQuery = query(
+        collection(db, "tmrstaffResponses"),
+        where("form_005_first-name", "==", first),
+        where("form_006_surname", "==", last),
+        where("form_007_email", "==", email)
+    );
+
+    getDocs(userQuery)
+        .then((snapshot) => {
+            if (snapshot.empty) {
+                welcomeMessageElement.textContent = "Welcome, Guest";
+                alert("No user data found for the provided details.");
+                return;
+            }
+
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                const fullName = `${data["form_005_first-name"] || ""} ${data["form_006_surname"] || ""}`.trim();
+                const department = data["form_department"] || "General";
+
+                // Update the welcome message dynamically
+                welcomeMessageElement.textContent = `Welcome, ${fullName} | ${department}`;
+
+                // Optionally store the full name and department locally
+                localStorage.setItem("lastFullName", fullName);
+                localStorage.setItem("lastDepartment", department);
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching user data:", error);
+            welcomeMessageElement.textContent = "Welcome, Guest";
+        });
+}
+
+</script>
+
+
+
+        <script>
+            // Switch between tab content sections
+            function switchTab(tabId) {
+                console.log(`Switching to tab: ${tabId}`);
+
+                // Hide all tab content sections
+                document.querySelectorAll(".tab-content-section").forEach((section) => {
+                    section.classList.remove("active");
+                });
+
+                // Show the selected tab section
+                const target = document.getElementById(tabId);
+                if (target) {
+                    target.classList.add("active");
+                } else {
+                    console.warn(`No element found with id: ${tabId}`);
+                }
+            }
+
+            // Toggle between light and dark themes
+            function toggleTheme() {
+                console.log("Toggling theme");
+                document.body.classList.toggle("dark-theme");
+                console.log(`Theme is now: ${document.body.classList.contains("dark-theme") ? "Dark" : "Light"}`);
+            }
+
+            // Toggle submenu dropdown
+            function toggleSubmenu(element) {
+                console.log("Toggling submenu");
+                const submenu = element.nextElementSibling;
+                if (submenu) {
+                    submenu.classList.toggle("d-block");
+                } else {
+                    console.warn("No submenu found");
+                }
+
+                const chevron = element.querySelector(".chevron");
+                if (chevron) {
+                    chevron.classList.toggle("fa-chevron-down");
+                    chevron.classList.toggle("fa-chevron-up");
+                }
+            }
+
+            // Load dynamic notifications
+            function loadNotifications() {
+                const notificationList = document.getElementById("notificationList");
+                if (!notificationList) {
+                    console.error("Notification list not found");
+                    return;
+                }
+
+                const notifications = [
+                    { type: "info", message: "Your latest behavioral score has been updated.", new: true },
+                    { type: "reminder", message: "Reminder: Complete your daily mental wellness check-in.", new: false },
+                    { type: "event", message: "Next Pediatric Conference is June 2, 2025.", new: false },
+                    { type: "achievement", message: "You've completed your training session.", new: true },
+                ];
+
+                notificationList.innerHTML = "";
+
+                notifications.forEach((note) => {
+                    const li = document.createElement("li");
+                    li.classList.add("list-group-item");
+
+                    let icon = "";
+                    switch (note.type) {
+                        case "info":
+                            icon = '<i class="fas fa-info-circle me-2 text-primary"></i>';
+                            break;
+                        case "reminder":
+                            icon = '<i class="fas fa-exclamation-circle me-2 text-warning"></i>';
+                            break;
+                        case "event":
+                            icon = '<i class="fas fa-calendar-check me-2 text-info"></i>';
+                            break;
+                        case "achievement":
+                            icon = '<i class="fas fa-trophy me-2 text-success"></i>';
+                            break;
+                    }
+
+                    const badge = `<span class="badge ${note.new ? "bg-success" : "bg-secondary"} float-end">${note.new ? "New" : "Read"}</span>`;
+                    li.innerHTML = `${icon}${note.message}${badge}`;
+                    notificationList.appendChild(li);
+                });
+            }
+
+            // Initialize charts and notifications
+            document.addEventListener("DOMContentLoaded", function () {
+                new Chart(document.getElementById("mentalChart"), {
+                    type: "bar",
+                    data: {
+                        labels: ["Jan", "Mar", "Jun"],
+                        datasets: [
+                            {
+                                label: "Affective Mental Well-Being Scale",
+                                data: [10, 25, 35],
+                                backgroundColor: "#1f6aa5",
+                            },
+                        ],
+                    },
+                    options: { responsive: true },
+                });
+
+                new Chart(document.getElementById("behaviorChart"), {
+                    type: "bar",
+                    data: {
+                        labels: ["Jan", "Mar", "Jun"],
+                        datasets: [
+                            {
+                                label: "Functional Well-Being Scale",
+                                data: [60, 80, 90],
+                                backgroundColor: "#ffc107",
+                            },
+                        ],
+                    },
+                    options: { responsive: true },
+                });
+
+                loadNotifications();
+            });
+        </script>
+
+        <script>
+            // Wait for the DOM content to be fully loaded before executing the script
+            document.addEventListener("DOMContentLoaded", function () {
+                // Helper function to destroy an existing chart instance if it exists
+                function destroyChartIfExists(chartInstance) {
+                    if (chartInstance) {
+                        chartInstance.destroy();
+                    }
+                }
+
+                // Timeline Chart
+                const timelineCanvas = document.getElementById("timelineChart");
+
+                // Check if there's an existing timeline chart and destroy it
+                if (timelineCanvas && window.timelineChartInstance) {
+                    destroyChartIfExists(window.timelineChartInstance); // Destroy the previous timeline chart instance
+                }
+
+                // Clear the canvas context to ensure it's ready for a new chart
+                if (timelineCanvas) {
+                    timelineCanvas.width = timelineCanvas.width; // Resetting canvas width clears the canvas
+                    timelineCanvas.height = timelineCanvas.height; // Ensure the height is also reset
+                }
+
+                // Create a new Timeline chart
+                window.timelineChartInstance = new Chart(timelineCanvas.getContext("2d"), {
+                    type: "line", // Line chart type
+                    data: {
+                        labels: ["Week 1", "Week 2", "Week 3", "Week 4"], // X-axis labels
+                        datasets: [
+                            {
+                                label: "Progress (%)",
+                                data: [10, 25, 40, 55], // Data points
+                                backgroundColor: "rgba(54, 162, 235, 0.2)", // Background color under the line
+                                borderColor: "rgba(54, 162, 235, 1)", // Line color
+                                borderWidth: 2, // Line width
+                                pointRadius: 5, // Point size
+                                pointBackgroundColor: "rgba(54, 162, 235, 1)", // Point color
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true, // Make the chart responsive
+                        plugins: {
+                            legend: { display: true, position: "top" }, // Display legend at the top
+                        },
+                        scales: {
+                            x: { title: { display: true, text: "Timeline (Weeks)" } }, // X-axis title
+                            y: { title: { display: true, text: "Progress (%)" } }, // Y-axis title
+                        },
+                    },
+                });
+
+                // Placeholder for additional charts (e.g., Goals Chart)
+                const goalsCanvas = document.getElementById("goalsChart");
+
+                if (goalsCanvas) {
+                    // If the canvas for the goals chart exists, initialize or destroy the previous chart if needed
+                    if (window.goalsChartInstance) {
+                        destroyChartIfExists(window.goalsChartInstance); // Destroy previous instance if it exists
+                    }
+
+                    // Clear the canvas context to ensure it's ready for a new chart
+                    goalsCanvas.width = goalsCanvas.width; // Clear the canvas
+                    goalsCanvas.height = goalsCanvas.height;
+
+                    // Create a new Goals chart (Bar chart example)
+                    window.goalsChartInstance = new Chart(goalsCanvas.getContext("2d"), {
+                        type: "bar", // Bar chart type
+                        data: {
+                            labels: ["Task 1", "Task 2", "Task 3"], // X-axis labels (tasks)
+                            datasets: [
+                                {
+                                    label: "Completion (%)",
+                                    data: [70, 50, 90], // Data points for completion
+                                    backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 99, 132, 0.2)"], // Colors for the bars
+                                    borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 159, 64, 1)", "rgba(255, 99, 132, 1)"], // Border colors
+                                    borderWidth: 1, // Border width
+                                },
+                            ],
+                        },
+                        options: {
+                            responsive: true, // Make the chart responsive
+                            plugins: {
+                                legend: { display: true, position: "top" }, // Display legend at the top
+                            },
+                            scales: {
+                                x: { title: { display: true, text: "Tasks" } }, // X-axis title
+                                y: { title: { display: true, text: "Completion (%)" }, max: 100 }, // Y-axis title and max value
+                            },
+                        },
+                    });
+                }
+            });
+        </script>
+
+
+
+
+
+        <style>
+            .tab-content-section {
+                background: linear-gradient(135deg, #1e3a8a, #2563eb);
+                border-radius: 15px;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                color: #fff;
+            }
+
+            .card {
+                background: rgba(255, 255, 255, 0.9);
+                border-radius: 12px;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            }
+
+            .card-header {
+                font-weight: bold;
+                font-size: 1.2rem;
+                text-transform: uppercase;
+            }
+
+            .list-group-item {
+                background: rgba(255, 255, 255, 0.8);
+                border: none;
+                border-radius: 8px;
+                margin-bottom: 8px;
+                transition: background 0.3s ease;
+            }
+
+            .list-group-item:hover {
+                background: rgba(0, 0, 0, 0.05);
+            }
+        </style>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Helper function to destroy an existing chart if it exists
+                function destroyChartIfExists(chartInstance) {
+                    if (chartInstance) {
+                        chartInstance.destroy();
+                    }
+                }
+
+                function loadReports() {
+                    const reportSummary = document.getElementById("report-summary");
+                    if (reportSummary) {
+                        reportSummary.innerHTML = `
+          <p><strong>Highlights:</strong></p>
+          <ul>
+            <li>Total Revenue: $120,000</li>
+            <li>New Clients: 25</li>
+            <li>Project Completion Rate: 90%</li>
+          </ul>
+        `;
+                    }
+                }
+
+                function loadKpiChart() {
+                    const kpiCanvas = document.getElementById("kpiMetricsChart");
+                    if (kpiCanvas) {
+                        destroyChartIfExists(window.kpiChartInstance);
+                        window.kpiChartInstance = new Chart(kpiCanvas.getContext("2d"), {
+                            type: "bar",
+                            data: {
+                                labels: ["Revenue Growth", "Retention Rate", "Conversion Rate"],
+                                datasets: [
+                                    {
+                                        label: "Performance (%)",
+                                        data: [10, 90, 5],
+                                        backgroundColor: ["#1f6aa5", "#28a745", "#ffc107"],
+                                    },
+                                ],
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    x: { title: { display: true, text: "KPIs" } },
+                                    y: {
+                                        title: { display: true, text: "Performance (%)" },
+                                        max: 100,
+                                    },
+                                },
+                            },
+                        });
+                    }
+                }
+
+                function loadProgressTrackingChart() {
+                    const progressCanvas = document.getElementById("progressTrackingChart");
+                    if (progressCanvas) {
+                        destroyChartIfExists(window.progressChartInstance);
+                        window.progressChartInstance = new Chart(progressCanvas.getContext("2d"), {
+                            type: "line",
+                            data: {
+                                labels: ["Task 1", "Task 2", "Task 3"],
+                                datasets: [
+                                    {
+                                        label: "Progress (%)",
+                                        data: [60, 75, 85],
+                                        backgroundColor: "rgba(255, 159, 64, 0.2)",
+                                        borderColor: "rgba(255, 159, 64, 1)",
+                                        borderWidth: 2,
+                                        pointRadius: 5,
+                                        pointBackgroundColor: "rgba(255, 159, 64, 1)",
+                                    },
+                                ],
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    x: { title: { display: true, text: "Tasks" } },
+                                    y: {
+                                        title: { display: true, text: "Progress (%)" },
+                                        max: 100,
+                                    },
+                                },
+                            },
+                        });
+                    }
+                }
+
+                loadReports();
+                loadKpiChart();
+                loadProgressTrackingChart();
+            });
+        </script>
+
+        <script>
+
+function openAddMemberModal() {
+    // Reference to the modal body
+    const modalBody = document.getElementById('addMemberModalBody');
+
+    // Show loading spinner while the content is fetched
+    modalBody.innerHTML = '<div class="text-center"><span class="spinner-border text-primary" role="status"></span></div>';
+
+    // Fetch the content from the external URL
+    fetch('https://toliwekka.github.io/TMR-CHECKIN/staffregister.html')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load staffregister.html');
+            }
+            return response.text();
+        })
+        .then(html => {
+            // Replace modal body with the fetched HTML content
+            modalBody.innerHTML = html;
+
+            // Reinitialize Bootstrap features like accordions
+            const accordionTriggers = modalBody.querySelectorAll('[data-bs-toggle="collapse"]');
+            accordionTriggers.forEach(trigger => {
+                trigger.addEventListener('click', event => {
+                    const targetId = event.currentTarget.getAttribute('data-bs-target');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const collapseInstance = bootstrap.Collapse.getOrCreateInstance(targetElement);
+                        collapseInstance.toggle();
+                    }
+                });
+            });
+        })
+        .catch(error => {
+            modalBody.innerHTML = `<div class="alert alert-danger" role="alert">${error.message}</div>`;
+        });
+
+    // Show the modal
+    const modal = new bootstrap.Modal(document.getElementById('addMemberModal'));
+    modal.show();
+}
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const calendarEl = document.getElementById("calendar");
+    if (calendarEl) {
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: "dayGridMonth",
+            headerToolbar: {
+                left: "prev,next today",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek,timeGridDay",
+            },
+            editable: true,
+            selectable: true,
+            select: function (info) {
+                const eventTitle = prompt("Enter Event Title:");
+                if (eventTitle) {
+                    calendar.addEvent({
+                        title: eventTitle,
+                        start: info.startStr,
+                        end: info.endStr,
+                    });
+                }
+            },
+        });
+        calendar.render();
+
+        // Force a resize event after a short delay to ensure the calendar fills the container
+        setTimeout(() => {
+            calendar.updateSize();
+        }, 300);
+
+        // Optional: Recalculate size on window resize
+        window.addEventListener("resize", () => {
+            calendar.updateSize();
+        });
+    }
+});
+        </script>
+
+        <!-- Add the following script to control the timer and reflection saving -->
+        <!-- Add the following script to control the timer and reflection saving -->
+        <script>
+            let timerInterval;
+            let timeSpent = 0;
+
+            function startTimer() {
+                const timerDisplay = document.getElementById("timer");
+                const startButton = document.getElementById("startTimer");
+                startButton.disabled = true; // Disable the start button after clicked
+
+                timerInterval = setInterval(() => {
+                    timeSpent += 1;
+                    const minutes = Math.floor(timeSpent / 60);
+                    const seconds = timeSpent % 60;
+                    timerDisplay.textContent = `${padZero(minutes)}:${padZero(seconds)}`;
+                }, 1000);
+
+                // Change button to "Stop Timer" after starting
+                startButton.innerHTML = '<i class="fas fa-pause-circle"></i> Stop Reflection Timer';
+                startButton.setAttribute("onclick", "stopTimer()");
+            }
+
+            function stopTimer() {
+                clearInterval(timerInterval);
+                const startButton = document.getElementById("startTimer");
+                startButton.disabled = false;
+                startButton.innerHTML = '<i class="fas fa-play-circle"></i> Start Reflection Timer';
+                startButton.setAttribute("onclick", "startTimer()");
+            }
+
+            function padZero(num) {
+                return num < 10 ? `0${num}` : num;
+            }
+
+            // Function to save reflection entry
+            function saveReflection() {
+                const reflectionInput = document.getElementById("reflectionInput");
+                const entryList = document.getElementById("entryList");
+                const reflectionText = reflectionInput.value.trim();
+
+                if (reflectionText) {
+                    const newEntry = document.createElement("li");
+                    newEntry.classList.add("list-group-item", "text-white", "bg-transparent", "border-light");
+                    newEntry.textContent = reflectionText;
+                    entryList.appendChild(newEntry);
+                    reflectionInput.value = ""; // Clear the text area after saving
+                }
+            }
+        </script>
+
+
+        <script>
+            let barChartInstance = null;
+            let timelineChartInstance = null;
+
+            const memberData = {
+                john: {
+                    name: "John Doe",
+                    barData: [85, 70, 90, 80], // Example scores for Communication, Support, Trust, Engagement
+                    timelineData: [80, 85, 90, 95], // Example timeline data
+                    timelineLabels: ["2020", "2021", "2022", "2023"],
+                },
+                jane: {
+                    name: "Jane Smith",
+                    barData: [90, 95, 85, 100],
+                    timelineData: [75, 80, 85, 92],
+                    timelineLabels: ["2020", "2021", "2022", "2023"],
+                },
+            };
+
+            // Open the modal with specific member data
+            function openModal(memberId) {
+                const member = memberData[memberId];
+
+                // Update modal title
+                document.getElementById("modalMemberName").innerText = member.name;
+
+                // Render Bar Chart
+                const barChartContainer = document.getElementById("barChartContainer");
+                barChartContainer.innerHTML = ""; // Clear previous content
+                const barLabels = ["Communication", "Support", "Trust", "Engagement"];
+                barLabels.forEach((label, index) => {
+                    const bar = document.createElement("div");
+                    bar.className = "bar";
+                    bar.style.width = `${member.barData[index]}%`;
+                    bar.innerText = `${label} (${member.barData[index]}%)`;
+                    barChartContainer.appendChild(bar);
+                });
+
+                // Render Timeline Chart
+                const timelineChartContainer = document.getElementById("timelineChartContainer");
+                timelineChartContainer.innerHTML = ""; // Clear previous content
+                member.timelineLabels.forEach((label, index) => {
+                    const point = document.createElement("div");
+                    point.className = "timeline-point";
+                    point.style.left = `${(index / (member.timelineLabels.length - 1)) * 100}%`;
+                    point.innerText = `${label} (${member.timelineData[index]}%)`;
+                    timelineChartContainer.appendChild(point);
+                });
+
+                // Show the modal using Bootstrap's modal API
+                const familyMemberModal = new bootstrap.Modal(document.getElementById("familyMemberModal"));
+                familyMemberModal.show();
+            }
+
+            // Close the modal and destroy chart instances
+            function closeModal() {
+                // Hide the modal using Bootstrap's modal method
+                $("#familyMemberModal").modal("hide");
+
+                // Optionally, destroy chart instances when modal closes
+                if (barChartInstance) {
+                    barChartInstance.destroy();
+                    barChartInstance = null;
+                }
+                if (timelineChartInstance) {
+                    timelineChartInstance.destroy();
+                    timelineChartInstance = null;
+                }
+            }
+
+            // Helper function to clear canvas context
+            function clearCanvas(canvasId) {
+                const canvas = document.getElementById(canvasId);
+                if (canvas) {
+                    const ctx = canvas.getContext("2d");
+                    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the entire canvas
+                }
+            }
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Helper function to destroy existing chart instances if they exist
+                function destroyChartIfExists(chartInstance) {
+                    if (chartInstance) {
+                        chartInstance.destroy();
+                    }
+                }
+
+                // Create and load timeline chart
+                function loadTimelineChart() {
+                    const timelineCanvas = document.getElementById("timelineChart");
+                    if (timelineCanvas && window.timelineChartInstance) {
+                        destroyChartIfExists(window.timelineChartInstance);
+                    }
+
+                    window.timelineChartInstance = new Chart(timelineCanvas.getContext("2d"), {
+                        type: "line",
+                        data: {
+                            labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+                            datasets: [
+                                {
+                                    label: "Progress (%)",
+                                    data: [10, 25, 40, 55],
+                                    backgroundColor: "rgba(54, 162, 235, 0.2)",
+                                    borderColor: "rgba(54, 162, 235, 1)",
+                                    borderWidth: 2,
+                                    pointRadius: 5,
+                                    pointBackgroundColor: "rgba(54, 162, 235, 1)",
+                                },
+                            ],
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                x: {
+                                    title: { display: true, text: "Timeline (Weeks)" },
+                                },
+                                y: {
+                                    title: { display: true, text: "Progress (%)" },
+                                },
+                            },
+                        },
+                    });
+                }
+
+                // Create and load KPI metrics chart
+                function loadKpiChart() {
+                    const kpiCanvas = document.getElementById("kpiMetricsChart");
+                    if (kpiCanvas && window.kpiChartInstance) {
+                        destroyChartIfExists(window.kpiChartInstance);
+                    }
+
+                    window.kpiChartInstance = new Chart(kpiCanvas.getContext("2d"), {
+                        type: "bar",
+                        data: {
+                            labels: ["KPI 1", "KPI 2", "KPI 3"],
+                            datasets: [
+                                {
+                                    label: "KPI Metrics",
+                                    data: [80, 90, 70],
+                                    backgroundColor: "#1f6aa5",
+                                },
+                            ],
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                x: {
+                                    title: { display: true, text: "KPI" },
+                                },
+                                y: {
+                                    title: { display: true, text: "Performance (%)" },
+                                    max: 100,
+                                },
+                            },
+                        },
+                    });
+                }
+
+                // Create and load progress tracking chart
+                function loadProgressTrackingChart() {
+                    const progressCanvas = document.getElementById("progressTrackingChart");
+                    if (progressCanvas && window.progressChartInstance) {
+                        destroyChartIfExists(window.progressChartInstance);
+                    }
+
+                    window.progressChartInstance = new Chart(progressCanvas.getContext("2d"), {
+                        type: "line",
+                        data: {
+                            labels: ["Task 1", "Task 2", "Task 3"],
+                            datasets: [
+                                {
+                                    label: "Progress (%)",
+                                    data: [60, 75, 85],
+                                    backgroundColor: "rgba(255, 159, 64, 0.2)",
+                                    borderColor: "rgba(255, 159, 64, 1)",
+                                    borderWidth: 2,
+                                    pointRadius: 5,
+                                    pointBackgroundColor: "rgba(255, 159, 64, 1)",
+                                },
+                            ],
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                x: {
+                                    title: { display: true, text: "Tasks" },
+                                },
+                                y: {
+                                    title: { display: true, text: "Progress (%)" },
+                                },
+                            },
+                        },
+                    });
+                }
+
+                // Function to switch tabs dynamically
+                function switchTab(tabId) {
+                    const sections = document.querySelectorAll(".tab-content-section");
+                    sections.forEach((section) => {
+                        section.classList.remove("active");
+                    });
+
+                    const selectedSection = document.getElementById(tabId);
+                    if (selectedSection) {
+                        selectedSection.classList.add("active");
+                    }
+                }
+
+                // Initialize charts
+                loadTimelineChart();
+                loadKpiChart();
+                loadProgressTrackingChart();
+            });
+            function switchTab(tabId) {
+                // Hide all tab content sections
+                document.querySelectorAll(".tab-content-section").forEach((section) => {
+                    section.classList.remove("active");
+                });
+
+                // Show the selected tab content
+                const target = document.getElementById(tabId);
+                if (target) {
+                    target.classList.add("active");
+                } else {
+                    console.warn(`No tab section found for ID: ${tabId}`);
+                }
+            }
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Bar Chart
+                const barChartOptions = {
+                    chart: {
+                        type: "bar",
+                        height: 300,
+                    },
+                    series: [
+                        {
+                            name: "Completion",
+                            data: [70, 50, 90],
+                        },
+                    ],
+                    xaxis: {
+                        categories: ["Task 1", "Task 2", "Task 3"],
+                    },
+                };
+                new ApexCharts(document.querySelector("#barChartContainer"), barChartOptions).render();
+
+                // Timeline Chart
+                const timelineChartOptions = {
+                    chart: {
+                        type: "line",
+                        height: 300,
+                    },
+                    series: [
+                        {
+                            name: "Progress",
+                            data: [10, 25, 40, 55],
+                        },
+                    ],
+                    xaxis: {
+                        categories: ["Week 1", "Week 2", "Week 3", "Week 4"],
+                    },
+                };
+                new ApexCharts(document.querySelector("#timelineChartContainer"), timelineChartOptions).render();
+            });
+        </script>
+
+
+
+
+<script>
+    // Define status and category styles
+    const statusStyles = {
+        "Not Started": "badge bg-secondary",
+        "In Progress": "badge bg-warning",
+        "Scheduled": "badge bg-info",
+        "Achieved": "badge bg-success",
+    };
+
+    const categoryStyles = {
+        "Emotional Wellness": "bg-success",
+        "Spiritual Health": "bg-primary",
+        "Family & Community": "bg-info",
+        "Economic Stability": "bg-warning",
+        "Physical Health & Nutrition": "bg-danger",
+        "Academic or Skill Goals": "bg-secondary",
+        "Therapy & Self-Reflection": "bg-dark",
+        "Substance Use & Recovery": "bg-purple",
+        "Gender-Based Wellness": "bg-teal",
+    };
+
+    // Goals data
+    const goalsData = [
+        {
+            id: "1",
+            category: "Emotional Wellness",
+            description: "Log daily mood using the dashboard scale for 30 days",
+            status: "In Progress",
+            startDate: "2025-05-01",
+            dueDate: "2025-05-30",
+        },
+        {
+            id: "2",
+            category: "Spiritual Health",
+            description: "Attend weekly fellowship sessions",
+            status: "Not Started",
+            startDate: "2025-05-05",
+            dueDate: "2025-06-10",
+        },
+        {
+            id: "3",
+            category: "Family & Community",
+            description: "Organize a community clean-up drive",
+            status: "Scheduled",
+            startDate: "2025-05-15",
+            dueDate: "2025-06-15",
+        },
+    ];
+
+    // Function to dynamically load goals
+    function loadGoals() {
+        const container = document.getElementById("goalCardsContainer");
+        if (!container) {
+            console.error("Goal container element not found!");
+            return;
+        }
+
+        container.innerHTML = ""; // Clear existing goals
+
+        goalsData.forEach((goal) => {
+            const categoryClass = categoryStyles[goal.category] || "bg-secondary";
+
+            const card = document.createElement("div");
+            card.className = "col-md-6";
+            card.innerHTML = `
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header ${categoryClass} text-white text-center rounded-top">
+                        <h5>${goal.category}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>${goal.description}</p>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <strong>Status:</strong> 
+                                <span class="${statusStyles[goal.status]}">${goal.status}</span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Start Date:</strong> ${goal.startDate}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Due Date:</strong> ${goal.dueDate}
+                            </li>
+                        </ul>
+                        <div class="mt-3">
+                            <button class="btn btn-sm btn-outline-primary edit-goal" data-id="${goal.id}">Edit</button>
+                            <button class="btn btn-sm btn-outline-danger delete-goal" data-id="${goal.id}">Delete</button>
+                        </div>
+                    </div>
+                </div>`;
+            container.appendChild(card);
+        });
+    }
+
+    // Event listener for the goal form submission
+    document.getElementById("smartGoalForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const goalId = document.getElementById("goalId").value;
+        const category = document.getElementById("goalCategory").value;
+        const description = document.getElementById("goalDescription").value;
+        const status = document.getElementById("goalStatus").value;
+        const startDate = document.getElementById("goalStartDate").value;
+        const dueDate = document.getElementById("goalDueDate").value;
+
+        if (goalId) {
+            // Edit existing goal
+            const goalIndex = goalsData.findIndex((goal) => goal.id === goalId);
+            if (goalIndex >= 0) {
+                goalsData[goalIndex] = { id: goalId, category, description, status, startDate, dueDate };
+            }
+        } else {
+            // Add new goal
+            const newGoal = {
+                id: Date.now().toString(),
+                category,
+                description,
+                status,
+                startDate,
+                dueDate,
+            };
+            goalsData.push(newGoal);
+        }
+
+        loadGoals();
+        const modalInstance = bootstrap.Modal.getInstance(document.getElementById("addGoalModal"));
+        modalInstance.hide();
+    });
+
+    // Edit and delete functionality
+    document.getElementById("goalCardsContainer").addEventListener("click", function (e) {
+        const target = e.target;
+
+        if (target.classList.contains("edit-goal")) {
+            const goalId = target.dataset.id;
+            const goal = goalsData.find((g) => g.id === goalId);
+
+            if (goal) {
+                document.getElementById("goalId").value = goal.id;
+                document.getElementById("goalCategory").value = goal.category;
+                document.getElementById("goalDescription").value = goal.description;
+                document.getElementById("goalStatus").value = goal.status;
+                document.getElementById("goalStartDate").value = goal.startDate;
+                document.getElementById("goalDueDate").value = goal.dueDate;
+                const modalInstance = new bootstrap.Modal(document.getElementById("addGoalModal"));
+                modalInstance.show();
+            }
+        }
+
+        if (target.classList.contains("delete-goal")) {
+            const goalId = target.dataset.id;
+            const goalIndex = goalsData.findIndex((g) => g.id === goalId);
+            if (goalIndex >= 0) {
+                goalsData.splice(goalIndex, 1);
+                loadGoals();
+            }
+        }
+    });
+
+    // Initialize goals on page load
+    document.addEventListener("DOMContentLoaded", loadGoals);
+</script>
+
 
     </body>
 </html>
