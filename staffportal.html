@@ -13,6 +13,16 @@
         <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+        <!-- Firebase App (the core Firebase SDK) -->
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+
+        <!-- Firebase Firestore -->
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+        <!-- Firebase App (Core SDK) -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+        <!-- Firebase Firestore -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
         <style>
             :root {
@@ -304,111 +314,99 @@
                 color: #111827; /* Almost black for text */
             }
 
+            /* Add this CSS to handle dynamic text color */
+            .dynamic-text {
+                transition: color 0.3s ease;
+            }
 
+            /* For light backgrounds */
+            .dynamic-text.light-bg {
+                color: #111827; /* Dark text */
+            }
 
-/* Add this CSS to handle dynamic text color */
-.dynamic-text {
-    transition: color 0.3s ease;
-}
+            /* For dark backgrounds */
+            .dynamic-text.dark-bg {
+                color: #f9fafb; /* Light text */
+            }
 
-/* For light backgrounds */
-.dynamic-text.light-bg {
-    color: #111827; /* Dark text */
-}
+            .card.card-custom.p-3 {
+                color: #2f4f2f; /* Olive green text color for visibility */
+            }
 
-/* For dark backgrounds */
-.dynamic-text.dark-bg {
-    color: #f9fafb; /* Light text */
-}
+            .staff-title {
+                font-family: "Georgia", "Times New Roman", serif; /* Fallback serif fonts */
+                font-weight: 700; /* Bold to match the logo style */
+                letter-spacing: 0.5px; /* Adjust letter spacing for similar aesthetics */
+                color: #ffffff; /* White color to match the logo text */
+                text-transform: uppercase; /* Ensures consistency with the logo's uppercase text */
+            }
 
+            #calendar {
+                width: 100%; /* Makes the calendar take the full width of its container */
+                height: auto; /* Automatically adjusts the height */
+                min-height: 500px; /* Ensures the calendar is always at least 500px tall */
+                max-width: 1200px; /* Optional: Restricts maximum width if needed */
+                margin: 0 auto; /* Centers the calendar */
+            }
 
-
-
-.card.card-custom.p-3 {
-    color: #2f4f2f; /* Olive green text color for visibility */
-}
-
-
-
-.staff-title {
-    font-family: 'Georgia', 'Times New Roman', serif; /* Fallback serif fonts */
-    font-weight: 700; /* Bold to match the logo style */
-    letter-spacing: 0.5px; /* Adjust letter spacing for similar aesthetics */
-    color: #ffffff; /* White color to match the logo text */
-    text-transform: uppercase; /* Ensures consistency with the logo's uppercase text */
-}
-
-#calendar {
-    width: 100%; /* Makes the calendar take the full width of its container */
-    height: auto; /* Automatically adjusts the height */
-    min-height: 500px; /* Ensures the calendar is always at least 500px tall */
-    max-width: 1200px; /* Optional: Restricts maximum width if needed */
-    margin: 0 auto; /* Centers the calendar */
-}
-
-
-#checkin {
-    min-height: 100vh;
-    padding: 20px;
-    background-color: #f8f9fa;
-}
-
-
+            #checkin {
+                min-height: 100vh;
+                padding: 20px;
+                background-color: #f8f9fa;
+            }
         </style>
-<script>
-/**
- * Determines if a color is light or dark.
- * @param {string} color - The background color in hex, rgb, or rgba.
- * @returns {boolean} - True if light, false if dark.
- */
-function isColorLight(color) {
-    let r, g, b;
+        <script>
+            /**
+             * Determines if a color is light or dark.
+             * @param {string} color - The background color in hex, rgb, or rgba.
+             * @returns {boolean} - True if light, false if dark.
+             */
+            function isColorLight(color) {
+                let r, g, b;
 
-    // If color is in hex format
-    if (color.startsWith("#")) {
-        const bigint = parseInt(color.slice(1), 16);
-        r = (bigint >> 16) & 255;
-        g = (bigint >> 8) & 255;
-        b = bigint & 255;
-    } else if (color.startsWith("rgb")) {
-        // If color is in rgb/rgba format
-        const rgbValues = color.match(/\d+/g);
-        [r, g, b] = rgbValues.map(Number);
-    } else {
-        console.warn("Unsupported color format:", color);
-        return false; // Default to dark
-    }
+                // If color is in hex format
+                if (color.startsWith("#")) {
+                    const bigint = parseInt(color.slice(1), 16);
+                    r = (bigint >> 16) & 255;
+                    g = (bigint >> 8) & 255;
+                    b = bigint & 255;
+                } else if (color.startsWith("rgb")) {
+                    // If color is in rgb/rgba format
+                    const rgbValues = color.match(/\d+/g);
+                    [r, g, b] = rgbValues.map(Number);
+                } else {
+                    console.warn("Unsupported color format:", color);
+                    return false; // Default to dark
+                }
 
-    // Calculate brightness using the formula
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-    return brightness > 128; // Threshold for light/dark
-}
+                // Calculate brightness using the formula
+                const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+                return brightness > 128; // Threshold for light/dark
+            }
 
-/**
- * Adjusts text color based on the background color.
- */
-function adjustTextColors() {
-    const elements = document.querySelectorAll(".dynamic-text");
-    elements.forEach((element) => {
-        const bgColor = window.getComputedStyle(element.parentElement).backgroundColor;
-        if (isColorLight(bgColor)) {
-            element.classList.add("light-bg");
-            element.classList.remove("dark-bg");
-        } else {
-            element.classList.add("dark-bg");
-            element.classList.remove("light-bg");
-        }
-    });
-}
+            /**
+             * Adjusts text color based on the background color.
+             */
+            function adjustTextColors() {
+                const elements = document.querySelectorAll(".dynamic-text");
+                elements.forEach((element) => {
+                    const bgColor = window.getComputedStyle(element.parentElement).backgroundColor;
+                    if (isColorLight(bgColor)) {
+                        element.classList.add("light-bg");
+                        element.classList.remove("dark-bg");
+                    } else {
+                        element.classList.add("dark-bg");
+                        element.classList.remove("light-bg");
+                    }
+                });
+            }
 
-// Adjust text colors on DOM load and whenever the theme changes
-document.addEventListener("DOMContentLoaded", adjustTextColors);
+            // Adjust text colors on DOM load and whenever the theme changes
+            document.addEventListener("DOMContentLoaded", adjustTextColors);
 
-// Example: Re-run this function after a theme switch or content update
-// adjustTextColors();
-
-</script>
-
+            // Example: Re-run this function after a theme switch or content update
+            // adjustTextColors();
+        </script>
     </head>
     <body class="light-theme">
         <div class="container-fluid">
@@ -416,22 +414,18 @@ document.addEventListener("DOMContentLoaded", adjustTextColors);
                 <!-- Sidebar -->
                 <nav class="col-md-2 sidebar text-white p-3">
                     <div class="text-center mb-4 d-flex justify-content-center align-items-center">
-    <img src="logo.png" alt="TMR Logo" class="img-fluid" style="max-width: 100px; margin-right: 10px;" />
-    <h2 class="fw-bold mt-2 staff-title">STAFF</h2>
+                        <img src="logo.png" alt="TMR Logo" class="img-fluid" style="max-width: 100px; margin-right: 10px;" />
+                        <h2 class="fw-bold mt-2 staff-title">STAFF</h2>
                     </div>
                     <ul class="nav flex-column mt-4">
                         <li class="nav-item mb-2">
                             <a class="nav-link text-white" onclick="switchTab('dashboard')"><i class="fas fa-home me-2"></i>Dashboard</a>
                         </li>
-<!-- Navigation Item -->
-<li class="nav-item mb-2">
-    <a 
-        class="nav-link text-white" 
-        href="#" 
-        onclick="loadCheckinSection('https://toliwekka.github.io/TMR-CHECKIN/assessmentintroa.html')">
-        <i class="fas fa-pencil-alt me-2"></i>Start Check-In
-    </a>
-</li>                        <li class="nav-item">
+                        <!-- Navigation Item -->
+                        <li class="nav-item mb-2">
+                            <a class="nav-link text-white" href="#" onclick="loadCheckinSection('https://toliwekka.github.io/TMR-CHECKIN/assessmentintroa.html')"> <i class="fas fa-pencil-alt me-2"></i>Start Check-In </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-white d-flex align-items-center" onclick="toggleSubmenu(this)"><i class="fas fa-chart-bar me-2"></i>Performance Analytics<i class="fas fa-chevron-down ms-auto chevron"></i></a>
                             <ul class="submenu">
                                 <li class="nav-item mb-2">
@@ -504,10 +498,10 @@ document.addEventListener("DOMContentLoaded", adjustTextColors);
                 <main class="col-md-10 ms-sm-auto p-4">
                     <!-- Main header -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div>
-                            <h2 class="header-highlight">Welcome, Dr. Grace Namakula | Pediatrics Department</h2>
-                            <p class="text-muted">Your personalized dashboard for tracking well-being, goals, and progress.</p>
-                        </div>
+<div>
+    <h2 id="textContent" class="header-highlight">Welcome, Dr. Grace Namakula | Pediatrics Department</h2>
+    <p class="text-muted">Your personalized dashboard for tracking well-being, goals, and progress.</p>
+</div>
                         <div>
                             <button class="btn btn-outline-primary"><i class="fas fa-sign-out-alt"></i> Logout</button>
                         </div>
@@ -595,42 +589,37 @@ document.addEventListener("DOMContentLoaded", adjustTextColors);
                         </footer>
                     </div>
                     <!-- T|Checkin Section -->
-<!-- T|Checkin Section -->
-<div id="checkin" class="tab-content-section" style="display: none;">
-    <h3 class="mb-4">
-        <i class="fas fa-chart-line text-primary me-2"></i> T|Check
-    </h3>
-    <div id="tcheck-content">
-        <!-- Content from the URL will load here -->
-    </div>
-</div>
+                    <!-- T|Checkin Section -->
+                    <div id="checkin" class="tab-content-section" style="display: none;">
+                        <h3 class="mb-4"><i class="fas fa-chart-line text-primary me-2"></i> T|Check</h3>
+                        <div id="tcheck-content">
+                            <!-- Content from the URL will load here -->
+                        </div>
+                    </div>
 
-<!-- JavaScript -->
-<script>
-    function loadCheckinSection(url) {
+                    <!-- JavaScript -->
+                    <script>
+                        function loadCheckinSection(url) {
+                            const sections = document.querySelectorAll(".tab-content-section");
+                            sections.forEach((section) => (section.style.display = "none"));
 
-        const sections = document.querySelectorAll('.tab-content-section');
-        sections.forEach(section => section.style.display = 'none');
+                            const checkinSection = document.getElementById("checkin");
+                            checkinSection.style.display = "block";
 
-        const checkinSection = document.getElementById('checkin');
-        checkinSection.style.display = 'block';
+                            const content = document.getElementById("tcheck-content");
+                            fetch(url)
+                                .then((response) => response.text())
+                                .then((html) => {
+                                    content.innerHTML = html;
+                                })
+                                .catch((error) => {
+                                    console.error("Error loading T|Check content:", error);
+                                    content.innerHTML = "<p class='text-danger'>Error loading content. Please try again later.</p>";
+                                });
 
-        const content = document.getElementById('tcheck-content');
-        fetch(url)
-            .then(response => response.text())
-            .then(html => {
-                content.innerHTML = html;
-            })
-            .catch(error => {
-                console.error('Error loading T|Check content:', error);
-                content.innerHTML = "<p class='text-danger'>Error loading content. Please try again later.</p>";
-            });
-
-        checkinSection.scrollIntoView({ behavior: 'smooth' });
-       
-    }
-</script>
-
+                            checkinSection.scrollIntoView({ behavior: "smooth" });
+                        }
+                    </script>
 
                     <!-- Timeline Charts Section -->
                     <div id="charts" class="tab-content-section">
@@ -669,16 +658,16 @@ document.addEventListener("DOMContentLoaded", adjustTextColors);
                                         <div class="mb-3">
                                             <label for="goalCategory" class="form-label">Category</label>
                                             <select class="form-select" id="goalCategory" required>
-                                    <option value="Emotional Wellness">Emotional Wellness</option>
-                                    <option value="Mindfulness & Sleep">Mindfulness & Sleep</option>
-                                    <option value="Spiritual Health (e.g., prayer, fellowship)">Spiritual Health (e.g., prayer, fellowship)</option>
-                                    <option value="Family & Community">Family & Community</option>
-                                    <option value="Economic Stability (Savings, Side Hustle)">Economic Stability (Savings, Side Hustle)</option>
-                                    <option value="Physical Health & Nutrition">Physical Health & Nutrition</option>
-                                    <option value="Academic or Skill Goals">Academic or Skill Goals</option>
-                                    <option value="Therapy & Self-Reflection">Therapy & Self-Reflection</option>
-                                    <option value="Substance Use & Recovery">Substance Use & Recovery</option>
-                                    <option value="Gender-Based Wellness">Gender-Based Wellness</option>
+                                                <option value="Emotional Wellness">Emotional Wellness</option>
+                                                <option value="Mindfulness & Sleep">Mindfulness & Sleep</option>
+                                                <option value="Spiritual Health (e.g., prayer, fellowship)">Spiritual Health (e.g., prayer, fellowship)</option>
+                                                <option value="Family & Community">Family & Community</option>
+                                                <option value="Economic Stability (Savings, Side Hustle)">Economic Stability (Savings, Side Hustle)</option>
+                                                <option value="Physical Health & Nutrition">Physical Health & Nutrition</option>
+                                                <option value="Academic or Skill Goals">Academic or Skill Goals</option>
+                                                <option value="Therapy & Self-Reflection">Therapy & Self-Reflection</option>
+                                                <option value="Substance Use & Recovery">Substance Use & Recovery</option>
+                                                <option value="Gender-Based Wellness">Gender-Based Wellness</option>
                                             </select>
                                         </div>
                                         <div class="mb-3">
@@ -687,16 +676,17 @@ document.addEventListener("DOMContentLoaded", adjustTextColors);
                                         </div>
                                         <div class="mb-3">
                                             <label for="goalStatus" class="form-label">Status</label>
-<select class="form-select" id="goalStatus" required>
-  <option value="Not Started">Not Started</option>
-  <option value="In Progress">In Progress</option>
-  <option value="Scheduled">Scheduled</option>
-  <option value="Achieved">Achieved</option>
-  <option value="Needs Review">Needs Review</option>
-  <option value="Missed Deadline">Missed Deadline</option>
-  <option value="Deferred">Deferred</option>
-  <option value="On Hold">On Hold</option>
-  <option value="Cancelled">Cancelled</option>
+                                            <select class="form-select" id="goalStatus" required>
+                                                <option value="Not Started">Not Started</option>
+                                                <option value="In Progress">In Progress</option>
+                                                <option value="Scheduled">Scheduled</option>
+                                                <option value="Achieved">Achieved</option>
+                                                <option value="Needs Review">Needs Review</option>
+                                                <option value="Missed Deadline">Missed Deadline</option>
+                                                <option value="Deferred">Deferred</option>
+                                                <option value="On Hold">On Hold</option>
+                                                <option value="Cancelled">Cancelled</option>
+                                            </select>
                                         </div>
                                         <div class="mb-3">
                                             <label for="goalStartDate" class="form-label">Start Date</label>
@@ -714,8 +704,6 @@ document.addEventListener("DOMContentLoaded", adjustTextColors);
                             </div>
                         </div>
                     </div>
-
-
 
                     <!-- Reports Section -->
                     <div id="reports" class="tab-content-section">
@@ -883,180 +871,178 @@ document.addEventListener("DOMContentLoaded", adjustTextColors);
                     </div>
 
                     <!-- Family Circle Section -->
-<!-- Family Circle Section -->
-<!-- Family Circle Section -->
-<div id="family" class="tab-content-section">
-    <h3 class="mb-4"><i class="fas fa-users text-primary me-2"></i> Family Circle</h3>
-    <div class="card card-custom p-3">
-        <h2>Your Connected Family</h5>
-        <p>Manage your family connections, view detailed bios, and track assessments with visual insights.</p>
+                    <!-- Family Circle Section -->
+                    <!-- Family Circle Section -->
+                    <div id="family" class="tab-content-section">
+                        <h3 class="mb-4"><i class="fas fa-users text-primary me-2"></i> Family Circle</h3>
+                        <div class="card card-custom p-3">
+                            <h2>Your Connected Family</h2>
+                            <p>Manage your family connections, view detailed bios, and track assessments with visual insights.</p>
 
-        <!-- Family Members Table -->
-        <table class="table table-hover table-bordered text-center">
-            <thead class="table-dark">
-                <tr>
-                    <th>Name</th>
-                    <th>Relationship</th>
-                    <th>Age</th>
-                    <th>Location</th>
-                    <th>Assessment Score</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="familyTableBody">
-                <!-- Rows dynamically populated by JavaScript -->
-            </tbody>
-        </table>
+                            <!-- Family Members Table -->
+                            <table class="table table-hover table-bordered text-center">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Relationship</th>
+                                        <th>Age</th>
+                                        <th>Location</th>
+                                        <th>Assessment Score</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="familyTableBody">
+                                    <!-- Rows dynamically populated by JavaScript -->
+                                </tbody>
+                            </table>
 
-        <!-- Add Member Button -->
-        <div class="text-end mt-3">
-            <button class="btn btn-primary btn-sm" onclick="openAddMemberModal()"><i class="fas fa-user-plus me-2"></i>Add New Member</button>
-        </div>
-    </div>
-</div>
-
-<!-- Modals -->
-
-<!-- Add/Edit Member Modal -->
-<div class="modal fade" id="editMemberModal" tabindex="-1" aria-labelledby="editMemberModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="editMemberModalLabel">Edit Family Member</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editMemberForm">
-                    <input type="hidden" id="editMemberId" />
-                    <div class="mb-3">
-                        <label for="editMemberName" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="editMemberName" required />
+                            <!-- Add Member Button -->
+                            <div class="text-end mt-3">
+                                <button class="btn btn-primary btn-sm" onclick="openAddMemberModal()"><i class="fas fa-user-plus me-2"></i>Add New Member</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="editMemberRelationship" class="form-label">Relationship</label>
-                        <select class="form-select" id="editMemberRelationship" required>
-<option value="Mother">Mother / Maama</option>
-<option value="Father">Father / Taata</option>
-<option value="Brother">Brother</option>
-<option value="Sister">Sister</option>
-<option value="Cousin">Cousin</option>
-<option value="Uncle">Uncle</option>
-<option value="Aunt">Aunt</option>
-<option value="Grandmother">Grandmother</option>
-<option value="Grandfather">Grandfather</option>
-<option value="Step-Mother">Step-Mother</option>
-<option value="Step-Father">Step-Father</option>
-<option value="Niece">Niece</option>
-<option value="Nephew">Nephew</option>
-<option value="In-law">In-law</option>
-<option value="Friend">Friend</option>
-<option value="Mentor">Mentor</option>
-<option value="Neighbor">Neighbor</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editMemberAge" class="form-label">Age</label>
-                        <input type="number" class="form-control" id="editMemberAge" required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="editMemberLocation" class="form-label">Location</label>
-                        <input type="text" class="form-control" id="editMemberLocation" required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="editMemberScore" class="form-label">Assessment Score (%)</label>
-                        <input type="number" class="form-control" id="editMemberScore" max="100" min="0" required />
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Booking Modal -->
-<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="bookingModalLabel">Book Task/Appointment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="bookingForm">
-                    <input type="hidden" id="bookingMemberId" />
-                    <div class="mb-3">
-                        <label for="taskName" class="form-label">Task/Appointment Name</label>
-                        <input type="text" class="form-control" id="taskName" placeholder="Enter task name" required />
+                    <!-- Modals -->
+
+                    <!-- Add/Edit Member Modal -->
+                    <div class="modal fade" id="editMemberModal" tabindex="-1" aria-labelledby="editMemberModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title" id="editMemberModalLabel">Edit Family Member</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="editMemberForm">
+                                        <input type="hidden" id="editMemberId" />
+                                        <div class="mb-3">
+                                            <label for="editMemberName" class="form-label">Name</label>
+                                            <input type="text" class="form-control" id="editMemberName" required />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editMemberRelationship" class="form-label">Relationship</label>
+                                            <select class="form-select" id="editMemberRelationship" required>
+                                                <option value="Mother">Mother / Maama</option>
+                                                <option value="Father">Father / Taata</option>
+                                                <option value="Brother">Brother</option>
+                                                <option value="Sister">Sister</option>
+                                                <option value="Cousin">Cousin</option>
+                                                <option value="Uncle">Uncle</option>
+                                                <option value="Aunt">Aunt</option>
+                                                <option value="Grandmother">Grandmother</option>
+                                                <option value="Grandfather">Grandfather</option>
+                                                <option value="Step-Mother">Step-Mother</option>
+                                                <option value="Step-Father">Step-Father</option>
+                                                <option value="Niece">Niece</option>
+                                                <option value="Nephew">Nephew</option>
+                                                <option value="In-law">In-law</option>
+                                                <option value="Friend">Friend</option>
+                                                <option value="Mentor">Mentor</option>
+                                                <option value="Neighbor">Neighbor</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editMemberAge" class="form-label">Age</label>
+                                            <input type="number" class="form-control" id="editMemberAge" required />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editMemberLocation" class="form-label">Location</label>
+                                            <input type="text" class="form-control" id="editMemberLocation" required />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editMemberScore" class="form-label">Assessment Score (%)</label>
+                                            <input type="number" class="form-control" id="editMemberScore" max="100" min="0" required />
+                                        </div>
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="taskDate" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="taskDate" required />
+
+                    <!-- Booking Modal -->
+                    <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title" id="bookingModalLabel">Book Task/Appointment</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="bookingForm">
+                                        <input type="hidden" id="bookingMemberId" />
+                                        <div class="mb-3">
+                                            <label for="taskName" class="form-label">Task/Appointment Name</label>
+                                            <input type="text" class="form-control" id="taskName" placeholder="Enter task name" required />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="taskDate" class="form-label">Date</label>
+                                            <input type="date" class="form-control" id="taskDate" required />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="taskTime" class="form-label">Time</label>
+                                            <input type="time" class="form-control" id="taskTime" required />
+                                        </div>
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary">Book Task</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="taskTime" class="form-label">Time</label>
-                        <input type="time" class="form-control" id="taskTime" required />
+
+                    <div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header bg-success text-white">
+                                    <h5 class="modal-title" id="addMemberModalLabel">Add Member</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" id="addMemberModalBody">
+                                    <!-- This is where staffregister.html content will be loaded -->
+                                    <div class="text-center">
+                                        <span class="spinner-border text-primary" role="status"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Book Task</button>
+
+                    <!-- Performance Modal -->
+                    <div class="modal fade" id="performanceModal" tabindex="-1" aria-labelledby="performanceModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title" id="performanceModalLabel">Performance & Schedule</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="performanceContent">
+                                        <h5>Performance Insights</h5>
+                                        <p>Details for <strong id="performanceMemberName"></strong>:</p>
+                                        <!-- Include graphs, schedules, etc. dynamically -->
+                                        <p><i>Coming soon: integrated performance graphs and schedules!</i></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title" id="addMemberModalLabel">Add Member</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="addMemberModalBody">
-                <!-- This is where staffregister.html content will be loaded -->
-                <div class="text-center">
-                    <span class="spinner-border text-primary" role="status"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                    <script>
+                        const familyData = [
+                            { id: "1", name: "Mariam Nakato", relationship: "Mother", age: 58, location: "Kampala", score: 92 },
+                            { id: "2", name: "Joshua Muyanja", relationship: "Brother", age: 32, location: "Entebbe", score: 85 },
+                        ];
 
-
-
-<!-- Performance Modal -->
-<div class="modal fade" id="performanceModal" tabindex="-1" aria-labelledby="performanceModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="performanceModalLabel">Performance & Schedule</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="performanceContent">
-                    <h5>Performance Insights</h5>
-                    <p>Details for <strong id="performanceMemberName"></strong>:</p>
-                    <!-- Include graphs, schedules, etc. dynamically -->
-                    <p><i>Coming soon: integrated performance graphs and schedules!</i></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    const familyData = [
-        { id: "1", name: "Mariam Nakato", relationship: "Mother", age: 58, location: "Kampala", score: 92 },
-        { id: "2", name: "Joshua Muyanja", relationship: "Brother", age: 32, location: "Entebbe", score: 85 },
-    ];
-
-    function renderFamilyTable() {
-        const tableBody = document.getElementById("familyTableBody");
-        tableBody.innerHTML = "";
-        familyData.forEach(member => {
-            tableBody.innerHTML += `
+                        function renderFamilyTable() {
+                            const tableBody = document.getElementById("familyTableBody");
+                            tableBody.innerHTML = "";
+                            familyData.forEach((member) => {
+                                tableBody.innerHTML += `
                 <tr>
                     <td>${member.name}</td>
                     <td>${member.relationship}</td>
@@ -1070,43 +1056,43 @@ document.addEventListener("DOMContentLoaded", adjustTextColors);
                         <button class="btn btn-sm btn-info" onclick="viewPerformance('${member.id}')"><i class="fas fa-chart-line"></i></button>
                     </td>
                 </tr>`;
-        });
-    }
+                            });
+                        }
 
-    function editMember(id) {
-        const member = familyData.find(m => m.id === id);
-        if (!member) return;
-        document.getElementById("editMemberId").value = member.id;
-        document.getElementById("editMemberName").value = member.name;
-        document.getElementById("editMemberRelationship").value = member.relationship;
-        document.getElementById("editMemberAge").value = member.age;
-        document.getElementById("editMemberLocation").value = member.location;
-        document.getElementById("editMemberScore").value = member.score;
-        new bootstrap.Modal(document.getElementById("editMemberModal")).show();
-    }
+                        function editMember(id) {
+                            const member = familyData.find((m) => m.id === id);
+                            if (!member) return;
+                            document.getElementById("editMemberId").value = member.id;
+                            document.getElementById("editMemberName").value = member.name;
+                            document.getElementById("editMemberRelationship").value = member.relationship;
+                            document.getElementById("editMemberAge").value = member.age;
+                            document.getElementById("editMemberLocation").value = member.location;
+                            document.getElementById("editMemberScore").value = member.score;
+                            new bootstrap.Modal(document.getElementById("editMemberModal")).show();
+                        }
 
-    function removeMember(id) {
-        const index = familyData.findIndex(m => m.id === id);
-        if (index > -1) {
-            familyData.splice(index, 1);
-            renderFamilyTable();
-        }
-    }
+                        function removeMember(id) {
+                            const index = familyData.findIndex((m) => m.id === id);
+                            if (index > -1) {
+                                familyData.splice(index, 1);
+                                renderFamilyTable();
+                            }
+                        }
 
-    function openBookingModal(id) {
-        document.getElementById("bookingMemberId").value = id;
-        new bootstrap.Modal(document.getElementById("bookingModal")).show();
-    }
+                        function openBookingModal(id) {
+                            document.getElementById("bookingMemberId").value = id;
+                            new bootstrap.Modal(document.getElementById("bookingModal")).show();
+                        }
 
-    function viewPerformance(id) {
-        const member = familyData.find(m => m.id === id);
-        if (!member) return;
-        document.getElementById("performanceMemberName").innerText = member.name;
-        new bootstrap.Modal(document.getElementById("performanceModal")).show();
-    }
+                        function viewPerformance(id) {
+                            const member = familyData.find((m) => m.id === id);
+                            if (!member) return;
+                            document.getElementById("performanceMemberName").innerText = member.name;
+                            new bootstrap.Modal(document.getElementById("performanceModal")).show();
+                        }
 
-    document.addEventListener("DOMContentLoaded", renderFamilyTable);
-</script>
+                        document.addEventListener("DOMContentLoaded", renderFamilyTable);
+                    </script>
 
                     <div class="modal fade" id="familyMemberModal" tabindex="-1" aria-labelledby="familyMemberModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
@@ -1210,71 +1196,67 @@ document.addEventListener("DOMContentLoaded", adjustTextColors);
         <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
+
+<script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDeDsOiA6QP4qbedd_JmQ9na1hM3sf4y3Q",
+        authDomain: "mentalhealthtracker-15563.firebaseapp.com",
+        projectId: "mentalhealthtracker-15563",
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Initialize Firestore
+    const db = firebase.firestore();
+
+    // Fetch user information from localStorage
+    const first = localStorage.getItem("form_005_first-name")?.trim();
+    const last = localStorage.getItem("form_006_surname")?.trim();
+    const email = localStorage.getItem("form_007_email")?.trim()?.toLowerCase();
+
+    const textContentElement = document.getElementById("textContent");
+
+    if (!first || !last || !email) {
+        alert("Missing user information in localStorage.");
+        textContentElement.textContent = "Welcome, Guest";
+    } else {
+        db.collection("tmrstaffResponses")
+            .where("form_005_first-name", "==", first)
+            .where("form_006_surname", "==", last)
+            .where("form_007_email", "==", email)
+            .get()
+            .then((snapshot) => {
+                if (snapshot.empty) {
+                    textContentElement.textContent = "Welcome, Guest";
+                    alert("No user data found for the provided details.");
+                    return;
+                }
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const fullName = `${data["form_005_first-name"] || ""} ${data["form_006_surname"] || ""}`.trim();
+                    const department = data["form_001_hospital_department"] || "General";
+
+                    // Update the content of the <h2> dynamically
+                    textContentElement.textContent = `Welcome, Dr. ${fullName} | ${department}`;
+                });
+            })
+            .catch((error) => {
+                console.error("Error fetching user data:", error);
+                textContentElement.textContent = "Welcome, Guest";
+            });
+    }
+</script>
+
+
         <script>
             function toggleSubmenu(element) {
                 const parent = element.parentElement;
                 parent.classList.toggle("open");
             }
         </script>
-
-<script>
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyDeDsOiA6QP4qbedd_JmQ9na1hM3sf4y3Q",
-    authDomain: "mentalhealthtracker-15563.firebaseapp.com",
-    projectId: "mentalhealthtracker-15563",
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-const first = localStorage.getItem("form_005_first-name")?.trim();
-const last = localStorage.getItem("form_006_surname")?.trim();
-const email = localStorage.getItem("form_007_email")?.trim()?.toLowerCase();
-
-const welcomeMessageElement = document.getElementById("welcome-message");
-
-if (!first || !last || !email) {
-    alert("Missing user information in localStorage.");
-    welcomeMessageElement.textContent = "Welcome, Guest";
-} else {
-    const userQuery = query(
-        collection(db, "tmrstaffResponses"),
-        where("form_005_first-name", "==", first),
-        where("form_006_surname", "==", last),
-        where("form_007_email", "==", email)
-    );
-
-    getDocs(userQuery)
-        .then((snapshot) => {
-            if (snapshot.empty) {
-                welcomeMessageElement.textContent = "Welcome, Guest";
-                alert("No user data found for the provided details.");
-                return;
-            }
-
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                const fullName = `${data["form_005_first-name"] || ""} ${data["form_006_surname"] || ""}`.trim();
-                const department = data["form_department"] || "General";
-
-                // Update the welcome message dynamically
-                welcomeMessageElement.textContent = `Welcome, ${fullName} | ${department}`;
-
-                // Optionally store the full name and department locally
-                localStorage.setItem("lastFullName", fullName);
-                localStorage.setItem("lastDepartment", department);
-            });
-        })
-        .catch((error) => {
-            console.error("Error fetching user data:", error);
-            welcomeMessageElement.textContent = "Welcome, Guest";
-        });
-}
-
-</script>
 
 
 
@@ -1496,10 +1478,6 @@ if (!first || !last || !email) {
             });
         </script>
 
-
-
-
-
         <style>
             .tab-content-section {
                 background: linear-gradient(135deg, #1e3a8a, #2563eb);
@@ -1633,87 +1611,83 @@ if (!first || !last || !email) {
         </script>
 
         <script>
+            function openAddMemberModal() {
+                // Reference to the modal body
+                const modalBody = document.getElementById("addMemberModalBody");
 
-function openAddMemberModal() {
-    // Reference to the modal body
-    const modalBody = document.getElementById('addMemberModalBody');
+                // Show loading spinner while the content is fetched
+                modalBody.innerHTML = '<div class="text-center"><span class="spinner-border text-primary" role="status"></span></div>';
 
-    // Show loading spinner while the content is fetched
-    modalBody.innerHTML = '<div class="text-center"><span class="spinner-border text-primary" role="status"></span></div>';
+                // Fetch the content from the external URL
+                fetch("https://toliwekka.github.io/TMR-CHECKIN/staffregister.html")
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("Failed to load staffregister.html");
+                        }
+                        return response.text();
+                    })
+                    .then((html) => {
+                        // Replace modal body with the fetched HTML content
+                        modalBody.innerHTML = html;
 
-    // Fetch the content from the external URL
-    fetch('https://toliwekka.github.io/TMR-CHECKIN/staffregister.html')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load staffregister.html');
+                        // Reinitialize Bootstrap features like accordions
+                        const accordionTriggers = modalBody.querySelectorAll('[data-bs-toggle="collapse"]');
+                        accordionTriggers.forEach((trigger) => {
+                            trigger.addEventListener("click", (event) => {
+                                const targetId = event.currentTarget.getAttribute("data-bs-target");
+                                const targetElement = document.querySelector(targetId);
+                                if (targetElement) {
+                                    const collapseInstance = bootstrap.Collapse.getOrCreateInstance(targetElement);
+                                    collapseInstance.toggle();
+                                }
+                            });
+                        });
+                    })
+                    .catch((error) => {
+                        modalBody.innerHTML = `<div class="alert alert-danger" role="alert">${error.message}</div>`;
+                    });
+
+                // Show the modal
+                const modal = new bootstrap.Modal(document.getElementById("addMemberModal"));
+                modal.show();
             }
-            return response.text();
-        })
-        .then(html => {
-            // Replace modal body with the fetched HTML content
-            modalBody.innerHTML = html;
 
-            // Reinitialize Bootstrap features like accordions
-            const accordionTriggers = modalBody.querySelectorAll('[data-bs-toggle="collapse"]');
-            accordionTriggers.forEach(trigger => {
-                trigger.addEventListener('click', event => {
-                    const targetId = event.currentTarget.getAttribute('data-bs-target');
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        const collapseInstance = bootstrap.Collapse.getOrCreateInstance(targetElement);
-                        collapseInstance.toggle();
-                    }
-                });
-            });
-        })
-        .catch(error => {
-            modalBody.innerHTML = `<div class="alert alert-danger" role="alert">${error.message}</div>`;
-        });
+            document.addEventListener("DOMContentLoaded", function () {
+                const calendarEl = document.getElementById("calendar");
+                if (calendarEl) {
+                    const calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: "dayGridMonth",
+                        headerToolbar: {
+                            left: "prev,next today",
+                            center: "title",
+                            right: "dayGridMonth,timeGridWeek,timeGridDay",
+                        },
+                        editable: true,
+                        selectable: true,
+                        select: function (info) {
+                            const eventTitle = prompt("Enter Event Title:");
+                            if (eventTitle) {
+                                calendar.addEvent({
+                                    title: eventTitle,
+                                    start: info.startStr,
+                                    end: info.endStr,
+                                });
+                            }
+                        },
+                    });
+                    calendar.render();
 
-    // Show the modal
-    const modal = new bootstrap.Modal(document.getElementById('addMemberModal'));
-    modal.show();
-}
+                    // Force a resize event after a short delay to ensure the calendar fills the container
+                    setTimeout(() => {
+                        calendar.updateSize();
+                    }, 300);
 
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    const calendarEl = document.getElementById("calendar");
-    if (calendarEl) {
-        const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: "dayGridMonth",
-            headerToolbar: {
-                left: "prev,next today",
-                center: "title",
-                right: "dayGridMonth,timeGridWeek,timeGridDay",
-            },
-            editable: true,
-            selectable: true,
-            select: function (info) {
-                const eventTitle = prompt("Enter Event Title:");
-                if (eventTitle) {
-                    calendar.addEvent({
-                        title: eventTitle,
-                        start: info.startStr,
-                        end: info.endStr,
+                    // Optional: Recalculate size on window resize
+                    window.addEventListener("resize", () => {
+                        calendar.updateSize();
                     });
                 }
-            },
-        });
-        calendar.render();
-
-        // Force a resize event after a short delay to ensure the calendar fills the container
-        setTimeout(() => {
-            calendar.updateSize();
-        }, 300);
-
-        // Optional: Recalculate size on window resize
-        window.addEventListener("resize", () => {
-            calendar.updateSize();
-        });
-    }
-});
+            });
         </script>
 
         <!-- Add the following script to control the timer and reflection saving -->
@@ -1766,7 +1740,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
         </script>
-
 
         <script>
             let barChartInstance = null;
@@ -2040,74 +2013,71 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         </script>
 
+        <script>
+            // Define status and category styles
+            const statusStyles = {
+                "Not Started": "badge bg-secondary",
+                "In Progress": "badge bg-warning",
+                Scheduled: "badge bg-info",
+                Achieved: "badge bg-success",
+            };
 
+            const categoryStyles = {
+                "Emotional Wellness": "bg-success",
+                "Spiritual Health": "bg-primary",
+                "Family & Community": "bg-info",
+                "Economic Stability": "bg-warning",
+                "Physical Health & Nutrition": "bg-danger",
+                "Academic or Skill Goals": "bg-secondary",
+                "Therapy & Self-Reflection": "bg-dark",
+                "Substance Use & Recovery": "bg-purple",
+                "Gender-Based Wellness": "bg-teal",
+            };
 
+            // Goals data
+            const goalsData = [
+                {
+                    id: "1",
+                    category: "Emotional Wellness",
+                    description: "Log daily mood using the dashboard scale for 30 days",
+                    status: "In Progress",
+                    startDate: "2025-05-01",
+                    dueDate: "2025-05-30",
+                },
+                {
+                    id: "2",
+                    category: "Spiritual Health",
+                    description: "Attend weekly fellowship sessions",
+                    status: "Not Started",
+                    startDate: "2025-05-05",
+                    dueDate: "2025-06-10",
+                },
+                {
+                    id: "3",
+                    category: "Family & Community",
+                    description: "Organize a community clean-up drive",
+                    status: "Scheduled",
+                    startDate: "2025-05-15",
+                    dueDate: "2025-06-15",
+                },
+            ];
 
-<script>
-    // Define status and category styles
-    const statusStyles = {
-        "Not Started": "badge bg-secondary",
-        "In Progress": "badge bg-warning",
-        "Scheduled": "badge bg-info",
-        "Achieved": "badge bg-success",
-    };
+            // Function to dynamically load goals
+            function loadGoals() {
+                const container = document.getElementById("goalCardsContainer");
+                if (!container) {
+                    console.error("Goal container element not found!");
+                    return;
+                }
 
-    const categoryStyles = {
-        "Emotional Wellness": "bg-success",
-        "Spiritual Health": "bg-primary",
-        "Family & Community": "bg-info",
-        "Economic Stability": "bg-warning",
-        "Physical Health & Nutrition": "bg-danger",
-        "Academic or Skill Goals": "bg-secondary",
-        "Therapy & Self-Reflection": "bg-dark",
-        "Substance Use & Recovery": "bg-purple",
-        "Gender-Based Wellness": "bg-teal",
-    };
+                container.innerHTML = ""; // Clear existing goals
 
-    // Goals data
-    const goalsData = [
-        {
-            id: "1",
-            category: "Emotional Wellness",
-            description: "Log daily mood using the dashboard scale for 30 days",
-            status: "In Progress",
-            startDate: "2025-05-01",
-            dueDate: "2025-05-30",
-        },
-        {
-            id: "2",
-            category: "Spiritual Health",
-            description: "Attend weekly fellowship sessions",
-            status: "Not Started",
-            startDate: "2025-05-05",
-            dueDate: "2025-06-10",
-        },
-        {
-            id: "3",
-            category: "Family & Community",
-            description: "Organize a community clean-up drive",
-            status: "Scheduled",
-            startDate: "2025-05-15",
-            dueDate: "2025-06-15",
-        },
-    ];
+                goalsData.forEach((goal) => {
+                    const categoryClass = categoryStyles[goal.category] || "bg-secondary";
 
-    // Function to dynamically load goals
-    function loadGoals() {
-        const container = document.getElementById("goalCardsContainer");
-        if (!container) {
-            console.error("Goal container element not found!");
-            return;
-        }
-
-        container.innerHTML = ""; // Clear existing goals
-
-        goalsData.forEach((goal) => {
-            const categoryClass = categoryStyles[goal.category] || "bg-secondary";
-
-            const card = document.createElement("div");
-            card.className = "col-md-6";
-            card.innerHTML = `
+                    const card = document.createElement("div");
+                    card.className = "col-md-6";
+                    card.innerHTML = `
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-header ${categoryClass} text-white text-center rounded-top">
                         <h5>${goal.category}</h5>
@@ -2132,79 +2102,77 @@ document.addEventListener("DOMContentLoaded", function () {
                         </div>
                     </div>
                 </div>`;
-            container.appendChild(card);
-        });
-    }
-
-    // Event listener for the goal form submission
-    document.getElementById("smartGoalForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const goalId = document.getElementById("goalId").value;
-        const category = document.getElementById("goalCategory").value;
-        const description = document.getElementById("goalDescription").value;
-        const status = document.getElementById("goalStatus").value;
-        const startDate = document.getElementById("goalStartDate").value;
-        const dueDate = document.getElementById("goalDueDate").value;
-
-        if (goalId) {
-            // Edit existing goal
-            const goalIndex = goalsData.findIndex((goal) => goal.id === goalId);
-            if (goalIndex >= 0) {
-                goalsData[goalIndex] = { id: goalId, category, description, status, startDate, dueDate };
+                    container.appendChild(card);
+                });
             }
-        } else {
-            // Add new goal
-            const newGoal = {
-                id: Date.now().toString(),
-                category,
-                description,
-                status,
-                startDate,
-                dueDate,
-            };
-            goalsData.push(newGoal);
-        }
 
-        loadGoals();
-        const modalInstance = bootstrap.Modal.getInstance(document.getElementById("addGoalModal"));
-        modalInstance.hide();
-    });
+            // Event listener for the goal form submission
+            document.getElementById("smartGoalForm").addEventListener("submit", function (e) {
+                e.preventDefault();
 
-    // Edit and delete functionality
-    document.getElementById("goalCardsContainer").addEventListener("click", function (e) {
-        const target = e.target;
+                const goalId = document.getElementById("goalId").value;
+                const category = document.getElementById("goalCategory").value;
+                const description = document.getElementById("goalDescription").value;
+                const status = document.getElementById("goalStatus").value;
+                const startDate = document.getElementById("goalStartDate").value;
+                const dueDate = document.getElementById("goalDueDate").value;
 
-        if (target.classList.contains("edit-goal")) {
-            const goalId = target.dataset.id;
-            const goal = goalsData.find((g) => g.id === goalId);
+                if (goalId) {
+                    // Edit existing goal
+                    const goalIndex = goalsData.findIndex((goal) => goal.id === goalId);
+                    if (goalIndex >= 0) {
+                        goalsData[goalIndex] = { id: goalId, category, description, status, startDate, dueDate };
+                    }
+                } else {
+                    // Add new goal
+                    const newGoal = {
+                        id: Date.now().toString(),
+                        category,
+                        description,
+                        status,
+                        startDate,
+                        dueDate,
+                    };
+                    goalsData.push(newGoal);
+                }
 
-            if (goal) {
-                document.getElementById("goalId").value = goal.id;
-                document.getElementById("goalCategory").value = goal.category;
-                document.getElementById("goalDescription").value = goal.description;
-                document.getElementById("goalStatus").value = goal.status;
-                document.getElementById("goalStartDate").value = goal.startDate;
-                document.getElementById("goalDueDate").value = goal.dueDate;
-                const modalInstance = new bootstrap.Modal(document.getElementById("addGoalModal"));
-                modalInstance.show();
-            }
-        }
-
-        if (target.classList.contains("delete-goal")) {
-            const goalId = target.dataset.id;
-            const goalIndex = goalsData.findIndex((g) => g.id === goalId);
-            if (goalIndex >= 0) {
-                goalsData.splice(goalIndex, 1);
                 loadGoals();
-            }
-        }
-    });
+                const modalInstance = bootstrap.Modal.getInstance(document.getElementById("addGoalModal"));
+                modalInstance.hide();
+            });
 
-    // Initialize goals on page load
-    document.addEventListener("DOMContentLoaded", loadGoals);
-</script>
+            // Edit and delete functionality
+            document.getElementById("goalCardsContainer").addEventListener("click", function (e) {
+                const target = e.target;
 
+                if (target.classList.contains("edit-goal")) {
+                    const goalId = target.dataset.id;
+                    const goal = goalsData.find((g) => g.id === goalId);
 
+                    if (goal) {
+                        document.getElementById("goalId").value = goal.id;
+                        document.getElementById("goalCategory").value = goal.category;
+                        document.getElementById("goalDescription").value = goal.description;
+                        document.getElementById("goalStatus").value = goal.status;
+                        document.getElementById("goalStartDate").value = goal.startDate;
+                        document.getElementById("goalDueDate").value = goal.dueDate;
+                        const modalInstance = new bootstrap.Modal(document.getElementById("addGoalModal"));
+                        modalInstance.show();
+                    }
+                }
+
+                if (target.classList.contains("delete-goal")) {
+                    const goalId = target.dataset.id;
+                    const goalIndex = goalsData.findIndex((g) => g.id === goalId);
+                    if (goalIndex >= 0) {
+                        goalsData.splice(goalIndex, 1);
+                        loadGoals();
+                    }
+                }
+            });
+
+            // Initialize goals on page load
+            document.addEventListener("DOMContentLoaded", loadGoals);
+        </script>
     </body>
 </html>
