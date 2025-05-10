@@ -1344,21 +1344,6 @@
 
             // Initialize charts and notifications
             document.addEventListener("DOMContentLoaded", function () {
-                new Chart(document.getElementById("mentalChart"), {
-                    type: "bar",
-                    data: {
-                        labels: ["Jan", "Mar", "Jun"],
-                        datasets: [
-                            {
-                                label: "Affective Mental Well-Being Scale",
-                                data: [10, 25, 35],
-                                backgroundColor: "#1f6aa5",
-                            },
-                        ],
-                    },
-                    options: { responsive: true },
-                });
-
                 new Chart(document.getElementById("behaviorChart"), {
                     type: "bar",
                     data: {
@@ -1375,6 +1360,73 @@
                 });
 
                 loadNotifications();
+            });
+        </script>
+
+        <script>
+            // Initialize Firebase
+            // Fetch and plot scores
+            document.addEventListener("DOMContentLoaded", function () {
+                const first = localStorage.getItem("form_005_first-name")?.trim();
+                const last = localStorage.getItem("form_006_surname")?.trim();
+                const email = localStorage.getItem("form_007_email")?.trim()?.toLowerCase();
+
+                if (!first || !last || !email) {
+                    alert("Missing user information in localStorage.");
+                    return;
+                }
+
+                // Fetch scores from Firestore
+                const userQuery = db.collection("tmrstaffResponses").where("form_005_first-name", "==", first).where("form_006_surname", "==", last).where("form_007_email", "==", email);
+
+                userQuery
+                    .get()
+                    .then((snapshot) => {
+                        if (snapshot.empty) {
+                            alert("No user data found.");
+                            return;
+                        }
+
+                        // Prepare data for the chart
+                        const labels = []; // Evaluation dates
+                        const scores = []; // Raw scores
+
+                        snapshot.forEach((doc) => {
+                            const data = doc.data();
+                            if (data.form_062_PartA_Score && data.form_000_evaluationDate) {
+                                labels.push(data.form_000_evaluationDate);
+                                scores.push(parseFloat(data.form_062_PartA_Score)); // Raw scores
+                            }
+                        });
+
+                        // Plot the chart
+                        const ctx = document.getElementById("mentalChart").getContext("2d");
+                        new Chart(ctx, {
+                            type: "bar",
+                            data: {
+                                labels: labels,
+                                datasets: [
+                                    {
+                                        label: "Affective Mental Well-Being Scale (Raw Scores)",
+                                        data: scores,
+                                        backgroundColor: "#1f6aa5",
+                                    },
+                                ],
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        max: Math.ceil(Math.max(...scores) / 10) * 10, // Adjust y-axis for better visualization
+                                    },
+                                },
+                            },
+                        });
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching data for chart:", error);
+                    });
             });
         </script>
 
