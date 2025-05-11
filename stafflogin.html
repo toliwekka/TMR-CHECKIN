@@ -150,40 +150,49 @@
         const otp = document.getElementById("otp").value.trim();
         const first = document.getElementById("firstName").value.trim();
         const last = document.getElementById("lastName").value.trim();
-        const email = document.getElementById("email").value.trim();
+        const email = document.getElementById("email").value.trim().toLowerCase();
 
         if (!otp || !first || !last || !email) {
             alert("Please fill in all fields.");
             return;
         }
 
-        confirmationResult
-            .confirm(otp)
+        confirmationResult.confirm(otp)
             .then((result) => {
                 const user = result.user;
                 console.log("User signed in:", user.phoneNumber);
 
+                console.log("Searching for:", { first, last, email });
+
                 db.collection("tmrRegister")
-                    .where("form_005_first-name", "==", first)
-                    .where("form_006_surname", "==", last)
                     .where("form_007_email", "==", email)
                     .get()
                     .then((snapshot) => {
                         if (snapshot.empty) {
-                            alert("No matching assessment records found.");
-                            return;
-                        }
+                            console.warn("No record found by email. Trying name-based fallback...");
 
-                        const docData = snapshot.docs[0].data();
-                        localStorage.clear();
-                        for (const key in docData) {
-                            localStorage.setItem(key, docData[key]);
-                        }
+                            db.collection("tmrRegister")
+                                .where("form_005_first-name", "==", first)
+                                .where("form_006_surname", "==", last)
+                                .get()
+                                .then((fallbackSnap) => {
+                                    if (fallbackSnap.empty) {
+                                        alert("No matching assessment records found with any method.");
+                                        console.warn("Both queries returned empty.");
+                                        return;
+                                    }
 
-                        document.body.classList.add("fade-out");
-                        setTimeout(() => {
-                            window.location.href = "userlandingpage.html";
-                        }, 500);
+                                    const docData = fallbackSnap.docs[0].data();
+                                    console.log("Fallback match found:", docData);
+
+                                    saveAndRedirect(user, docData);
+                                });
+                        } else {
+                            const docData = snapshot.docs[0].data();
+                            console.log("Primary email match found:", docData);
+
+                            saveAndRedirect(user, docData);
+                        }
                     })
                     .catch((err) => {
                         console.error("Firestore query error:", err);
@@ -195,7 +204,27 @@
                 alert("Invalid OTP. Please try again.");
             });
     }
+
+    // Save user data and redirect
+    function saveAndRedirect(user, docData) {
+        localStorage.clear();
+
+        // Save Firestore fields
+        for (const key in docData) {
+            localStorage.setItem(key, docData[key]);
+        }
+
+        // Save Firebase Auth details (optional)
+        localStorage.setItem("auth_phone", user.phoneNumber || "");
+        localStorage.setItem("auth_uid", user.uid || "");
+
+        document.body.classList.add("fade-out");
+        setTimeout(() => {
+            window.location.href = "userlandingpage.html";
+        }, 500);
+    }
 </script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
