@@ -1221,7 +1221,7 @@
                 alert("Missing user information in localStorage.");
                 textContentElement.textContent = "Welcome, Guest";
             } else {
-                db.collection("tmrstaffResponses")
+                db.collection("tmrRegister")
                     .where("form_005_first-name", "==", first)
                     .where("form_006_surname", "==", last)
                     .where("form_007_email", "==", email)

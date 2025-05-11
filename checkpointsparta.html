@@ -1,388 +1,371 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TMR International | T-Check Portal</title>
-  <link rel="icon" type="image/png" href="./logo.png" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root {
-      --emoji-scale: 3rem;
-      --label-scale: 1rem;
-      --question-scale: 2rem;
-    }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TMR International | T-Check Portal</title>
+        <link rel="icon" type="image/png" href="./logo.png" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            :root {
+                --emoji-scale: 3rem;
+                --label-scale: 1rem;
+                --question-scale: 2rem;
+            }
 
-    @media (max-width: 768px) {
-      :root {
-        --emoji-scale: 2.5rem;
-        --label-scale: 0.9rem;
-        --question-scale: 1.5rem;
-      }
-    }
+            @media (max-width: 768px) {
+                :root {
+                    --emoji-scale: 2.5rem;
+                    --label-scale: 0.9rem;
+                    --question-scale: 1.5rem;
+                }
+            }
 
-    @media (max-width: 480px) {
-      :root {
-        --emoji-scale: 2rem;
-        --label-scale: 0.85rem;
-        --question-scale: 1.2rem;
-      }
-    }
+            @media (max-width: 480px) {
+                :root {
+                    --emoji-scale: 2rem;
+                    --label-scale: 0.85rem;
+                    --question-scale: 1.2rem;
+                }
+            }
 
-    .emoji {
-      font-size: var(--emoji-scale);
-    }
+            .emoji {
+                font-size: var(--emoji-scale);
+            }
 
-    .label {
-      font-size: var(--label-scale);
-      margin-top: 0.5rem;
-      font-weight: 600;
-      text-align: center;
-    }
+            .label {
+                font-size: var(--label-scale);
+                margin-top: 0.5rem;
+                font-weight: 600;
+                text-align: center;
+            }
 
-    .question-text {
-      font-size: var(--question-scale);
-    }
+            .question-text {
+                font-size: var(--question-scale);
+            }
 
-    .mood-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      padding: 1.25rem;
-      border-radius: 0.75rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      width: 100px;
-      height: 140px;
-    }
+            .mood-card {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                padding: 1.25rem;
+                border-radius: 0.75rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                width: 100px;
+                height: 140px;
+            }
 
-    @media (min-width: 640px) {
-      .mood-card { width: 110px; height: 160px; }
-    }
+            @media (min-width: 640px) {
+                .mood-card {
+                    width: 110px;
+                    height: 160px;
+                }
+            }
 
-    @media (min-width: 768px) {
-      .mood-card { width: 120px; height: 180px; }
-    }
+            @media (min-width: 768px) {
+                .mood-card {
+                    width: 120px;
+                    height: 180px;
+                }
+            }
 
-    .mood-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    }
+            .mood-card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            }
 
-    .selected {
-      transform: scale(1.1);
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    }
+            .selected {
+                transform: scale(1.1);
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            }
 
-    .fade {
-      transition: opacity 0.4s ease-in-out;
-    }
+            .fade {
+                transition: opacity 0.4s ease-in-out;
+            }
 
-    .hiddenFade {
-      opacity: 0;
-      pointer-events: none;
-    }
+            .hiddenFade {
+                opacity: 0;
+                pointer-events: none;
+            }
 
-    .visibleFade {
-      opacity: 1;
-    }
+            .visibleFade {
+                opacity: 1;
+            }
 
-    .question-counter-circle {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-width: 4px;
-      border-style: solid;
-      border-radius: 9999px;
-      width: 60px;
-      height: 60px;
-      font-size: 1.25rem;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
+            .question-counter-circle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-width: 4px;
+                border-style: solid;
+                border-radius: 9999px;
+                width: 60px;
+                height: 60px;
+                font-size: 1.25rem;
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+            }
 
-    @media (min-width: 640px) {
-      .question-counter-circle {
-        width: 80px;
-        height: 80px;
-        font-size: 1.5rem;
-      }
-    }
-.fade-out {
-  opacity: 0;
-  transition: opacity 2s ease-in-out;
-}
-  </style>
-</head>
-<body id="body" class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen flex flex-col items-center justify-center text-white p-4 relative touch-none">
+            @media (min-width: 640px) {
+                .question-counter-circle {
+                    width: 80px;
+                    height: 80px;
+                    font-size: 1.5rem;
+                }
+            }
+            .fade-out {
+                opacity: 0;
+                transition: opacity 2s ease-in-out;
+            }
+        </style>
+    </head>
+    <body id="body" class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen flex flex-col items-center justify-center text-white p-4 relative touch-none">
+        <audio id="soundSelect" src="Aaliyah - At Your Best (You Are Love) Instrumental.m4a"></audio>
+        <audio id="soundFinish" src="https://assets.mixkit.co/sfx/preview/mixkit-game-level-completed-2059.mp3"></audio>
+        <audio id="soundBG" src="Mariah Carey - Touch My Body Instrumental.m4a" loop></audio>
 
-  <audio id="soundSelect" src="Aaliyah - At Your Best (You Are Love) Instrumental.m4a"></audio>
-  <audio id="soundFinish" src="https://assets.mixkit.co/sfx/preview/mixkit-game-level-completed-2059.mp3"></audio>
-  <audio id="soundBG" src="Mariah Carey - Touch My Body Instrumental.m4a" loop></audio>
+        <div class="absolute top-4 right-4 flex items-center gap-4">
+            <select id="themeSelector" class="bg-white text-black px-3 py-1 rounded shadow">
+                <option value="default" selected>🌿 Mint Fresh</option>
+                <option value="fieryRed">🔥 Fiery Red</option>
+                <option value="blushRose">🌸 Blush Rose</option>
+                <option value="midnightDark">🌚 Midnight Dark</option>
+                <option value="sereneLavender">💜 Serene Lavender</option>
+                <option value="oceanBreeze">🌊 Ocean Breeze</option>
+                <option value="goldenSunset">🌅 Golden Sunset</option>
+                <option value="softStone">🪶 Soft Stone</option>
+                <option value="softBlush">💖 Soft Blush</option>
+            </select>
+            <button id="musicToggle" class="bg-white text-black px-3 py-1 rounded shadow">🔈 Music</button>
+        </div>
 
-  <div class="absolute top-4 right-4 flex items-center gap-4">
-    <select id="themeSelector" class="bg-white text-black px-3 py-1 rounded shadow">
-      <option value="default" selected>🌿 Mint Fresh</option>
-      <option value="fieryRed">🔥 Fiery Red</option>
-      <option value="blushRose">🌸 Blush Rose</option>
-      <option value="midnightDark">🌚 Midnight Dark</option>
-      <option value="sereneLavender">💜 Serene Lavender</option>
-      <option value="oceanBreeze">🌊 Ocean Breeze</option>
-      <option value="goldenSunset">🌅 Golden Sunset</option>
-      <option value="softStone">🪶 Soft Stone</option>
-      <option value="softBlush">💖 Soft Blush</option>
-    </select>
-    <button id="musicToggle" class="bg-white text-black px-3 py-1 rounded shadow">🔈 Music</button>
-  </div>
+        <div id="avatarMood" class="text-5xl mb-4 animate-bounce">😐</div>
 
-  <div id="avatarMood" class="text-5xl mb-4 animate-bounce">😐</div>
+        <div class="max-w-4xl w-full px-10 py-14 rounded-3xl bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_20px_60px_rgba(255,255,255,0.15)] transition-all duration-700 ease-in-out transform hover:scale-[1.015]">
+            <div id="questionCounterWrapper" class="flex flex-col items-center mb-10">
+                <div id="questionCounterCircle" class="question-counter-circle border-red-400 animate-pulse bg-gradient-to-br from-white/30 to-white/5 text-white shadow-inner shadow-white/10 backdrop-blur-xl">1</div>
+                <div class="text-2xl mt-4 text-white/90 font-light tracking-widest uppercase">Over the past 14 days</div>
+            </div>
 
-  <div class="max-w-4xl w-full px-10 py-14 rounded-3xl bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_20px_60px_rgba(255,255,255,0.15)] transition-all duration-700 ease-in-out transform hover:scale-[1.015]">
-    <div id="questionCounterWrapper" class="flex flex-col items-center mb-10">
-      <div id="questionCounterCircle" class="question-counter-circle border-red-400 animate-pulse bg-gradient-to-br from-white/30 to-white/5 text-white shadow-inner shadow-white/10 backdrop-blur-xl">1</div>
-      <div class="text-2xl mt-4 text-white/90 font-light tracking-widest uppercase">Over the past 14 days</div>
-    </div>
+            <div id="questionContainer" class="mb-10 flex items-center justify-center min-h-[100px] text-center">
+                <p class="question-text font-semibold text-white leading-snug tracking-tight animate-fade-in max-w-2xl"></p>
+            </div>
 
-    <div id="questionContainer" class="mb-10 flex items-center justify-center min-h-[100px] text-center">
-      <p class="question-text font-semibold text-white leading-snug tracking-tight animate-fade-in max-w-2xl"></p>
-    </div>
+            <div id="moodOptions" class="flex justify-center gap-6 flex-wrap mt-6 px-6"></div>
 
-    <div id="moodOptions" class="flex justify-center gap-6 flex-wrap mt-6 px-6"></div>
+            <div id="selectedFeedback" class="mt-10 text-xl sm:text-2xl font-semibold text-yellow-300 text-center transition-opacity duration-500 ease-in-out opacity-90"></div>
+            <div id="completionMessage" class="mt-12 text-2xl sm:text-3xl font-extrabold hidden text-green-300 text-center animate-fade-in tracking-wide"></div>
+        </div>
 
-    <div id="selectedFeedback" class="mt-10 text-xl sm:text-2xl font-semibold text-yellow-300 text-center transition-opacity duration-500 ease-in-out opacity-90"></div>
-    <div id="completionMessage" class="mt-12 text-2xl sm:text-3xl font-extrabold hidden text-green-300 text-center animate-fade-in tracking-wide"></div>
-  </div>
+        <script>
+            function shuffleArray(array) {
+                return array
+                    .map((item) => ({ item, sort: Math.random() }))
+                    .sort((a, b) => a.sort - b.sort)
+                    .map(({ item }) => item);
+            }
 
-  <script>
-function shuffleArray(array) {
-  return array
-    .map(item => ({ item, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ item }) => item);
-}
+            const questions = shuffleArray([
+                "I’ve been feeling optimistic about the future.",
+                "I’ve been feeling useful",
+                "I’ve been feeling relaxed",
+                "I’ve been feeling interested in other people",
+                "I’ve had energy to spare",
+                "I’ve been dealing with problems well",
+                "I’ve been thinking clearly",
+                "I’ve been feeling good about myself",
+                "I’ve been feeling close to other people",
+                "I’ve been feeling confident",
+                "I’ve been able to make up my own mind about things",
+                "I’ve been feeling loved",
+                "I’ve been interested in new things",
+                "I've been feeling cheerful",
+            ]);
 
-const questions = shuffleArray([
-  "I’ve been feeling optimistic about the future.",
-  "I’ve been feeling useful",
-  "I’ve been feeling relaxed",
-  "I’ve been feeling interested in other people",
-  "I’ve had energy to spare",
-  "I’ve been dealing with problems well",
-  "I’ve been thinking clearly",
-  "I’ve been feeling good about myself",
-  "I’ve been feeling close to other people",
-  "I’ve been feeling confident",
-  "I’ve been able to make up my own mind about things",
-  "I’ve been feeling loved",
-  "I’ve been interested in new things",
-  "I've been feeling cheerful"
-]);
+            const options = shuffleArray([
+                { label: "Not at All", emoji: "😞", color: "bg-red-500", score: 1 },
+                { label: "Rarely", emoji: "😕", color: "bg-orange-400", score: 2 },
+                { label: "Some of the Time", emoji: "😐", color: "bg-yellow-300 text-black", score: 3 },
+                { label: "Often", emoji: "🙂", color: "bg-green-400", score: 4 },
+                { label: "All the Time", emoji: "😄", color: "bg-blue-500", score: 5 },
+            ]);
 
+            const themes = [
+                { border: "border-red-400", anim: "animate-pulse" },
+                { border: "border-orange-400", anim: "animate-bounce" },
+                { border: "border-yellow-300", anim: "animate-spin" },
+                { border: "border-green-400", anim: "animate-ping" },
+                { border: "border-blue-500", anim: "animate-bounce" },
+            ];
 
-const options = shuffleArray([
-      { label: "Not at All", emoji: "😞", color: "bg-red-500", score: 1 },
-      { label: "Rarely", emoji: "😕", color: "bg-orange-400", score: 2 },
-      { label: "Some of the Time", emoji: "😐", color: "bg-yellow-300 text-black", score: 3 },
-      { label: "Often", emoji: "🙂", color: "bg-green-400", score: 4 },
-      { label: "All the Time", emoji: "😄", color: "bg-blue-500", score: 5 }
-]);
+            const themePresets = {
+                default: ["from-slate-900", "to-slate-800"],
+                fieryRed: ["from-red-700", "to-red-900"],
+                blushRose: ["from-pink-300", "to-pink-500"],
+                midnightDark: ["from-gray-900", "to-black"],
+                sereneLavender: ["from-purple-300", "to-indigo-600"],
+                oceanBreeze: ["from-cyan-400", "to-blue-600"],
+                goldenSunset: ["from-yellow-400", "to-orange-500"],
+                softStone: ["from-zinc-300", "to-gray-400"],
+                softBlush: ["from-rose-200", "to-pink-300"],
+            };
 
-    const themes = [
-      { border: 'border-red-400', anim: 'animate-pulse' },
-      { border: 'border-orange-400', anim: 'animate-bounce' },
-      { border: 'border-yellow-300', anim: 'animate-spin' },
-      { border: 'border-green-400', anim: 'animate-ping' },
-      { border: 'border-blue-500', anim: 'animate-bounce' }
-    ];
+            let currentIndex = 0;
+            let totalScore = 0;
+            const responses = [];
 
-    const themePresets = {
-      default: ['from-slate-900', 'to-slate-800'],
-      fieryRed: ['from-red-700', 'to-red-900'],
-      blushRose: ['from-pink-300', 'to-pink-500'],
-      midnightDark: ['from-gray-900', 'to-black'],
-      sereneLavender: ['from-purple-300', 'to-indigo-600'],
-      oceanBreeze: ['from-cyan-400', 'to-blue-600'],
-      goldenSunset: ['from-yellow-400', 'to-orange-500'],
-      softStone: ['from-zinc-300', 'to-gray-400'],
-      softBlush: ['from-rose-200', 'to-pink-300']
-    };
+            const counterCircle = document.getElementById("questionCounterCircle");
+            const questionContainer = document.getElementById("questionContainer");
+            const moodOptionsEl = document.getElementById("moodOptions");
+            const feedback = document.getElementById("selectedFeedback");
+            const completionMessage = document.getElementById("completionMessage");
+            const body = document.getElementById("body");
+            const themeSelector = document.getElementById("themeSelector");
+            const avatar = document.getElementById("avatarMood");
+            const soundSelect = document.getElementById("soundSelect");
+            const soundFinish = document.getElementById("soundFinish");
+            const soundBG = document.getElementById("soundBG");
+            const musicToggle = document.getElementById("musicToggle");
 
-    let currentIndex = 0;
-    let totalScore = 0;
-    const responses = [];
+            musicToggle.onclick = () => {
+                if (soundBG.paused) {
+                    soundBG.play();
+                    musicToggle.textContent = "🔊 Music";
+                } else {
+                    soundBG.pause();
+                    musicToggle.textContent = "🔈 Music";
+                }
+            };
 
-    const counterCircle = document.getElementById('questionCounterCircle');
-    const questionContainer = document.getElementById('questionContainer');
-    const moodOptionsEl = document.getElementById('moodOptions');
-    const feedback = document.getElementById('selectedFeedback');
-    const completionMessage = document.getElementById('completionMessage');
-    const body = document.getElementById('body');
-    const themeSelector = document.getElementById('themeSelector');
-    const avatar = document.getElementById('avatarMood');
-    const soundSelect = document.getElementById('soundSelect');
-    const soundFinish = document.getElementById('soundFinish');
-    const soundBG = document.getElementById('soundBG');
-    const musicToggle = document.getElementById('musicToggle');
+            function updateAvatar(score) {
+                avatar.textContent = score < 20 ? "😞" : score < 35 ? "😐" : score < 50 ? "🙂" : "😄";
+            }
 
-    musicToggle.onclick = () => {
-      if (soundBG.paused) {
-        soundBG.play();
-        musicToggle.textContent = '🔊 Music';
-      } else {
-        soundBG.pause();
-        musicToggle.textContent = '🔈 Music';
-      }
-    };
+            function renderQuestion(idx) {
+                const theme = themes[idx % themes.length];
 
-    function updateAvatar(score) {
-      avatar.textContent = score < 20 ? "😞" : score < 35 ? "😐" : score < 50 ? "🙂" : "😄";
-    }
+                const Xoptions = shuffleArray([
+                    { label: "Not at All", emoji: "😞", color: "bg-red-500", score: 1 },
+                    { label: "Rarely", emoji: "😕", color: "bg-orange-400", score: 2 },
+                    { label: "Some of the Time", emoji: "😐", color: "bg-yellow-300 text-black", score: 3 },
+                    { label: "Often", emoji: "🙂", color: "bg-green-400", score: 4 },
+                    { label: "All the Time", emoji: "😄", color: "bg-blue-500", score: 5 },
+                ]);
 
-    function renderQuestion(idx) {
-      const theme = themes[idx % themes.length];
+                function XshuffleArray(array) {
+                    return array
+                        .map((value) => ({ value, sort: Math.random() }))
+                        .sort((a, b) => a.sort - b.sort)
+                        .map(({ value }) => value);
+                }
 
+                // Base options without colors
+                const baseOptions = XshuffleArray([
+                    { label: "Not at All", emoji: "😞", score: 1 },
+                    { label: "Rarely", emoji: "😕", score: 2 },
+                    { label: "Some of the Time", emoji: "😐", score: 3 },
+                    { label: "Often", emoji: "🙂", score: 4 },
+                    { label: "All the Time", emoji: "😄", score: 5 },
+                ]);
 
-const Xoptions = shuffleArray([
-      { label: "Not at All", emoji: "😞", color: "bg-red-500", score: 1 },
-      { label: "Rarely", emoji: "😕", color: "bg-orange-400", score: 2 },
-      { label: "Some of the Time", emoji: "😐", color: "bg-yellow-300 text-black", score: 3 },
-      { label: "Often", emoji: "🙂", color: "bg-green-400", score: 4 },
-      { label: "All the Time", emoji: "😄", color: "bg-blue-500", score: 5 }
-]);
+                // Possible colors (add more if desired)
+                const colorPalette = ["bg-red-500", "bg-orange-400", "bg-yellow-300 text-black", "bg-green-400", "bg-blue-500"];
 
+                // Shuffle colors and assign them to the base options
+                const shuffledColors = shuffleArray(colorPalette);
 
+                const options = baseOptions.map((opt, index) => ({
+                    ...opt,
+                    color: shuffledColors[index],
+                }));
 
+                counterCircle.innerText = idx + 1;
+                counterCircle.className = `question-counter-circle ${theme.border} ${theme.anim}`;
+                const questionP = questionContainer.querySelector("p");
+                questionP.classList.remove("visibleFade");
+                questionP.classList.add("hiddenFade");
 
-function XshuffleArray(array) {
-  return array
-    .map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
-}
+                setTimeout(() => {
+                    questionP.innerText = questions[idx];
+                    questionP.classList.remove("hiddenFade");
+                    questionP.classList.add("visibleFade");
+                }, 100);
 
-// Base options without colors
-const baseOptions = XshuffleArray([
-  { label: "Not at All", emoji: "😞", score: 1 },
-  { label: "Rarely", emoji: "😕", score: 2 },
-  { label: "Some of the Time", emoji: "😐", score: 3 },
-  { label: "Often", emoji: "🙂", score: 4 },
-  { label: "All the Time", emoji: "😄", score: 5 }
-]);
+                moodOptionsEl.innerHTML = "";
+                options.forEach((opt) => {
+                    const card = document.createElement("div");
+                    card.className = `mood-card ${opt.color}`;
+                    card.innerHTML = `<div class="emoji">${opt.emoji}</div><div class="label">${opt.label}</div>`;
+                    card.onclick = () => selectAnswer(opt, card);
+                    moodOptionsEl.appendChild(card);
+                });
 
-// Possible colors (add more if desired)
-const colorPalette = [
-  "bg-red-500",
-  "bg-orange-400",
-  "bg-yellow-300 text-black",
-  "bg-green-400",
-  "bg-blue-500"
-];
+                feedback.innerText = "";
+            }
 
-// Shuffle colors and assign them to the base options
-const shuffledColors = shuffleArray(colorPalette);
+            function selectAnswer(opt, cardEl) {
+                soundSelect.play();
+                cardEl.classList.add("selected");
+                feedback.innerText = `You selected: "${opt.label}"`;
 
-const options = baseOptions.map((opt, index) => ({
-  ...opt,
-  color: shuffledColors[index]
-}));
+                totalScore += opt.score;
+                responses.push({ q: questions[currentIndex], a: opt.label, s: opt.score });
 
+                setTimeout(() => {
+                    cardEl.classList.remove("selected");
+                    currentIndex++;
 
-
-
-
-
-
-
-      counterCircle.innerText = idx + 1;
-      counterCircle.className = `question-counter-circle ${theme.border} ${theme.anim}`;
-      const questionP = questionContainer.querySelector('p');
-      questionP.classList.remove("visibleFade");
-      questionP.classList.add("hiddenFade");
-
-      setTimeout(() => {
-        questionP.innerText = questions[idx];
-        questionP.classList.remove("hiddenFade");
-        questionP.classList.add("visibleFade");
-      }, 100);
-
-      moodOptionsEl.innerHTML = '';
-      options.forEach(opt => {
-        const card = document.createElement('div');
-        card.className = `mood-card ${opt.color}`;
-        card.innerHTML = `<div class="emoji">${opt.emoji}</div><div class="label">${opt.label}</div>`;
-        card.onclick = () => selectAnswer(opt, card);
-        moodOptionsEl.appendChild(card);
-      });
-
-      feedback.innerText = '';
-    }
-
-    function selectAnswer(opt, cardEl) {
-      soundSelect.play();
-      cardEl.classList.add('selected');
-      feedback.innerText = `You selected: "${opt.label}"`;
-
-      totalScore += opt.score;
-      responses.push({ q: questions[currentIndex], a: opt.label, s: opt.score });
-
-
-      setTimeout(() => {
-        cardEl.classList.remove('selected');
-        currentIndex++;
-
-        if (currentIndex < questions.length) {
-          renderQuestion(currentIndex);
-          updateAvatar(totalScore);
-        } else {
-
-
-  localStorage.setItem('assessmentResults', JSON.stringify(responses));
-  questionContainer.innerHTML = '';
-  moodOptionsEl.innerHTML = '';
-  feedback.innerText = '';
-  updateAvatar(totalScore);
+                    if (currentIndex < questions.length) {
+                        renderQuestion(currentIndex);
+                        updateAvatar(totalScore);
+                    } else {
+                        localStorage.setItem("assessmentResults", JSON.stringify(responses));
+                        questionContainer.innerHTML = "";
+                        moodOptionsEl.innerHTML = "";
+                        feedback.innerText = "";
+                        updateAvatar(totalScore);
                         // Save to localStorage
-                        localStorage.setItem("form_062_PartA_Score", totalScore);
-                        localStorage.setItem("form_063_PartA_Answers", JSON.stringify(responses));
-  completionMessage.innerText = `🎉 Assessment Complete! Your Score: ${totalScore} / ${questions.length * 5}`;
-  completionMessage.classList.remove('hidden');
+                        localStorage.setItem("chk_006_meta_score_part_a", totalScore);
+                        localStorage.setItem("chk_004_meta_questions_part_a", JSON.stringify(responses));
+                        completionMessage.innerText = `🎉 Assessment Complete! Your Score: ${totalScore} / ${questions.length * 5}`;
+                        completionMessage.classList.remove("hidden");
 
-  setTimeout(() => {
-    document.body.classList.add('fade-out');
-  }, 2000);
+                        setTimeout(() => {
+                            document.body.classList.add("fade-out");
+                        }, 2000);
 
-  setTimeout(() => {
-    window.location.href = 'assessmentintrob.html';
-  }, 4000);
+                        setTimeout(() => {
+                            window.location.href = "assessmentintrob.html";
+                        }, 4000);
+                    }
+                }, 800);
+            }
 
-        }
-      }, 800);
-    }
+            themeSelector.addEventListener("change", (e) => {
+                const theme = themePresets[e.target.value];
+                if (theme) {
+                    body.className = `bg-gradient-to-br ${theme[0]} ${theme[1]} min-h-screen flex flex-col items-center justify-center text-white p-4 relative`;
+                }
+            });
 
-    themeSelector.addEventListener('change', (e) => {
-      const theme = themePresets[e.target.value];
-      if (theme) {
-        body.className = `bg-gradient-to-br ${theme[0]} ${theme[1]} min-h-screen flex flex-col items-center justify-center text-white p-4 relative`;
-      }
-    });
+            // Swipe gestures
+            let touchStartX = 0;
+            body.addEventListener("touchstart", (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
 
-    // Swipe gestures
-    let touchStartX = 0;
-    body.addEventListener("touchstart", (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    });
+            body.addEventListener("touchend", (e) => {
+                const diffX = e.changedTouches[0].screenX - touchStartX;
+                if (diffX > 70 && currentIndex > 0) {
+                    currentIndex--;
+                    totalScore -= responses.pop()?.s || 0;
+                    renderQuestion(currentIndex);
+                }
+            });
 
-    body.addEventListener("touchend", (e) => {
-      const diffX = e.changedTouches[0].screenX - touchStartX;
-      if (diffX > 70 && currentIndex > 0) {
-        currentIndex--;
-        totalScore -= responses.pop()?.s || 0;
-        renderQuestion(currentIndex);
-      }
-    });
-
-    renderQuestion(currentIndex);
-  </script>
-</body>
+            renderQuestion(currentIndex);
+        </script>
+    </body>
 </html>

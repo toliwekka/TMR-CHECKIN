@@ -269,28 +269,136 @@
         <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
         <script>
+            // Firebase configuration
             const firebaseConfig = {
                 apiKey: "AIzaSyDeDsOiA6QP4qbedd_JmQ9na1hM3sf4y3Q",
                 authDomain: "mentalhealthtracker-15563.firebaseapp.com",
                 projectId: "mentalhealthtracker-15563",
             };
 
+            console.log("Initializing Firebase...");
             firebase.initializeApp(firebaseConfig);
-
             const db = firebase.firestore();
+
+            // Fetch user info from localStorage
+            const first = localStorage.getItem("form_005_first-name")?.trim();
+            const last = localStorage.getItem("form_006_surname")?.trim();
+            const email = localStorage.getItem("form_007_email")?.trim()?.toLowerCase();
+
+            console.log("Fetched user info from localStorage:", { first, last, email });
+
+            const textContentElement = document.getElementById("textContent");
+            let staffId = null;
+
+            if (!first || !last || !email) {
+                alert("Missing user information in localStorage.");
+                console.warn("User info missing:", { first, last, email });
+                textContentElement.textContent = "Welcome, Guest";
+            } else {
+                console.log("Querying Firestore for matching user...");
+                db.collection("tmrRegister")
+                    .where("form_005_first-name", "==", first)
+                    .where("form_006_surname", "==", last)
+                    .where("form_007_email", "==", email)
+                    .get()
+                    .then((snapshot) => {
+                        if (snapshot.empty) {
+                            console.warn("No matching documents found in Firestore.");
+                            textContentElement.textContent = "Welcome, Guest";
+                            alert("No user data found for the provided details.");
+                            return;
+                        }
+
+                        snapshot.forEach((doc) => {
+                            const data = doc.data();
+                            const title = `${data["form_004_title"] || ""}`.trim();
+                            const fullName = `${data["form_005_first-name"] || ""} ${data["form_006_surname"] || ""}`.trim();
+                            const department = data["form_001_hospital_department"] || "General";
+
+                            // Generate a unique checkpoint ID
+                            function generateUniqueId(prefix = "Chkpt") {
+                                const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, "");
+                                const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
+                                return `${prefix}-${timestamp}-${randomPart}`;
+                            }
+
+                            const uniqueId = generateUniqueId();
+                            localStorage.setItem("chk_000_meta_id", uniqueId);
+
+                            // Extract and store metadata
+                            staffId = data["form_000_00_StaffID"] || localStorage.getItem("form_000_00_StaffID");
+                            localStorage.setItem("chk_001_meta_client_id", staffId);
+                            localStorage.setItem("chk_002_meta_department", department);
+                            localStorage.setItem("chk_003_meta_assessment_date", new Date().toISOString());
+                            localStorage.setItem("chk_008_meta_gender", data["form_009_gender"] || "");
+                            localStorage.setItem("chk_009_meta_age_group", data["form_010_age-group"] || "");
+                            localStorage.setItem("chk_010_meta_occupation", title);
+                            localStorage.setItem("chk_011_meta_education_level", data["form_060_education"] || "");
+                            localStorage.setItem("chk_012_meta_marital_status", data["form_011_marital-status"] || "");
+                            localStorage.setItem("chk_012_meta_employment_status", data["form_016_employment"] || "");
+
+                            console.log("User document found:", data);
+                            console.log("Extracted Staff ID:", staffId);
+
+                            document.getElementById("userName").textContent = `${title} ${fullName} | ${department}`;
+                            sendLocalStorageToFirestore();
+                        });
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching user data:", error);
+                        textContentElement.textContent = "Welcome, Guest";
+                    });
+            }
+
+            function sendLocalStorageToFirestore() {
+                const filteredData = {};
+                const keys = [];
+
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith("chk_")) {
+                        keys.push(key);
+                    }
+                }
+
+                keys.sort();
+                console.log("Sorted checkpoint keys:", keys);
+
+                keys.forEach((key) => {
+                    const value = localStorage.getItem(key);
+                    try {
+                        filteredData[key] = JSON.parse(value);
+                    } catch {
+                        filteredData[key] = value;
+                    }
+                });
+
+                // Ensure Staff ID is included
+                filteredData["chk_001_meta_client_id"] = staffId;
+
+                // Custom document ID
+                const suffix = Math.floor(1 + Math.random() * 9999)
+                    .toString()
+                    .padStart(4, "0");
+                const customDocId = `${staffId}-${suffix}`;
+
+                console.log("Submitting to Firestore with ID:", customDocId);
+                console.log("Data:", filteredData);
+
+                db.collection("tmrCheckpoints")
+                    .doc(customDocId)
+                    .set(filteredData)
+                    .then(() => {
+                        console.log("Data submitted successfully.");
+                        alert("Data submitted successfully!");
+                    })
+                    .catch((error) => {
+                        console.error("Error writing document: ", error);
+                    });
+            }
         </script>
 
         <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const firstName = localStorage.getItem("form_005_first-name") || "Your";
-                const lastName = localStorage.getItem("form_005_alst-name") || "Name";
-                const fullName = `${firstName} ${lastName}`;
-
-                const name = fullName || "Your";
-                const capitalized = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-                document.getElementById("userName").textContent = `${capitalized},`;
-            });
-
             // Global variables
             let AScore = 0;
             let BScore = 0;
@@ -355,9 +463,8 @@
 
             // Function to fetch data from localStorage and retry if it's not yet available
             function getStoredData() {
-                const tempAScore = localStorage.getItem("form_062_PartA_Score");
-                const tempBScore = localStorage.getItem("form_064_PartB_Score");
-
+                const tempAScore = localStorage.getItem("chk_006_meta_score_part_a");
+                const tempBScore = localStorage.getItem("chk_007_meta_score_part_b");
 
                 // If the scores are not yet available, retry after 100ms
                 if (tempAScore === null || tempBScore === null) {
@@ -375,29 +482,7 @@
                     updateTextContent(AScore, BScore, percA, percB);
                     plotGauges(percA, percB);
                     renderAllCharts(percA, percB);
-                    sendLocalStorageToFirestore();
                 }
-            }
-
-            function sendLocalStorageToFirestore() {
-                const data = {};
-
-                // Loop through localStorage keys
-                for (let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    const value = localStorage.getItem(key);
-                    data[key] = value;
-                }
-
-                db.collection("tmrstaffResponses")
-                    .add(data)
-                    .then(() => {
-                        alert("Data submitted successfully!");
-                        console.log("Saved:", data);
-                    })
-                    .catch((error) => {
-                        console.error("Error writing document: ", error);
-                    });
             }
 
             function updateScores(AScore, BScore) {

@@ -7,6 +7,10 @@
         <link rel="icon" type="image/png" href="./logo.png" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+        <!-- Firebase SDKs (compat mode for HTML) -->
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
         <script>
             (function () {
                 // Retrieve the themes from themes.js
@@ -613,22 +617,22 @@
                                             <option value="" selected disabled>Select Department...</option>
                                             <!-- Medical Departments -->
                                             <optgroup label="TMR Hospital Departments">
-<option value="it_unit">IT Unit</option>
-<option value="customer_care">Customer Care</option>
-<option value="hr_unit">HR Unit</option>
-<option value="business_development_unit">Business Development Unit</option>
-<option value="biomedical_unit">Biomedical Unit</option>
-<option value="laboratory_unit">Laboratory Unit</option>
-<option value="radiology_unit">Radiology Unit</option>
-<option value="front_office_unit">Front Office Unit</option>
-<option value="house_keeping_unit">House Keeping Unit</option>
-<option value="security_unit">Security Unit</option>
-<option value="cafe_lazat">Café Lazat</option>
-<option value="doctors">Doctors</option>
-<option value="nurses">Nurses</option>
-<option value="pharmacy_unit">Pharmacy Unit</option>
-<option value="finance_unit">Finance Unit</option>
-<option value="quality_assurance">Quality Assurance</option>
+                                                <option value="IT Unit">IT Unit</option>
+                                                <option value="Customer Care">Customer Care</option>
+                                                <option value="HR Unit">HR Unit</option>
+                                                <option value="Business Development Unit">Business Development Unit</option>
+                                                <option value="Biomedical Unit">Biomedical Unit</option>
+                                                <option value="Laboratory Unit">Laboratory Unit</option>
+                                                <option value="Radiology Unit">Radiology Unit</option>
+                                                <option value="Front Office Unit">Front Office Unit</option>
+                                                <option value="House Keeping Unit">House Keeping Unit</option>
+                                                <option value="Security Unit">Security Unit</option>
+                                                <option value="Café Lazat">Café Lazat</option>
+                                                <option value="Doctors">Doctors</option>
+                                                <option value="Nurses">Nurses</option>
+                                                <option value="Pharmacy Unit">Pharmacy Unit</option>
+                                                <option value="Finance Unit">Finance Unit</option>
+                                                <option value="Quality Assurance">Quality Assurance</option>
                                             </optgroup>
                                         </select>
                                     </div>
@@ -714,19 +718,37 @@
                                         <!-- Common Salutations -->
                                         <!-- Common Salutations -->
                                         <optgroup label="Common">
-                                            <option value="mr">Mr.</option>
-                                            <option value="mrs">Mrs.</option>
-                                            <option value="miss">Miss</option>
-                                            <option value="ms">Ms.</option>
-                                            <option value="dr">Dr.</option>
-                                            <option value="prof">Prof.</option>
-                                            <option value="rev">Rev.</option>
-                                            <option value="sir">Sir</option>
-                                            <option value="madam">Madam</option>
-                                            <option value="consultant">Consultant</option>
-                                            <option value="specialist">Specialist</option>
-                                            <option value="medical-officer">Medical Officer</option>
-                                            <option value="clinical-officer">Clinical Officer</option>
+                                            <option value="Mr.">Mr.</option>
+                                            <option value="Mrs.">Mrs.</option>
+                                            <option value="Miss">Miss</option>
+                                            <option value="Ms.">Ms.</option>
+                                            <option value="Dr.">Dr.</option>
+                                            <option value="Prof.">Prof.</option>
+                                            <option value="Rev.">Rev.</option>
+                                            <option value="Sir">Sir</option>
+                                            <option value="Madam">Madam</option>
+                                        </optgroup>
+                                        <optgroup label="Honorary">
+                                            <option value="Hon.">Hon.</option>
+                                            <option value="H.E.">H.E. (His/Her Excellency)</option>
+                                            <option value="Rt. Hon.">Rt. Hon.</option>
+                                        </optgroup>
+                                        <optgroup label="Professional">
+                                            <option value="Adv.">Adv. (Advocate)</option>
+                                            <option value="Eng.">Eng. (Engineer)</option>
+                                            <option value="Arch.">Arch. (Architect)</option>
+                                            <option value="Pharm.">Pharm. (Pharmacist)</option>
+                                        </optgroup>
+                                        <optgroup label="Clerical">
+                                            <option value="Fr.">Fr. (Father)</option>
+                                            <option value="Sr.">Sr. (Sister)</option>
+                                            <option value="Bro.">Bro. (Brother)</option>
+                                            <option value="Pastor">Pastor</option>
+                                            <option value="Imam">Imam</option>
+                                        </optgroup>
+                                        <optgroup label="Medical">
+                                            <option value="Dr.">Dr.</option>
+                                            <option value="Med. Spec.">Med. Spec. (Medical Specialist)</option>
                                         </optgroup>
                                     </select>
                                 </div>
@@ -985,11 +1007,11 @@
                                         onchange="toggleConditionalSections()"
                                     >
                                         <option value="" disabled>Select Employment Status...</option>
-                                        <option value="employed" selected>Employed</option>
-                                        <option value="self_employed">Self-Employed</option>
-                                        <option value="student">Student</option>
-                                        <option value="unemployed">Unemployed</option>
-                                        <option value="retired">Retired</option>
+                                        <option value="Employed" selected>Employed</option>
+                                        <option value="Self-Employed">Self-Employed</option>
+                                        <option value="Student">Student</option>
+                                        <option value="Unemployed">Unemployed</option>
+                                        <option value="Retired">Retired</option>
                                     </select>
                                 </div>
                                 <script>
@@ -1003,7 +1025,11 @@
                                 <div class="conditional-section" id="employed-details" style="display: none; margin-top: 20px;">
                                     <!-- Employer Name -->
                                     <div class="form-group" style="display: none; align-items: center; margin-bottom: 10px;">
-                                        <label for="017_employer-name" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        <label
+                                            for="017_employer-name"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
                                             Employer Name
                                         </label>
 
@@ -1032,23 +1058,23 @@
                                             style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
                                         >
                                             <option value="" disabled>Select Industry...</option>
-                                            <option value="healthcare" selected>Healthcare</option>
-                                            <option value="education">Education</option>
-                                            <option value="agriculture">Agriculture</option>
-                                            <option value="construction">Construction</option>
-                                            <option value="mining">Mining</option>
-                                            <option value="it">Information Technology</option>
-                                            <option value="public_service">Public Service / Government</option>
-                                            <option value="retail">Retail / Wholesale</option>
-                                            <option value="transport">Transport / Logistics</option>
-                                            <option value="manufacturing">Manufacturing</option>
-                                            <option value="finance">Banking / Finance / Insurance</option>
-                                            <option value="hospitality">Hospitality / Tourism</option>
-                                            <option value="legal">Legal</option>
-                                            <option value="ngo">NGO / Non-Profit</option>
-                                            <option value="domestic">Domestic Work</option>
-                                            <option value="security">Security Services</option>
-                                            <option value="other">Other</option>
+                                            <option value="Healthcare" selected>Healthcare</option>
+                                            <option value="Education">Education</option>
+                                            <option value="Agriculture">Agriculture</option>
+                                            <option value="Construction">Construction</option>
+                                            <option value="Mining">Mining</option>
+                                            <option value="Information Technology">Information Technology</option>
+                                            <option value="Public Service">Public Service / Government</option>
+                                            <option value="Retail / Wholesale">Retail / Wholesale</option>
+                                            <option value="Transport / Logistics">Transport / Logistics</option>
+                                            <option value="Manufacturing">Manufacturing</option>
+                                            <option value="Banking / Finance / Insurance">Banking / Finance / Insurance</option>
+                                            <option value="Hospitality / Tourism">Hospitality / Tourism</option>
+                                            <option value="Legal">Legal</option>
+                                            <option value="NGO / Non-Profit">NGO / Non-Profit</option>
+                                            <option value="Domestic Work">Domestic Work</option>
+                                            <option value="Security Services">Security Services</option>
+                                            <option value="Other">Other</option>
                                         </select>
                                     </div>
 
@@ -1069,52 +1095,52 @@
 
                                             <!-- Clinical / Medical Staff -->
                                             <optgroup label="Clinical / Medical">
-                                                <option value="consultant-physician">Consultant Physician</option>
-                                                <option value="consultant-surgeon">Consultant Surgeon</option>
-                                                <option value="medical-officer">Medical Officer</option>
-                                                <option value="clinical-officer">Clinical Officer</option>
-                                                <option value="resident-doctor">Resident Doctor</option>
-                                                <option value="dentist">Dentist</option>
-                                                <option value="anesthetist">Anesthetist</option>
-                                                <option value="pharmacist">Pharmacist</option>
-                                                <option value="nurse">Nurse</option>
-                                                <option value="midwife">Midwife</option>
-                                                <option value="radiologist">Radiologist</option>
-                                                <option value="physiotherapist">Physiotherapist</option>
-                                                <option value="nutritionist">Nutritionist</option>
+                                                <option value="Consultant Physician">Consultant Physician</option>
+                                                <option value="Consultant Surgeon">Consultant Surgeon</option>
+                                                <option value="Medical Officer">Medical Officer</option>
+                                                <option value="Clinical Officer">Clinical Officer</option>
+                                                <option value="Resident Doctor">Resident Doctor</option>
+                                                <option value="Dentist">Dentist</option>
+                                                <option value="Anesthetist">Anesthetist</option>
+                                                <option value="Pharmacist">Pharmacist</option>
+                                                <option value="Nurse">Nurse</option>
+                                                <option value="Midwife">Midwife</option>
+                                                <option value="Radiologist">Radiologist</option>
+                                                <option value="Physiotherapist">Physiotherapist</option>
+                                                <option value="Nutritionist">Nutritionist</option>
                                             </optgroup>
 
                                             <!-- Administrative & Management -->
                                             <optgroup label="Administrative & Management">
-                                                <option value="ceo">Chief Executive Officer (CEO)</option>
-                                                <option value="hospital-director">Hospital Director</option>
-                                                <option value="medical-director">Medical Director</option>
-                                                <option value="operations-manager">Operations Manager</option>
-                                                <option value="finance-manager">Finance & Accounts Manager</option>
-                                                <option value="hr-manager">Human Resources Manager</option>
-                                                <option value="customer-relations">Customer Relations Officer</option>
-                                                <option value="public-relations">Public Relations Officer</option>
-                                                <option value="insurance-billing-officer">Insurance & Billing Officer</option>
+                                                <option value="Chief Executive Officer">Chief Executive Officer (CEO)</option>
+                                                <option value="Hospital Director">Hospital Director</option>
+                                                <option value="Medical Director">Medical Director</option>
+                                                <option value="Operations Manager">Operations Manager</option>
+                                                <option value="Finance & Accounts Manager">Finance & Accounts Manager</option>
+                                                <option value="Human Resources Manager">Human Resources Manager</option>
+                                                <option value="Customer Relations Officer">Customer Relations Officer</option>
+                                                <option value="Public Relations Officer">Public Relations Officer</option>
+                                                <option value="Insurance & Billing Officer">Insurance & Billing Officer</option>
                                             </optgroup>
 
                                             <!-- Support & Operations -->
                                             <optgroup label="Support & Operations">
-                                                <option value="housekeeping-attendant">Housekeeping Attendant</option>
-                                                <option value="security-officer">Security Officer</option>
-                                                <option value="maintenance-officer">Maintenance Officer</option>
-                                                <option value="ambulance-driver">Ambulance Driver</option>
-                                                <option value="storekeeper">Storekeeper</option>
-                                                <option value="catering-manager">Catering Manager</option>
+                                                <option value="Housekeeping Attendant">Housekeeping Attendant</option>
+                                                <option value="Security Officer">Security Officer</option>
+                                                <option value="Maintenance Officer">Maintenance Officer</option>
+                                                <option value="Ambulance Driver">Ambulance Driver</option>
+                                                <option value="Storekeeper">Storekeeper</option>
+                                                <option value="Catering Manager">Catering Manager</option>
                                             </optgroup>
 
                                             <!-- Specialized Services -->
                                             <optgroup label="Specialized Services">
-                                                <option value="radiographer">Radiographer</option>
-                                                <option value="sonographer">Sonographer</option>
-                                                <option value="anesthesia-technician">Anesthesia Technician</option>
-                                                <option value="dental-assistant">Dental Assistant</option>
-                                                <option value="physiotherapy-assistant">Physiotherapy Assistant</option>
-                                                <option value="mortuary-attendant">Mortuary Attendant</option>
+                                                <option value="Radiographer">Radiographer</option>
+                                                <option value="Sonographer">Sonographer</option>
+                                                <option value="Anesthesia Technician">Anesthesia Technician</option>
+                                                <option value="Dental Assistant">Dental Assistant</option>
+                                                <option value="Physiotherapy Assistant">Physiotherapy Assistant</option>
+                                                <option value="Mortuary Attendant">Mortuary Attendant</option>
                                             </optgroup>
 
                                             <!-- Other Option -->
@@ -1206,78 +1232,78 @@
                                         </label>
 
                                         <!-- Checkbox Container -->
-<!-- Checkbox Container -->
-<div style="display: flex; flex-direction: column; gap: 20px;">
-    <style>
-        .checkbox-wrapper {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            align-items: start;
-            background-color: #f8f8f8;
-            padding: 15px 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            gap: 20px;
-        }
+                                        <!-- Checkbox Container -->
+                                        <div style="display: flex; flex-direction: column; gap: 20px;">
+                                            <style>
+                                                .checkbox-wrapper {
+                                                    display: grid;
+                                                    grid-template-columns: auto 1fr;
+                                                    align-items: start;
+                                                    background-color: #f8f8f8;
+                                                    padding: 15px 20px;
+                                                    border-radius: 10px;
+                                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                                                    gap: 20px;
+                                                }
 
-        .checkbox-wrapper input[type="checkbox"] {
-            transform: scale(1.4);
-            margin-top: 5px;
-        }
+                                                .checkbox-wrapper input[type="checkbox"] {
+                                                    transform: scale(1.4);
+                                                    margin-top: 5px;
+                                                }
 
-        .checkbox-wrapper label {
-            display: flex;
-            flex-direction: column;
-        }
+                                                .checkbox-wrapper label {
+                                                    display: flex;
+                                                    flex-direction: column;
+                                                }
 
-        .checkbox-wrapper span {
-            font-size: 1.1rem;
-            color: #333;
-            font-weight: bold;
-        }
+                                                .checkbox-wrapper span {
+                                                    font-size: 1.1rem;
+                                                    color: #333;
+                                                    font-weight: bold;
+                                                }
 
-        .checkbox-wrapper small {
-            color: #555;
-            margin-top: 5px;
-        }
-    </style>
+                                                .checkbox-wrapper small {
+                                                    color: #555;
+                                                    margin-top: 5px;
+                                                }
+                                            </style>
 
-    <!-- Private Medical Insurance -->
-    <div class="checkbox-wrapper">
-        <input type="checkbox" id="023_private-medical-insurance" name="healthcare_options" value="private_insurance" />
-        <label for="023_private-medical-insurance">
-            <span>Private Medical Insurance</span>
-            <small>Access to private medical coverage for emergencies and regular healthcare services.</small>
-        </label>
-    </div>
+                                            <!-- Private Medical Insurance -->
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="023_private-medical-insurance" name="healthcare_options" value="private_insurance" />
+                                                <label for="023_private-medical-insurance">
+                                                    <span>Private Medical Insurance</span>
+                                                    <small>Access to private medical coverage for emergencies and regular healthcare services.</small>
+                                                </label>
+                                            </div>
 
-    <!-- Government Healthcare -->
-    <div class="checkbox-wrapper">
-        <input type="checkbox" id="024_government-healthcare" name="healthcare_options" value="government_healthcare" />
-        <label for="024-government-healthcare">
-            <span>Government Healthcare</span>
-            <small>National health services or programs provided by the government for public health coverage.</small>
-        </label>
-    </div>
+                                            <!-- Government Healthcare -->
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="024_government-healthcare" name="healthcare_options" value="government_healthcare" />
+                                                <label for="024-government-healthcare">
+                                                    <span>Government Healthcare</span>
+                                                    <small>National health services or programs provided by the government for public health coverage.</small>
+                                                </label>
+                                            </div>
 
-    <!-- Employer Clinic / Health Centre -->
-    <div class="checkbox-wrapper">
-        <input type="checkbox" id="025_employer-health-clinic" name="healthcare_options" value="employer_clinic" />
-        <label for="025_employer-health-clinic">
-            <span>Employer Clinic / Health Centre</span>
-            <small>Healthcare services provided through your employer's on-site clinic or health center.</small>
-        </label>
-    </div>
+                                            <!-- Employer Clinic / Health Centre -->
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="025_employer-health-clinic" name="healthcare_options" value="employer_clinic" />
+                                                <label for="025_employer-health-clinic">
+                                                    <span>Employer Clinic / Health Centre</span>
+                                                    <small>Healthcare services provided through your employer's on-site clinic or health center.</small>
+                                                </label>
+                                            </div>
 
-    <!-- None Option -->
-    <div class="checkbox-wrapper">
-        <input type="checkbox" id="026_no-healthcare-option" name="healthcare_options" value="none" />
-        <label for="026_no-healthcare-option">
-            <span>None</span>
-            <small>You do not have access to any of the healthcare options listed above.</small>
-        </label>
-    </div>
-</div>
+                                            <!-- None Option -->
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="026_no-healthcare-option" name="healthcare_options" value="none" />
+                                                <label for="026_no-healthcare-option">
+                                                    <span>None</span>
+                                                    <small>You do not have access to any of the healthcare options listed above.</small>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- Commute -->
@@ -1299,9 +1325,6 @@
                                         </select>
                                     </div>
                                 </div>
-
-
-
 
                                 <div class="conditional-section" id="unemployed-details" style="display: none; margin-top: 20px;">
                                     <!-- Last Job Held -->
@@ -1501,7 +1524,11 @@
                                     <!-- Support Source -->
                                     >
                                     <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                                        <label for="039_support-source" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        <label
+                                            for="039_support-source"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
                                             What is your primary source of support?
                                         </label>
                                         <select
@@ -1522,7 +1549,11 @@
                                 <div class="conditional-section" id="retired-details" style="display: none; margin-top: 20px;">
                                     <!-- Last Profession -->
                                     <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                                        <label for="040_last-profession" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        <label
+                                            for="040_last-profession"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
                                             Last Profession Before Retirement
                                         </label>
 
@@ -1537,7 +1568,11 @@
 
                                     <!-- Retirement Year -->
                                     <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                                        <label for="041_retirement-year" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        <label
+                                            for="041_retirement-year"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
                                             Year of Retirement
                                         </label>
 
@@ -1580,7 +1615,11 @@
 
                                     <!-- Pension Access -->
                                     <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                                        <label for="043_pension-access" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        <label
+                                            for="043_pension-access"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
                                             Do you receive any pension or retirement benefits?
                                         </label>
                                         <select
@@ -1614,7 +1653,11 @@
 
                                     <!-- Living Situation -->
                                     <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                                        <label for="045_living-situation" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        <label
+                                            for="045_living-situation"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
                                             Living Situation
                                         </label>
                                         <select
@@ -1630,7 +1673,6 @@
                                         </select>
                                     </div>
                                 </div>
-
 
                                 <div class="conditional-section" id="student-details" style="display: none;">
                                     <!-- Institution / Facility Picker -->
@@ -1735,10 +1777,18 @@
 
                                     <!-- Attendance Mode -->
                                     <div class="attendance_mode" style="display: flex; align-items: center; margin-bottom: 10px;">
-                                        <label for="048_attendance_mode" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        <label
+                                            for="048_attendance_mode"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
                                             Attendance Mode
                                         </label>
-                                        <select id="048_attendance_mode" class="form-group" style="flex-grow: 1; min-width: 250px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;">
+                                        <select
+                                            id="048_attendance_mode"
+                                            class="form-group"
+                                            style="flex-grow: 1; min-width: 250px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;"
+                                        >
                                             <option disabled selected>Select Mode</option>
                                             <option>Full-Time</option>
                                             <option>Part-Time</option>
@@ -1753,7 +1803,11 @@
                                             Peer Support
                                         </label>
 
-                                        <select id="049_peer_support" class="form-group" style="flex-grow: 1; min-width: 250px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;">
+                                        <select
+                                            id="049_peer_support"
+                                            class="form-group"
+                                            style="flex-grow: 1; min-width: 250px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;"
+                                        >
                                             <option disabled selected>Do you feel supported?</option>
                                             <option>Yes</option>
                                             <option>No</option>
@@ -1766,7 +1820,11 @@
                                         <label for="050_visit_reason" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
                                             Reason for Visit
                                         </label>
-                                        <select id="050_visit_reason" class="form-group" style="flex-grow: 1; min-width: 250px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;">
+                                        <select
+                                            id="050_visit_reason"
+                                            class="form-group"
+                                            style="flex-grow: 1; min-width: 250px; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px;"
+                                        >
                                             <option disabled selected>Select Reason</option>
                                             <option>Routine Checkup</option>
                                             <option>Mental Health Referral</option>
@@ -1845,7 +1903,11 @@
 
                                 <div class="conditional-section" id="business-details" style="display: none;">
                                     <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                                        <label for="054_business-name" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        <label
+                                            for="054_business-name"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
                                             Business Name:
                                         </label>
                                         <input
@@ -1857,7 +1919,11 @@
                                         />
                                     </div>
                                     <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                                        <label for="055_business-sector" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        <label
+                                            for="055_business-sector"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
                                             Business Sector:
                                         </label>
 
@@ -1925,7 +1991,11 @@
                                     </div>
 
                                     <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                                        <label for="059_years-in-service" class="MS-add-form-label" style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;">
+                                        <label
+                                            for="059_years-in-service"
+                                            class="MS-add-form-label"
+                                            style="width: 150px; min-width: 150px; background-color: var(--primary); padding: 0.5rem; border-radius: 5px; color: #fff; margin-right: 10px;"
+                                        >
                                             Years of Experience:
                                         </label>
 
@@ -1955,15 +2025,15 @@
                                         document.getElementById("professional-details").style.display = "none";
 
                                         // Show the appropriate section based on the selected employment status
-                                        if (employmentStatus === "student") {
+                                        if (employmentStatus === "Student") {
                                             document.getElementById("student-details").style.display = "block";
-                                        } else if (employmentStatus === "unemployed") {
+                                        } else if (employmentStatus === "Unemployed") {
                                             document.getElementById("unemployed-details").style.display = "block"; // Assume business details for self-employed/freelance
-                                        } else if (employmentStatus === "self_employed" || employmentStatus === "freelance") {
+                                        } else if (employmentStatus === "Self_employed" || employmentStatus === "freelance") {
                                             document.getElementById("business-details").style.display = "block"; // Assume business details for self-employed/freelance
-                                        } else if (employmentStatus === "retired") {
+                                        } else if (employmentStatus === "Retired") {
                                             document.getElementById("retired-details").style.display = "block"; // Assume business details for self-employed/freelance
-                                        } else if (employmentStatus === "employed") {
+                                        } else if (employmentStatus === "Employed") {
                                             document.getElementById("employed-details").style.display = "block";
                                         }
                                     }
@@ -1990,15 +2060,15 @@
                                         style="flex-grow: 1; font-family: 'Poppins', sans-serif; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
                                     >
                                         <option value="" selected disabled>Select Education Level...</option>
-                                        <option value="none">No Formal Education</option>
-                                        <option value="primary">Primary Education</option>
-                                        <option value="secondary">Secondary Education / High School</option>
-                                        <option value="vocational">Vocational / Technical Training</option>
-                                        <option value="diploma">Diploma</option>
-                                        <option value="bachelors">Bachelor's Degree</option>
-                                        <option value="postgraduate">Postgraduate Diploma</option>
-                                        <option value="masters">Master's Degree</option>
-                                        <option value="doctorate">Doctorate (PhD)</option>
+                                        <option value="No Formal Education">No Formal Education</option>
+                                        <option value="Primary Education">Primary Education</option>
+                                        <option value="Secondary Education / High School">Secondary Education / High School</option>
+                                        <option value="Vocational / Technical Training">Vocational / Technical Training</option>
+                                        <option value="Diploma">Diploma</option>
+                                        <option value="Bachelor's Degree">Bachelor's Degree</option>
+                                        <option value="Postgraduate Diploma">Postgraduate Diploma</option>
+                                        <option value="Master's Degree">Master's Degree</option>
+                                        <option value="Doctorate (PhD)">Doctorate (PhD)</option>
                                         <option value="other">Other</option>
                                     </select>
                                 </div>
@@ -2067,6 +2137,7 @@
 
                                 <script>
                                     localStorage.clear();
+
                                     document.addEventListener("DOMContentLoaded", () => {
                                         const consentCheckbox = document.getElementById("consent-chkbx");
                                         const consentBtn = document.getElementById("chk-header");
@@ -2101,22 +2172,20 @@
                                             return { isValid, errorMessage };
                                         }
 
-                                        // ✅ Respond to checkbox change AFTER the change happens
+                                        // ✅ Handle checkbox changes
                                         consentCheckbox.addEventListener("change", () => {
                                             const { isValid, errorMessage } = validateFormFields();
 
-                                            console.log("Checkbox was toggled. Is valid:", isValid);
                                             if (!isValid) {
                                                 alert("Please complete the following fields before giving consent:\n\n" + errorMessage);
-                                                consentCheckbox.checked = false; // Immediately revert checkbox
+                                                consentCheckbox.checked = false;
                                                 consentBtn.disabled = true;
                                             } else {
                                                 consentBtn.disabled = false;
-                                                console.log("Consent allowed. Button enabled:", !consentBtn.disabled);
                                             }
                                         });
 
-                                        // ✅ Auto-disable consent button on any form change
+                                        // ✅ Disable consent button on field changes
                                         const fieldIds = ["department", "hospital address", "title", "first-name", "last-name", "email", "phone", "age-group", "employment", "education", "gender"];
 
                                         fieldIds.forEach((id) => {
@@ -2127,13 +2196,12 @@
                                                     if (!isValid) {
                                                         consentCheckbox.checked = false;
                                                         consentBtn.disabled = true;
-                                                        console.log("Form became invalid. Consent reset.");
                                                     }
                                                 });
                                             }
                                         });
 
-                                        // ✅ Final check on consent button click
+                                        // ✅ Validate fields before consent button click
                                         consentBtn.addEventListener("click", (e) => {
                                             e.preventDefault();
                                             const { isValid, errorMessage } = validateFormFields();
@@ -2145,7 +2213,6 @@
                                                 return;
                                             }
 
-                                            // Wait for checkbox to fully update before checking
                                             setTimeout(() => {
                                                 if (!consentCheckbox.checked) {
                                                     consentBtn.disabled = false;
@@ -2156,22 +2223,20 @@
                                     });
 
                                     document.addEventListener("DOMContentLoaded", () => {
+                                        // Save First Name to localStorage
                                         const firstNameInput = document.getElementById("first-name");
-
                                         if (firstNameInput) {
-                                            // Update localStorage on blur (when user leaves the input)
                                             firstNameInput.addEventListener("blur", () => {
-                                                const firstNames = firstNameInput.value.trim();
-                                                if (firstNames) {
-                                                    localStorage.setItem("firstNames", firstNames);
+                                                const firstName = firstNameInput.value.trim();
+                                                if (firstName) {
+                                                    localStorage.setItem("firstNames", firstName);
                                                 }
                                             });
 
-                                            // Optional: Update localStorage on typing (live as they type)
                                             firstNameInput.addEventListener("input", () => {
-                                                const firstNames = firstNameInput.value.trim();
-                                                if (firstNames) {
-                                                    localStorage.setItem("firstNames", firstNames);
+                                                const firstName = firstNameInput.value.trim();
+                                                if (firstName) {
+                                                    localStorage.setItem("firstNames", firstName);
                                                 }
                                             });
                                         }
@@ -2180,11 +2245,54 @@
                                     document.addEventListener("DOMContentLoaded", () => {
                                         const inputs = document.querySelectorAll("input, textarea, select");
 
+                                        // Utility: Generate unique IDs
+                                        const generateUniqueID = (prefix) => {
+                                            const now = new Date();
+                                            const datePart = now
+                                                .toISOString()
+                                                .replace(/[-:.TZ]/g, "")
+                                                .slice(0, 14);
+                                            const randomPart = Math.random().toString(36).substr(2, 3).toUpperCase();
+                                            return `${prefix}-${datePart}-${randomPart}`;
+                                        };
+
+                                        // Define keys for unique IDs and default values
+                                        const keys = {
+                                            timestamp: "form_000_evaluationDate",
+                                            staffID: "form_000_00_StaffID",
+                                            familyMemberID: "form_000_01_FamilyMemberID",
+                                            notificationsID: "form_062_NotificationID",
+                                            upcomingEventsID: "form_063_UpcomingEventsID",
+                                            smartGoalsID: "form_064_smartGoalsID",
+                                            schedulerID: "form_065_schedulerID",
+                                            order: "form_field_order",
+                                        };
+
+                                        // Initialize unique IDs
+                                        const initID = (key, generator, prefix) => {
+                                            if (!localStorage.getItem(key)) {
+                                                const id = generator(prefix);
+                                                localStorage.setItem(key, id);
+                                            }
+                                        };
+
+                                        initID(keys.staffID, generateUniqueID, "TMR-STAFF");
+                                        initID(keys.familyMemberID, (prefix) => `${localStorage.getItem(keys.staffID)}-000`, "");
+                                        initID(keys.notificationsID, generateUniqueID, "NOTIF");
+                                        initID(keys.upcomingEventsID, generateUniqueID, "EVENT");
+                                        initID(keys.smartGoalsID, generateUniqueID, "SMART");
+                                        initID(keys.schedulerID, generateUniqueID, "SCHED");
+
+                                        // Initialize timestamp
+                                        if (!localStorage.getItem(keys.timestamp)) {
+                                            localStorage.setItem(keys.timestamp, new Date().toISOString());
+                                        }
+
+                                        // Restore and save input field values
                                         inputs.forEach((input) => {
                                             const key = `form_${input.id || input.name}`;
-
-                                            // Restore previous value from localStorage
                                             const savedValue = localStorage.getItem(key);
+
                                             if (savedValue !== null) {
                                                 if (input.type === "checkbox") {
                                                     input.checked = savedValue === "true";
@@ -2193,18 +2301,17 @@
                                                 }
                                             }
 
-                                            // Save value on 'input', 'change', and 'blur' — supports both manual and programmatic fills
-                                            const saveToLocal = () => {
+                                            const saveValue = () => {
                                                 const value = input.type === "checkbox" ? input.checked : input.value.trim();
                                                 localStorage.setItem(key, value);
                                             };
 
-                                            input.addEventListener("input", saveToLocal);
-                                            input.addEventListener("change", saveToLocal);
-                                            input.addEventListener("blur", saveToLocal);
+                                            input.addEventListener("input", saveValue);
+                                            input.addEventListener("change", saveValue);
+                                            input.addEventListener("blur", saveValue);
                                         });
 
-                                        // MutationObserver for detecting value changes (e.g., by autocomplete APIs)
+                                        // Monitor changes with MutationObserver
                                         const observer = new MutationObserver(() => {
                                             inputs.forEach((input) => {
                                                 const key = `form_${input.id || input.name}`;
@@ -2407,12 +2514,81 @@
         <script src="themes.js"></script>
         <!-- SCRIPT -->
         <script>
+            // Firebase configuration object
+            const firebaseConfig = {
+                apiKey: "AIzaSyDeDsOiA6QP4qbedd_JmQ9na1hM3sf4y3Q",
+                authDomain: "mentalhealthtracker-15563.firebaseapp.com",
+                projectId: "mentalhealthtracker-15563",
+            };
+
+            // Initialize Firebase app
+            console.debug("Initializing Firebase...");
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+                console.debug("Firebase initialized.");
+            } else {
+                firebase.app();
+                console.debug("Firebase app already initialized.");
+            }
+
+            // Initialize Firestore
+            const db = firebase.firestore();
+            console.debug("Firestore initialized:", db);
+
+            // ✅ FIXED: Make this function async so we can await it
+            async function sendLocalStorageToFirestore() {
+                const data = {};
+                console.debug("Starting sendLocalStorageToFirestore...");
+
+                // Loop through localStorage keys
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith("form_0")) {
+                        const value = localStorage.getItem(key);
+                        data[key] = value;
+                    }
+                }
+
+                const customDocID = localStorage.getItem("form_000_00_StaffID");
+
+                if (!customDocID) {
+                    alert("StaffID is missing. Cannot submit data.");
+                    throw new Error("StaffID is missing. Cannot submit data.");
+                }
+
+                console.debug("Custom Document ID:", customDocID);
+                console.debug("Data to be sent:", JSON.stringify(data));
+
+                // ✅ Return the Firestore Promise so it can be awaited
+                await db.collection("tmrRegister").doc(customDocID).set(data);
+
+                console.log("Data successfully saved with ID:", customDocID);
+            }
+
             document.addEventListener("DOMContentLoaded", () => {
+                console.debug("DOM fully loaded and parsed.");
+
                 const btn = document.getElementById("chk-header");
 
-                btn.addEventListener("click", () => {
-                    window.location.href = "assessmentintroa.html";
-                });
+                if (btn) {
+                    console.debug("Button with ID 'chk-header' found. Adding event listener.");
+
+                    btn.addEventListener("click", async () => {
+                        console.debug("Button clicked. Starting data submission.");
+
+                        try {
+                            await sendLocalStorageToFirestore();
+                            alert("Data submitted successfully!");
+                            console.debug("Redirecting to assessmentintroa.html...");
+                            window.location.href = "assessmentintroa.html";
+                        } catch (error) {
+                            console.error("Failed to send data to Firestore:", error);
+                            alert("Error submitting data. Please try again.");
+                        }
+                    });
+                } else {
+                    console.error("Error: Button with ID 'chk-header' not found.");
+                }
             });
         </script>
 
