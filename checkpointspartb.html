@@ -1014,71 +1014,71 @@
             const userResponses = {}; // Stores numeric score per question
             const userAnswers = {}; // Stores question and answer text
 
-function renderQuestion(index) {
-    const q = questions[index];
-    const optionsContainer = document.getElementById("optionsContainer");
+            function renderQuestion(index) {
+                const q = questions[index];
+                const optionsContainer = document.getElementById("optionsContainer");
 
-    // Update question text and metadata
-    document.getElementById("questionSection").textContent = q.section;
-    document.getElementById("questionMeta").textContent = q.pastcoupledays;
-    document.getElementById("questionText").textContent = q.text;
-    document.getElementById("questionBadge").textContent = index + 1;
+                // Update question text and metadata
+                document.getElementById("questionSection").textContent = q.section;
+                document.getElementById("questionMeta").textContent = q.pastcoupledays;
+                document.getElementById("questionText").textContent = q.text;
+                document.getElementById("questionBadge").textContent = index + 1;
 
-    // Clear previous options
-    optionsContainer.innerHTML = "";
+                // Clear previous options
+                optionsContainer.innerHTML = "";
 
-    // Generate answer buttons
-    (answerSets[q.answerType] || []).forEach((opt) => {
-        const btn = document.createElement("button");
-        btn.className = "option";
-        btn.textContent = opt;
+                // Generate answer buttons
+                (answerSets[q.answerType] || []).forEach((opt) => {
+                    const btn = document.createElement("button");
+                    btn.className = "option";
+                    btn.textContent = opt;
 
-        if (opt.length > 6) btn.classList.add("long-option");
+                    if (opt.length > 6) btn.classList.add("long-option");
 
-        btn.addEventListener("click", () => {
-            // Clear previous selection visuals
-            optionsContainer.querySelectorAll(".option").forEach((b) => b.classList.remove("selected"));
-            btn.classList.add("selected");
+                    btn.addEventListener("click", () => {
+                        // Clear previous selection visuals
+                        optionsContainer.querySelectorAll(".option").forEach((b) => b.classList.remove("selected"));
+                        btn.classList.add("selected");
 
-            // Extract score from the selected option
-            let score = 0;
-            const match = opt.match(/^(\d+)\s*=?/); // Match "3 = Sometimes"
-            score = match ? parseInt(match[1]) : !isNaN(opt) ? parseInt(opt) : 0;
+                        // Extract score from the selected option
+                        let score = 0;
+                        const match = opt.match(/^(\d+)\s*=?/); // Match "3 = Sometimes"
+                        score = match ? parseInt(match[1]) : !isNaN(opt) ? parseInt(opt) : 0;
 
-            // Adjust total score if answer changes
-            if (userResponses[index] !== undefined) {
-                scoreTotal -= userResponses[index];
-            }
-            userResponses[index] = score;
-            scoreTotal += score;
+                        // Adjust total score if answer changes
+                        if (userResponses[index] !== undefined) {
+                            scoreTotal -= userResponses[index];
+                        }
+                        userResponses[index] = score;
+                        scoreTotal += score;
 
-            // Save question and answer data
-            userAnswers[index] = { q: q.text, s: opt };
-            localStorage.setItem("chk_007_meta_score_part_b", scoreTotal);
-            localStorage.setItem("chk_005_meta_questions_part_b", JSON.stringify(userAnswers));
+                        // Save question and answer data
+                        userAnswers[index+1] = { category: q.section, question: q.text, score: opt };
+                        localStorage.setItem("chk_007_meta_score_part_b", scoreTotal);
+                        localStorage.setItem("chk_005_meta_questions_part_b", JSON.stringify(userAnswers));
 
-            // Handle final question or move to the next question
-            setTimeout(() => {
-                if (index === questions.length - 1) {
-                    document.getElementById("chk-header").style.display = "block";
-                    console.log("✅ Final Score:", scoreTotal);
+                        // Handle final question or move to the next question
+                        setTimeout(() => {
+                            if (index === questions.length - 1) {
+                                document.getElementById("chk-header").style.display = "block";
+                                console.log("✅ Final Score:", scoreTotal);
 
-                    // Disable buttons after the final question
-                    optionsContainer.querySelectorAll(".option").forEach((b) => {
-                        b.disabled = true;
-                        b.classList.add("disabled");
+                                // Disable buttons after the final question
+                                optionsContainer.querySelectorAll(".option").forEach((b) => {
+                                    b.disabled = true;
+                                    b.classList.add("disabled");
+                                });
+                            } else {
+                                currentIndex++;
+                                renderQuestion(currentIndex);
+                            }
+                        }, 200);
                     });
-                } else {
-                    currentIndex++;
-                    renderQuestion(currentIndex);
-                }
-            }, 200);
-        });
 
-        // Add the button to the container
-        optionsContainer.appendChild(btn);
-    });
-}
+                    // Add the button to the container
+                    optionsContainer.appendChild(btn);
+                });
+            }
 
             // Initialize and apply theme as early as possible
             let currentTheme = localStorage.getItem("theme") || "default";
