@@ -838,46 +838,50 @@
                         <p class="mt-3 text-muted">Track your key performance indicators to ensure you’re on track with your organizational goals.</p>
                     </div>
 
-                    <!-- Progress Tracking Section -->
-                    <div id="progress-tracking" class="tab-content-section">
-                        <h3 class="mb-4"><i class="fas fa-stream text-primary me-2"></i> Progress Tracking</h3>
-                        <div class="row my-4">
-                            <div class="col-md-6">
-                                <div class="card card-custom p-3">
-    <h5>
-        <i class="fas fa-chart-bar text-primary me-2"></i>
-        Well-Being Trends by Category
-        <span data-bs-toggle="tooltip" title="Shows your performance trend across well-being categories from the last 3 assessments.">
-            <i class="fas fa-circle-info text-muted ms-1"></i>
-        </span>
-    </h5>
-    <canvas id="groupedBarChart"></canvas>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card card-custom p-3">
-    <h5>
-        <i class="fas fa-heartbeat text-danger me-2"></i>
-        Your Current Well-Being Snapshot
-        <span data-bs-toggle="tooltip" title="A radar view of your latest well-being assessment across all categories.">
-            <i class="fas fa-circle-info text-muted ms-1"></i>
-        </span>
-    </h5>
-    <canvas id="wellBeingRadarChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
+<!-- Progress Tracking Section -->
+<div id="progress-tracking" class="tab-content-section">
+    <h3 class="mb-4"><i class="fas fa-stream text-primary me-2"></i> Progress Tracking</h3>
+    <!-- Progress Tracking Section -->
+    <div id="progress-tracking" class="tab-content-section">
+        <h3 class="mb-4"><i class="fas fa-stream text-primary me-2"></i> Progress Tracking</h3>
+        <div class="row my-4">
+            <div class="col-md-6">
+                <div class="card card-custom p-3">
+                    <h5>
+                        <i class="fas fa-chart-bar text-primary me-2"></i>
+                        Well-Being Trends by Category
+                        <span data-bs-toggle="tooltip" title="Shows your performance trend across well-being categories from the last 3 assessments.">
+                            <i class="fas fa-circle-info text-muted ms-1"></i>
+                        </span>
+                    </h5>
+                    <canvas id="groupedBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4">
+            <div class="col-md-6">
+                <div class="card card-custom p-3">
+                    <h5>
+                        <i class="fas fa-heartbeat text-danger me-2"></i>
+                        Your Current Well-Being Snapshot
+                        <span data-bs-toggle="tooltip" title="A radar view of your latest well-being assessment across all categories.">
+                            <i class="fas fa-circle-info text-muted ms-1"></i>
+                        </span>
+                    </h5>
+                    <canvas id="wellBeingRadarChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="card card-custom p-3">
+            <div id="progressComparisonChart" style="width: 100%; height: 400px;"></div>
+        </div>
+        <div class="card card-custom p-3">
+            <div id="progressChart" style="width: 100%; height: 400px;"></div>
+        </div>
 
-
-                       <div class="card card-custom p-3">
-                            <canvas id="groupedBarChart"></canvas>
-                        </div>
-                        <div class="card card-custom p-3">
-                            <canvas id="wellBeingRadarChart"></canvas>
-                        </div>
-
-                        <p class="mt-3 text-muted">This section provides an overview of task progress, milestones, and overall project health.</p>
-                    </div>
+        <p class="mt-3 text-muted">This section provides an overview of task progress, milestones, and overall project health.</p>
+    </div>
+</div>
 
                     <!-- Daily Scheduler Section -->
                     <div id="scheduler" class="tab-content-section">
@@ -1391,90 +1395,6 @@
             }
         </script>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
-                if (!staffId) {
-                    alert("Missing staff ID.");
-                    return;
-                }
-
-                // Load Google Charts
-                google.charts.load("current", { packages: ["corechart"] });
-                google.charts.setOnLoadCallback(fetchAndRenderComparisonChart);
-
-                function fetchAndRenderComparisonChart() {
-                    const db = firebase.firestore();
-
-                    db.collection("tmrCheckpoints")
-                        .where("chk_001_meta_client_id", "==", staffId)
-                        .orderBy("chk_003_meta_assessment_date", "desc")
-                        .limit(2)
-                        .get()
-                        .then((snapshot) => {
-                            if (snapshot.empty || snapshot.size < 2) {
-                                alert("Not enough assessments to compare.");
-                                return;
-                            }
-
-                            const docs = snapshot.docs.map((doc) => doc.data());
-                            const [latest, previous] = docs;
-
-                            // Convert Part B Firebase Map to usable object
-                            function extractCategoryAverages(partBMap) {
-                                const scores = {};
-                                Object.values(partBMap || {}).forEach((q) => {
-                                    const category = q.category?.trim() || "Other";
-                                    const val = parseFloat(q.score || 0);
-                                    if (!scores[category]) scores[category] = [];
-                                    scores[category].push(val);
-                                });
-
-                                const result = {};
-                                for (const [cat, vals] of Object.entries(scores)) {
-                                    const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
-                                    result[cat] = Math.round((avg / 10) * 100); // Normalize to %
-                                }
-                                return result;
-                            }
-
-                            const latestScores = extractCategoryAverages(latest.chk_005_meta_questions_part_b);
-                            const prevScores = extractCategoryAverages(previous.chk_005_meta_questions_part_b);
-
-                            const allCategories = new Set([...Object.keys(latestScores), ...Object.keys(prevScores)]);
-
-                            const data = [["Category", "Latest (%)", "Previous (%)"]];
-                            allCategories.forEach((cat) => {
-                                data.push([cat, latestScores[cat] ?? 0, prevScores[cat] ?? 0]);
-                            });
-
-                            const chartData = google.visualization.arrayToDataTable(data);
-
-                            const options = {
-                                title: "Well-Being Comparison: Latest vs Previous Assessment",
-                                hAxis: {
-                                    title: "Category",
-                                },
-                                vAxis: {
-                                    title: "Score (%)",
-                                    minValue: 0,
-                                    maxValue: 100,
-                                },
-                                colors: ["#4CAF50", "#FFC107"],
-                                bar: { groupWidth: "60%" },
-                                legend: { position: "top" },
-                                chartArea: { width: "80%", height: "70%" },
-                            };
-
-                            const chart = new google.visualization.ColumnChart(document.getElementById("progressComparisonChart"));
-                            chart.draw(chartData, options);
-                        })
-                        .catch((error) => {
-                            console.error("Error fetching assessments:", error);
-                        });
-                }
-            });
-        </script>
 
         <script>
             function toggleSubmenu(element) {
