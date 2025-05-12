@@ -2233,41 +2233,112 @@ function loadProgressTrackingChart() {
                 }
 
                 // Create and load progress tracking chart
-                function loadProgressTrackingChart() {
-                    const progressCanvas = document.getElementById("progressTrackingChart");
-                    if (progressCanvas && window.progressChartInstance) {
-                        destroyChartIfExists(window.progressChartInstance);
-                    }
+function loadProgressTrackingChart() {
+    const progressCanvas = document.getElementById("progressTrackingChart");
+    if (!progressCanvas) {
+        console.error("Canvas element not found.");
+        return;
+    }
 
-                    window.progressChartInstance = new Chart(progressCanvas.getContext("2d"), {
-                        type: "line",
-                        data: {
-                            labels: ["Task 1", "Task 2", "Task 3"],
-                            datasets: [
-                                {
-                                    label: "Progress (%)",
-                                    data: [60, 75, 85],
-                                    backgroundColor: "rgba(255, 159, 64, 0.2)",
-                                    borderColor: "rgba(255, 159, 64, 1)",
-                                    borderWidth: 2,
-                                    pointRadius: 5,
-                                    pointBackgroundColor: "rgba(255, 159, 64, 1)",
-                                },
-                            ],
-                        },
-                        options: {
-                            responsive: true,
-                            scales: {
-                                x: {
-                                    title: { display: true, text: "Tasks" },
-                                },
-                                y: {
-                                    title: { display: true, text: "Progress (%)" },
-                                },
-                            },
-                        },
-                    });
+    const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
+    if (!staffId) {
+        alert("Missing staff ID.");
+        return;
+    }
+
+    db.collection("tmrCheckpoints")
+        .where("chk_001_meta_client_id", "==", staffId)
+        .orderBy("chk_003_meta_assessment_date", "desc")
+        .limit(1)
+        .get()
+        .then((snapshot) => {
+            if (snapshot.empty) {
+                alert("No assessment data found.");
+                return;
+            }
+
+            const doc = snapshot.docs[0].data();
+            const partB = doc.chk_005_meta_questions_part_b || [];
+
+            // Prepare the categories and their corresponding scores
+            const categories = {
+                "Life Satisfaction and Life Evaluation": [],
+                "Physical Health, Mental Health, and Physical Function": [],
+                "Meaning and Purpose": [],
+                "Character and Caring": [],
+                "Relationships": [],
+                "Community and Social Support": [],
+                "Financial Evaluation and Stability": [],
+                "Affect": [],
+            };
+
+            partB.forEach(item => {
+                const section = item.section?.trim() || "Other";
+                const score = parseFloat(item.s || 0);
+                if (categories[section]) {
+                    categories[section].push(score);
                 }
+            });
+
+            // Prepare the labels and average progress data for the line chart
+            const labels = [];
+            const data = [];
+
+            for (const [section, scores] of Object.entries(categories)) {
+                if (scores.length > 0) {
+                    const avgScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+                    labels.push(section);
+                    data.push(avgScore);
+                }
+            }
+
+            // Initialize chart if it exists
+            if (window.progressChartInstance) {
+                window.progressChartInstance.destroy();
+            }
+
+            window.progressChartInstance = new Chart(progressCanvas.getContext("2d"), {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Progress (%)",
+                            data: data,
+                            backgroundColor: "rgba(255, 159, 64, 0.2)",
+                            borderColor: "rgba(255, 159, 64, 1)",
+                            borderWidth: 2,
+                            fill: true,
+                            pointRadius: 5,
+                            pointBackgroundColor: "rgba(255, 159, 64, 1)",
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: { display: true, text: "Well-Being Domains" },
+                        },
+                        y: {
+                            title: { display: true, text: "Progress (%)" },
+                            min: 0,
+                            max: 100,
+                        },
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.4, // smooth curve
+                        },
+                    },
+                },
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching data:", error);
+        });
+}
+
 
                 // Function to switch tabs dynamically
                 function switchTab(tabId) {
@@ -2304,9 +2375,51 @@ function loadProgressTrackingChart() {
         </script>
 
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Bar Chart
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
+        if (!staffId) {
+            alert("Missing staff ID.");
+            return;
+        }
+
+        // Fetch the latest data for Part B
+        db.collection("tmrCheckpoints")
+            .where("chk_001_meta_client_id", "==", staffId)
+            .orderBy("chk_003_meta_assessment_date", "desc")
+            .limit(1)
+            .get()
+            .then((snapshot) => {
+                if (snapshot.empty) {
+                    alert("No assessment data found.");
+                    return;
+                }
+
+                const doc = snapshot.docs[0].data();
+                const partB = doc.chk_005_meta_questions_part_b || [];
+                
+                // Prepare the Progress Chart (Bar Chart)
+                const sectionScores = {};
+                partB.forEach(item => {
+                    const section = item.section?.trim() || "Other";
+                    const score = parseFloat(item.s || 0);
+                    if (!sectionScores[section]) {
+                        sectionScores[section] = [];
+                    }
+                    sectionScores[section].push(score);
+                });
+
+                const labels = [];
+                const data = [];
+
+                for (const [section, scores] of Object.entries(sectionScores)) {
+                    const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+                    const normalized = Math.round(avg * 10); // Assuming scores are 0-10
+                    labels.push(section);
+                    data.push(normalized);
+                }
+
+                // Render Bar Chart
                 const barChartOptions = {
                     chart: {
                         type: "bar",
@@ -2314,17 +2427,34 @@ function loadProgressTrackingChart() {
                     },
                     series: [
                         {
-                            name: "Completion",
-                            data: [70, 50, 90],
+                            name: "Progress",
+                            data: data,
                         },
                     ],
                     xaxis: {
-                        categories: ["Task 1", "Task 2", "Task 3"],
+                        categories: labels,
+                        title: {
+                            text: "Well-Being Dimensions",
+                        },
+                    },
+                    yaxis: {
+                        title: {
+                            text: "Score (%)",
+                        },
+                        min: 0,
+                        max: 100,
                     },
                 };
                 new ApexCharts(document.querySelector("#barChartContainer"), barChartOptions).render();
 
-                // Timeline Chart
+                // Prepare the Timeline Chart (Line Chart)
+                const weeklyScores = [
+                    [10, 20, 30, 40], // Week 1
+                    [15, 25, 35, 45], // Week 2
+                    [20, 30, 40, 50], // Week 3
+                    [25, 35, 45, 55], // Week 4
+                ];
+
                 const timelineChartOptions = {
                     chart: {
                         type: "line",
@@ -2332,17 +2462,33 @@ function loadProgressTrackingChart() {
                     },
                     series: [
                         {
-                            name: "Progress",
-                            data: [10, 25, 40, 55],
+                            name: "Weekly Progress",
+                            data: weeklyScores.flat(),
                         },
                     ],
                     xaxis: {
                         categories: ["Week 1", "Week 2", "Week 3", "Week 4"],
+                        title: {
+                            text: "Weeks",
+                        },
+                    },
+                    yaxis: {
+                        title: {
+                            text: "Progress (%)",
+                        },
+                        min: 0,
+                        max: 100,
                     },
                 };
+
                 new ApexCharts(document.querySelector("#timelineChartContainer"), timelineChartOptions).render();
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
             });
-        </script>
+    });
+</script>
+
 
         <script>
             // Define status and category styles
