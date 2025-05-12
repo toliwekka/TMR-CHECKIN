@@ -28,6 +28,7 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 
+
         <style>
             :root {
                 --tmr-primary: #0f2f5f;
@@ -1671,7 +1672,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 </script>
 
-<script>
+<script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function () {
     const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
     if (!staffId) {
@@ -1679,7 +1680,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    // Load Google Charts
     google.charts.load("current", { packages: ["corechart"] });
     google.charts.setOnLoadCallback(fetchAndRenderChart);
 
@@ -1696,15 +1696,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 const doc = snapshot.docs[0].data();
-                const partB = doc.chk_005_meta_questions_part_b || {};
+                const partB = doc.chk_005_meta_questions_part_b;
+                if (!partB || typeof partB !== "object") {
+                    alert("Invalid Part B structure.");
+                    return;
+                }
 
                 const sectionScores = {};
                 Object.values(partB).forEach(item => {
+                    if (!item || typeof item !== "object") return;
+
                     const section = item.category?.trim() || "Other";
-                    const score = parseFloat(item.score || 0);
-                    if (!sectionScores[section]) {
-                        sectionScores[section] = [];
-                    }
+                    const score = parseFloat(item.score);
+                    if (isNaN(score)) return;
+
+                    if (!sectionScores[section]) sectionScores[section] = [];
                     sectionScores[section].push(score);
                 });
 
@@ -1713,24 +1719,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 let colorIndex = 0;
                 for (const [section, scores] of Object.entries(sectionScores)) {
-                    const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+                    const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
                     const percent = Math.round((avg / 10) * 100);
                     const color = colors[colorIndex++ % colors.length];
                     data.push([section, percent, color]);
                 }
 
-                const chartData = google.visualization.arrayToDataTable(data);
+                if (data.length <= 1) {
+                    alert("No valid chart data.");
+                    return;
+                }
 
+                const container = document.getElementById("progressChart");
+                if (!container) {
+                    console.error("Missing #progressChart container.");
+                    return;
+                }
+
+                const chartData = google.visualization.arrayToDataTable(data);
                 const options = {
                     title: "Staff Well-Being Progress by Category",
                     legend: { position: "none" },
                     vAxis: { minValue: 0, maxValue: 100, title: "Score (%)" },
                     hAxis: { title: "Well-Being Dimension" },
-                    tooltip: { isHtml: true },
                     chartArea: { width: "80%", height: "70%" },
                 };
 
-                const chart = new google.visualization.ColumnChart(document.getElementById("progressChart"));
+                const chart = new google.visualization.ColumnChart(container);
                 chart.draw(chartData, options);
             })
             .catch((error) => {
