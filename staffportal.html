@@ -1343,25 +1343,7 @@
                 });
             }
 
-            // Initialize charts and notifications
-            document.addEventListener("DOMContentLoaded", function () {
-                new Chart(document.getElementById("behaviorChart"), {
-                    type: "bar",
-                    data: {
-                        labels: ["Jan", "Mar", "Jun"],
-                        datasets: [
-                            {
-                                label: "Functional Well-Being Scale",
-                                data: [60, 80, 90],
-                                backgroundColor: "#ffc107",
-                            },
-                        ],
-                    },
-                    options: { responsive: true },
-                });
 
-                loadNotifications();
-            });
         </script>
 
 <script>
@@ -1383,76 +1365,94 @@
                     return;
                 }
 
-                const records = [];
+                const recordsA = [];
+                const recordsB = [];
 
                 snapshot.forEach((doc) => {
                     const data = doc.data();
-                    if (data.chk_006_meta_score_part_a && data.chk_003_meta_assessment_date) {
-                        const rawScore = parseFloat(data.chk_006_meta_score_part_a);
-                        const percentScore = Math.round((rawScore / 70) * 100);
-                        const dateObj = new Date(data.chk_003_meta_assessment_date);
-                        const formattedDateTime = dateObj.toLocaleString("en-US", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                            hour: "numeric",
-                            minute: "2-digit",
-                            hour12: true
-                        });
-                        records.push({ date: formattedDateTime, score: percentScore, raw: rawScore, time: dateObj });
+                    const dateObj = new Date(data.chk_003_meta_assessment_date);
+                    const formattedDateTime = dateObj.toLocaleString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                        hour: "numeric",
+                        minute: "2-digit",
+                        hour12: true
+                    });
+
+                    if (data.chk_006_meta_score_part_a) {
+                        const rawA = parseFloat(data.chk_006_meta_score_part_a);
+                        const percentA = Math.round((rawA / 70) * 100);
+                        recordsA.push({ date: formattedDateTime, score: percentA, raw: rawA, time: dateObj });
+                    }
+
+                    if (data.chk_007_meta_score_part_b) {
+                        const rawB = parseFloat(data.chk_007_meta_score_part_b);
+                        const percentB = Math.round((rawB / 240) * 100);
+                        recordsB.push({ date: formattedDateTime, score: percentB, raw: rawB, time: dateObj });
                     }
                 });
 
-                // Sort by actual datetime ascending
-                records.sort((a, b) => a.time - b.time);
+                // Helper to render a chart
+                function renderChart(canvasId, records, label, maxRaw, color) {
+                    records.sort((a, b) => a.time - b.time);
+                    const labels = records.map(r => r.date);
+                    const scores = records.map(r => r.score);
 
-                const labels = records.map(r => r.date);
-                const scores = records.map(r => r.score);
-
-                const ctx = document.getElementById("mentalChart").getContext("2d");
-                new Chart(ctx, {
-                    type: "bar",
-                    data: {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: "Affective Well-Being Score (% of 70)",
+                    const ctx = document.getElementById(canvasId).getContext("2d");
+                    new Chart(ctx, {
+                        type: "bar",
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: label,
                                 data: scores,
-                                backgroundColor: "#1f6aa5",
-                            },
-                        ],
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100,
-                                title: {
-                                    display: true,
-                                    text: "Score (%)"
-                                }
-                            },
+                                backgroundColor: color,
+                            }],
                         },
-                        plugins: {
-                            tooltip: {
-                                callbacks: {
-                                    label: function (context) {
-                                        const i = context.dataIndex;
-                                        const raw = records[i].raw;
-                                        return `Score: ${context.formattedValue}% (Raw: ${raw}/70)`;
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    title: {
+                                        display: true,
+                                        text: "Score (%)"
+                                    }
+                                },
+                            },
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        label: function (context) {
+                                            const i = context.dataIndex;
+                                            const raw = records[i].raw;
+                                            return `Score: ${context.formattedValue}% (Raw: ${raw}/${maxRaw})`;
+                                        }
                                     }
                                 }
                             }
-                        }
-                    },
-                });
+                        },
+                    });
+                }
+
+                if (recordsA.length) {
+                    renderChart("mentalChart", recordsA, "Affective Well-Being Score (% of 70)", 70, "#1f6aa5");
+                }
+
+                if (recordsB.length) {
+                    renderChart("behaviorChart", recordsB, "Functional Well-Being Scale", 240, "#ffc107");
+                }
             })
             .catch((error) => {
                 console.error("Error fetching checkpoint data:", error);
             });
     });
 </script>
+
+
+
 
         <script>
             // Wait for the DOM content to be fully loaded before executing the script
