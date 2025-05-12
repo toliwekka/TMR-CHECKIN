@@ -2428,8 +2428,88 @@ function loadWellBeingRadarChart() {
         });
 }
 
+function loadProgressTrackingBarChart() {
+    const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
+    if (!staffId) {
+        alert("Missing staff ID.");
+        return;
+    }
 
+    db.collection("tmrCheckpoints")
+        .where("chk_001_meta_client_id", "==", staffId)
+        .orderBy("chk_003_meta_assessment_date", "desc")
+        .limit(1)
+        .get()
+        .then((snapshot) => {
+            if (snapshot.empty) {
+                alert("No assessment data found.");
+                return;
+            }
 
+            const doc = snapshot.docs[0].data();
+            const partB = doc.chk_005_meta_questions_part_b;
+
+            if (!partB || typeof partB !== 'object') {
+                console.error("Invalid or missing Part B data:", partB);
+                return;
+            }
+
+            const categories = {};
+
+            // Organize data by category and calculate average scores
+            Object.entries(partB).forEach(([key, { category, score }]) => {
+                const numericScore = parseFloat(score);
+                if (!category || isNaN(numericScore)) return;
+
+                if (!categories[category]) categories[category] = [];
+                categories[category].push(numericScore);
+            });
+
+            const labels = [];
+            const data = [];
+
+            // Prepare labels and average score data for the chart
+            Object.entries(categories).forEach(([category, scores]) => {
+                const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+                labels.push(category);
+                data.push((avg / 10) * 100); // Normalize to 100%
+            });
+
+            const canvas = document.getElementById("progressTrackingBarChart");
+            if (!canvas) return;
+
+            destroyChartIfExists(window.progressBarChartInstance);
+            window.progressBarChartInstance = new Chart(canvas.getContext("2d"), {
+                type: "bar",
+                data: {
+                    labels,
+                    datasets: [{
+                        label: "Category Progress (%)",
+                        data,
+                        backgroundColor: "rgba(75, 192, 192, 0.2)",
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: { display: true, text: "Score (%)" }
+                        },
+                        x: {
+                            title: { display: true, text: "Well-Being Categories" }
+                        }
+                    }
+                }
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching data:", error);
+        });
+}
 
 
                 // Function to switch tabs dynamically
@@ -2449,6 +2529,7 @@ function loadWellBeingRadarChart() {
                 loadTimelineChart();
                 loadKpiChart();
                 loadWellBeingRadarChart();
+                loadProgressTrackingBarChart();
             });
             function switchTab(tabId) {
                 // Hide all tab content sections
