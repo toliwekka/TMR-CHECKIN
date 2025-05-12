@@ -2955,35 +2955,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            const docs = snapshot.docs.map(doc => doc.data());
+            const assessments = snapshot.docs.map(doc => {
+                const data = doc.data();
+                const date = data.chk_003_meta_assessment_date.toDate().toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric"
+                });
 
-            const assessments = docs
-                .map(doc => {
-                    const timestamp = doc.chk_003_meta_assessment_date;
-                    let dateLabel = "Unknown Date";
+                return {
+                    date,
+                    partB: data.chk_005_meta_questions_part_b || {}
+                };
+            });
 
-                    if (timestamp && typeof timestamp.seconds === "number") {
-                        const dateObj = new Date(timestamp.seconds * 1000);
-                        // Format: May 10, 2025
-                        dateLabel = dateObj.toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric"
-                        });
-                    }
-
-                    return {
-                        date: dateLabel,
-                        partB: doc.chk_005_meta_questions_part_b || {}
-                    };
-                })
-                .filter(ass => ass.date !== "Unknown Date");
-
-            if (assessments.length === 0) {
-                alert("No valid assessment dates found.");
-                return;
-            }
-
+            // Step 1: Collect all unique categories
             const allCategories = new Set();
             assessments.forEach(ass => {
                 Object.values(ass.partB).forEach(q => {
@@ -2992,6 +2978,8 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             const labels = Array.from(allCategories);
+
+            // Step 2: Build datasets
             const datasets = assessments.map(ass => {
                 const scoresByCategory = {};
                 Object.values(ass.partB).forEach(q => {
@@ -3004,16 +2992,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 const avgScores = labels.map(cat => {
                     const scores = scoresByCategory[cat] || [];
                     const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
-                    return Math.round((avg / 10) * 100); // normalize to 100%
+                    return Math.round((avg / 10) * 100); // Convert to percentage
                 });
 
                 return {
                     label: `Assessment: ${ass.date}`,
                     data: avgScores,
-                    backgroundColor: `rgba(${Math.floor(Math.random()*255)}, ${Math.floor(Math.random()*200)}, ${Math.floor(Math.random()*150)}, 0.7)`
+                    backgroundColor: `rgba(${Math.floor(Math.random()*200)}, ${Math.floor(Math.random()*150)}, ${Math.floor(Math.random()*255)}, 0.7)`
                 };
             });
 
+            // Step 3: Render Chart
             new Chart(ctx, {
                 type: "bar",
                 data: {
@@ -3025,7 +3014,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     plugins: {
                         title: {
                             display: true,
-                            text: "Well-Being Category Comparison (Grouped by Assessment)"
+                            text: "Well-Being Comparison by Category"
                         },
                         tooltip: {
                             mode: 'index',
