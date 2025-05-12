@@ -110,9 +110,9 @@
             </div>
 
             <div class="hero-sectionII text-center">
-            <div id="heroText" class="hero-text">
-                Welcome to your T|Check report. Each chart explains your unique well-being snapshot.
-            </div>
+                <div id="heroText" class="hero-text">
+                    Welcome to your T|Check report. Each chart explains your unique well-being snapshot.
+                </div>
             </div>
 
             <div class="masonry-layout">
@@ -182,6 +182,58 @@
             };
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
+
+                if (!staffId) {
+                    alert("Missing staff ID in localStorage.");
+                    return;
+                }
+
+                const userQuery = db.collection("tmrCheckpoints").where("chk_001_meta_client_id", "==", staffId).orderBy("chk_003_meta_assessment_date", "desc").limit(1);
+
+                userQuery
+                    .get()
+                    .then((snapshot) => {
+                        if (snapshot.empty) {
+                            alert("No checkpoint data found for this staff ID.");
+                            return;
+                        }
+
+                        let rawA = null;
+                        let rawB = null;
+
+                        snapshot.forEach((doc) => {
+                            const data = doc.data();
+
+                            // Store the raw values for Part A and Part B
+                            if (data.chk_007_meta_score_part_a) {
+                                rawA = parseFloat(data.chk_007_meta_score_part_a);
+                            }
+
+                            if (data.chk_007_meta_score_part_b) {
+                                rawB = parseFloat(data.chk_007_meta_score_part_b);
+                            }
+                        });
+
+                        // Save raw values to localStorage
+                        if (rawA !== null) {
+                            localStorage.setItem("tmr_records_part_a", JSON.stringify(rawA));
+                        }
+
+                        if (rawB !== null) {
+                            localStorage.setItem("tmr_records_part_b", JSON.stringify(rawB));
+                        }
+
+                        console.log("Raw Part A and Part B scores saved to localStorage.");
+                    })
+                    .catch((error) => {
+                        console.error("Error retrieving latest checkpoint:", error);
+                    });
+            });
         </script>
 
         <script>
