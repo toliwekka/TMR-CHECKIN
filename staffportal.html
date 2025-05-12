@@ -10,7 +10,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
-        <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+
         <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
         <!-- Firebase App (the core Firebase SDK) -->
@@ -1335,6 +1336,140 @@
 </script>
 
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
+        if (!staffId) {
+            alert("Missing staff ID.");
+            return;
+        }
+
+        const canvas = document.getElementById("groupedBarChart");
+        if (!canvas) {
+            console.error("Canvas element #groupedBarChart not found.");
+            return;
+        }
+        const ctx = canvas.getContext("2d");
+
+        db.collection("tmrCheckpoints")
+            .where("chk_001_meta_client_id", "==", staffId)
+            .orderBy("chk_003_meta_assessment_date", "desc")
+            .limit(3)
+            .get()
+            .then((snapshot) => {
+                if (snapshot.empty) {
+                    alert("No assessments found.");
+                    return;
+                }
+
+                const assessments = snapshot.docs.map((doc) => {
+                    const data = doc.data();
+                    let dateLabel = "Unknown Date";
+
+                    try {
+                        const rawDate = data.chk_003_meta_assessment_date;
+                        const dateObj = new Date(rawDate);
+                        if (!isNaN(dateObj.getTime())) {
+                            dateLabel = dateObj.toLocaleDateString("en-US", {
+                                weekday: "short",
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                            });
+                        } else {
+                            console.warn("Invalid date format:", rawDate);
+                        }
+                    } catch (e) {
+                        console.warn("Error parsing assessment date:", e);
+                    }
+
+                    return {
+                        dateLabel,
+                        partB: data.chk_005_meta_questions_part_b || {},
+                    };
+                });
+
+                // Gather all unique categories
+                const allCategories = new Set();
+                assessments.forEach((ass) => {
+                    Object.values(ass.partB).forEach((q) => {
+                        const cat = q?.category?.trim();
+                        if (cat) allCategories.add(cat);
+                    });
+                });
+                const labels = Array.from(allCategories).sort();
+
+                // Prepare datasets for each assessment
+                const datasets = assessments.map((ass) => {
+                    const scoresByCategory = {};
+                    Object.values(ass.partB).forEach((q) => {
+                        const category = q?.category?.trim() || "Other";
+                        const score = parseFloat(q?.score);
+                        if (!isNaN(score)) {
+                            if (!scoresByCategory[category]) scoresByCategory[category] = [];
+                            scoresByCategory[category].push(score);
+                        }
+                    });
+
+                    const avgScores = labels.map((cat) => {
+                        const scores = scoresByCategory[cat] || [];
+                        const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+                        return Math.round((avg / 10) * 100); // normalize to percentage
+                    });
+
+                    return {
+                        label: `Assessment: ${ass.dateLabel}`,
+                        data: avgScores,
+                        backgroundColor: `rgba(${Math.floor(Math.random() * 200)}, ${Math.floor(Math.random() * 150)}, ${Math.floor(Math.random() * 250)}, 0.7)`,
+                    };
+                });
+
+                // Render grouped bar chart
+                new Chart(ctx, {
+                    type: "bar",
+                    data: {
+                        labels,
+                        datasets,
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: "Well-Being Category Progress (Grouped by Assessment)",
+                            },
+                            tooltip: {
+                                mode: "index",
+                                intersect: false,
+                            },
+                            legend: {
+                                position: "top",
+                            },
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: "Score (%)",
+                                },
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: "Well-Being Categories",
+                                },
+                            },
+                        },
+                    },
+                });
+            })
+            .catch((error) => {
+                console.error("Error fetching assessments:", error);
+            });
+    });
+</script>
 
        <script>
             // Fetch user information from localStorage
@@ -2792,137 +2927,7 @@
             document.addEventListener("DOMContentLoaded", loadGoals);
         </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
-        if (!staffId) {
-            alert("Missing staff ID.");
-            return;
-        }
 
-        const canvas = document.getElementById("groupedBarChart");
-        if (!canvas) {
-            console.error("Canvas element #groupedBarChart not found.");
-            return;
-        }
-        const ctx = canvas.getContext("2d");
-
-        db.collection("tmrCheckpoints")
-            .where("chk_001_meta_client_id", "==", staffId)
-            .orderBy("chk_003_meta_assessment_date", "desc")
-            .limit(3)
-            .get()
-            .then((snapshot) => {
-                if (snapshot.empty) {
-                    alert("No assessments found.");
-                    return;
-                }
-
-                const assessments = snapshot.docs.map((doc) => {
-                    const data = doc.data();
-                    let dateLabel = "Unknown Date";
-
-                    try {
-                        const dateObj = data.chk_003_meta_assessment_date;
-                        if (dateObj?.toDate) {
-                            dateLabel = dateObj.toDate().toLocaleDateString("en-US", {
-                                weekday: "short",
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                            });
-                        }
-                    } catch (e) {
-                        console.warn("Invalid assessment date format:", e);
-                    }
-
-                    return {
-                        dateLabel,
-                        partB: data.chk_005_meta_questions_part_b || {},
-                    };
-                });
-
-                // Gather all unique categories
-                const allCategories = new Set();
-                assessments.forEach((ass) => {
-                    Object.values(ass.partB).forEach((q) => {
-                        const cat = q?.category?.trim();
-                        if (cat) allCategories.add(cat);
-                    });
-                });
-                const labels = Array.from(allCategories).sort();
-
-                // Prepare datasets for each assessment
-                const datasets = assessments.map((ass) => {
-                    const scoresByCategory = {};
-                    Object.values(ass.partB).forEach((q) => {
-                        const category = q?.category?.trim() || "Other";
-                        const score = parseFloat(q?.score);
-                        if (!isNaN(score)) {
-                            if (!scoresByCategory[category]) scoresByCategory[category] = [];
-                            scoresByCategory[category].push(score);
-                        }
-                    });
-
-                    const avgScores = labels.map((cat) => {
-                        const scores = scoresByCategory[cat] || [];
-                        const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
-                        return Math.round((avg / 10) * 100); // normalize to percentage
-                    });
-
-                    return {
-                        label: `Assessment: ${ass.dateLabel}`,
-                        data: avgScores,
-                        backgroundColor: `rgba(${Math.floor(Math.random() * 200)}, ${Math.floor(Math.random() * 150)}, ${Math.floor(Math.random() * 250)}, 0.7)`,
-                    };
-                });
-
-                // Render grouped bar chart
-                new Chart(ctx, {
-                    type: "bar",
-                    data: {
-                        labels,
-                        datasets,
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: "Well-Being Category Progress (Grouped by Assessment)",
-                            },
-                            tooltip: {
-                                mode: "index",
-                                intersect: false,
-                            },
-                            legend: {
-                                position: "top",
-                            },
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100,
-                                title: {
-                                    display: true,
-                                    text: "Score (%)",
-                                },
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: "Well-Being Categories",
-                                },
-                            },
-                        },
-                    },
-                });
-            })
-            .catch((error) => {
-                console.error("Error fetching assessments:", error);
-            });
-    });
-</script>
 
         <!-- Load Google Charts Library -->
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
