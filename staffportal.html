@@ -2934,7 +2934,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Initialize goals on page load
             document.addEventListener("DOMContentLoaded", loadGoals);
         </script>
-<script>
+<script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function () {
     const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
     if (!staffId) {
@@ -2942,110 +2942,95 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    const ctx = document.getElementById("groupedBarChart").getContext("2d");
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(renderGroupedBarChart);
 
-    db.collection("tmrCheckpoints")
-        .where("chk_001_meta_client_id", "==", staffId)
-        .orderBy("chk_003_meta_assessment_date", "desc")
-        .limit(3)
-        .get()
-        .then(snapshot => {
-            if (snapshot.empty) {
-                alert("No assessments found.");
-                return;
-            }
-
-            const assessments = snapshot.docs.map(doc => {
-                const data = doc.data();
-                const date = data.chk_003_meta_assessment_date.toDate().toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric"
-                });
-
-                return {
-                    date,
-                    partB: data.chk_005_meta_questions_part_b || {}
-                };
-            });
-
-            // Step 1: Collect all unique categories
-            const allCategories = new Set();
-            assessments.forEach(ass => {
-                Object.values(ass.partB).forEach(q => {
-                    allCategories.add(q.category?.trim() || "Other");
-                });
-            });
-
-            const labels = Array.from(allCategories);
-
-            // Step 2: Build datasets
-            const datasets = assessments.map(ass => {
-                const scoresByCategory = {};
-                Object.values(ass.partB).forEach(q => {
-                    const category = q.category?.trim() || "Other";
-                    const score = parseFloat(q.score || 0);
-                    if (!scoresByCategory[category]) scoresByCategory[category] = [];
-                    scoresByCategory[category].push(score);
-                });
-
-                const avgScores = labels.map(cat => {
-                    const scores = scoresByCategory[cat] || [];
-                    const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
-                    return Math.round((avg / 10) * 100); // Convert to percentage
-                });
-
-                return {
-                    label: `Assessment: ${ass.date}`,
-                    data: avgScores,
-                    backgroundColor: `rgba(${Math.floor(Math.random()*200)}, ${Math.floor(Math.random()*150)}, ${Math.floor(Math.random()*255)}, 0.7)`
-                };
-            });
-
-            // Step 3: Render Chart
-            new Chart(ctx, {
-                type: "bar",
-                data: {
-                    labels,
-                    datasets,
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: "Well-Being Comparison by Category"
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false
-                        },
-                        legend: {
-                            position: 'top'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            title: {
-                                display: true,
-                                text: "Score (%)"
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: "Well-Being Categories"
-                            }
-                        }
-                    }
+    function renderGroupedBarChart() {
+        db.collection("tmrCheckpoints")
+            .where("chk_001_meta_client_id", "==", staffId)
+            .orderBy("chk_003_meta_assessment_date", "desc")
+            .limit(3)
+            .get()
+            .then(snapshot => {
+                if (snapshot.empty) {
+                    alert("No assessments found.");
+                    return;
                 }
+
+                const docs = snapshot.docs.map(doc => {
+                    const data = doc.data();
+
+                    // Safe date parsing
+                    let rawDate = data.chk_003_meta_assessment_date;
+                    let jsDate;
+                    if (rawDate && typeof rawDate.toDate === "function") {
+                        jsDate = rawDate.toDate();
+                    } else if (rawDate?.seconds) {
+                        jsDate = new Date(rawDate.seconds * 1000);
+                    } else {
+                        jsDate = new Date();
+                    }
+
+                    return {
+                        dateLabel: jsDate.toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric"
+                        }),
+                        partB: data.chk_005_meta_questions_part_b || {}
+                    };
+                });
+
+                // Collect all category names
+                const allCategories = new Set();
+                docs.forEach(doc => {
+                    Object.values(doc.partB).forEach(q => {
+                        allCategories.add(q.category?.trim() || "Other");
+                    });
+                });
+
+                const header = ["Category", ...docs.map(d => d.dateLabel)];
+                const rows = Array.from(allCategories).map(category => {
+                    const row = [category];
+                    docs.forEach(doc => {
+                        const scores = Object.values(doc.partB)
+                            .filter(q => (q.category?.trim() || "Other") === category)
+                            .map(q => parseFloat(q.score || 0));
+                        const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+                        row.push(Math.round((avg / 10) * 100)); // normalize to %
+                    });
+                    return row;
+                });
+
+                const chartData = google.visualization.arrayToDataTable([header, ...rows]);
+
+                const options = {
+                    title: "Well-Being Category Scores Across Assessments",
+                    hAxis: { title: "Category" },
+                    vAxis: {
+                        title: "Score (%)",
+                        minValue: 0,
+                        maxValue: 100
+                    },
+                    bar: { groupWidth: "70%" },
+                    colors: ["#4CAF50", "#FFC107", "#2196F3"],
+                    legend: { position: "top" },
+                    chartArea: { width: "80%", height: "70%" }
+                };
+
+                const container = document.getElementById("progressComparisonChart");
+                if (!container) {
+                    console.error("Chart container not found.");
+                    return;
+                }
+
+                const chart = new google.visualization.ColumnChart(container);
+                chart.draw(chartData, options);
+            })
+            .catch(error => {
+                console.error("Error fetching assessments:", error);
             });
-        })
-        .catch(error => {
-            console.error("Error fetching assessments:", error);
-        });
+    }
 });
 </script>
 
