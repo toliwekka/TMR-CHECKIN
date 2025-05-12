@@ -853,9 +853,6 @@
                             <canvas id="wellBeingRadarChart"></canvas>
                         </div>
                         <div class="card card-custom p-3">
-                            <canvas id="progressTrackingChart"></canvas>
-                        </div>
-                        <div class="card card-custom p-3">
                             <canvas id="progressComparisonChart"></canvas>
                         </div>
                         <div class="card card-custom p-3">
@@ -1291,27 +1288,40 @@
         <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
-        <script>
-            // Firebase configuration
-            const firebaseConfig = {
-                apiKey: "AIzaSyDeDsOiA6QP4qbedd_JmQ9na1hM3sf4y3Q",
-                authDomain: "mentalhealthtracker-15563.firebaseapp.com",
-                projectId: "mentalhealthtracker-15563",
-            };
+    <!-- Firebase v9+ SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
+    <!-- Your Firebase initialization script -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-            // Initialize Firestore
-            const db = firebase.firestore();
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDeDsOiA6QP4qbedd_JmQ9na1hM3sf4y3Q",
+            authDomain: "mentalhealthtracker-15563.firebaseapp.com",
+            projectId: "mentalhealthtracker-15563",
+        };
 
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+        // Initialize Firestore
+        const db = getFirestore(app);
+        
+        // You can now use `db` globally in other scripts
+        console.log(db);
+    </script>
+
+       <script>
             // Fetch user information from localStorage
             const first = localStorage.getItem("form_005_first-name")?.trim();
             const last = localStorage.getItem("form_006_surname")?.trim();
             const email = localStorage.getItem("form_007_email")?.trim()?.toLowerCase();
          
-       </script>
-       <script>
+
 
             const textContentElement = document.getElementById("textContent");
 
