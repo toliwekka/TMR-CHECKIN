@@ -872,12 +872,6 @@
                 </div>
             </div>
         </div>
-        <div class="card card-custom p-3">
-            <div id="progressComparisonChart" style="width: 100%; height: 400px;"></div>
-        </div>
-        <div class="card card-custom p-3">
-            <div id="progressChart" style="width: 100%; height: 400px;"></div>
-        </div>
 
         <p class="mt-3 text-muted">This section provides an overview of task progress, milestones, and overall project health.</p>
     </div>
@@ -1597,88 +1591,6 @@
             });
         </script>
 
-        <script type="text/javascript">
-            document.addEventListener("DOMContentLoaded", function () {
-                const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
-                if (!staffId) {
-                    alert("Missing staff ID.");
-                    return;
-                }
-
-                google.charts.load("current", { packages: ["corechart"] });
-                google.charts.setOnLoadCallback(fetchAndRenderChart);
-
-                function fetchAndRenderChart() {
-                    db.collection("tmrCheckpoints")
-                        .where("chk_001_meta_client_id", "==", staffId)
-                        .orderBy("chk_003_meta_assessment_date", "desc")
-                        .limit(1)
-                        .get()
-                        .then((snapshot) => {
-                            if (snapshot.empty) {
-                                alert("No assessment data found.");
-                                return;
-                            }
-
-                            const doc = snapshot.docs[0].data();
-                            const partB = doc.chk_005_meta_questions_part_b;
-                            if (!partB || typeof partB !== "object") {
-                                alert("Invalid Part B structure.");
-                                return;
-                            }
-
-                            const sectionScores = {};
-                            Object.values(partB).forEach((item) => {
-                                if (!item || typeof item !== "object") return;
-
-                                const section = item.category?.trim() || "Other";
-                                const score = parseFloat(item.score);
-                                if (isNaN(score)) return;
-
-                                if (!sectionScores[section]) sectionScores[section] = [];
-                                sectionScores[section].push(score);
-                            });
-
-                            const data = [["Category", "Average Score (%)", { role: "style" }]];
-                            const colors = ["#4CAF50", "#2196F3", "#FFC107", "#FF5722", "#9C27B0", "#3F51B5", "#00BCD4"];
-
-                            let colorIndex = 0;
-                            for (const [section, scores] of Object.entries(sectionScores)) {
-                                const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
-                                const percent = Math.round((avg / 10) * 100);
-                                const color = colors[colorIndex++ % colors.length];
-                                data.push([section, percent, color]);
-                            }
-
-                            if (data.length <= 1) {
-                                alert("No valid chart data.");
-                                return;
-                            }
-
-                            const container = document.getElementById("progressChart");
-                            if (!container) {
-                                console.error("Missing #progressChart container.");
-                                return;
-                            }
-
-                            const chartData = google.visualization.arrayToDataTable(data);
-                            const options = {
-                                title: "Staff Well-Being Progress by Category",
-                                legend: { position: "none" },
-                                vAxis: { minValue: 0, maxValue: 100, title: "Score (%)" },
-                                hAxis: { title: "Well-Being Dimension" },
-                                chartArea: { width: "80%", height: "70%" },
-                            };
-
-                            const chart = new google.visualization.ColumnChart(container);
-                            chart.draw(chartData, options);
-                        })
-                        .catch((error) => {
-                            console.error("Error fetching data:", error);
-                        });
-                }
-            });
-        </script>
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
@@ -3012,87 +2924,5 @@
         <!-- Load Google Charts Library -->
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-        <!-- Chart Script -->
-        <script type="text/javascript">
-            document.addEventListener("DOMContentLoaded", function () {
-                const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
-                if (!staffId) {
-                    alert("Missing staff ID.");
-                    return;
-                }
-
-                google.charts.load("current", { packages: ["corechart"] });
-                google.charts.setOnLoadCallback(renderGroupedBarChart);
-
-                function renderGroupedBarChart() {
-                    db.collection("tmrCheckpoints")
-                        .where("chk_001_meta_client_id", "==", staffId)
-                        .orderBy("chk_003_meta_assessment_date", "desc")
-                        .limit(3)
-                        .get()
-                        .then((snapshot) => {
-                            if (snapshot.empty) {
-                                alert("No assessments found.");
-                                return;
-                            }
-
-                            const docs = snapshot.docs.map((doc) => {
-                                const data = doc.data();
-                                const rawDate = data.chk_003_meta_assessment_date;
-                                let jsDate = rawDate?.toDate ? rawDate.toDate() : new Date();
-                                return {
-                                    dateLabel: jsDate.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }),
-                                    partB: data.chk_005_meta_questions_part_b || {},
-                                };
-                            });
-
-                            const allCategories = new Set();
-                            docs.forEach((doc) => {
-                                Object.values(doc.partB).forEach((q) => {
-                                    const cat = q.category?.trim();
-                                    if (cat) allCategories.add(cat);
-                                });
-                            });
-
-                            const header = ["Category", ...docs.map((d) => d.dateLabel)];
-                            const rows = Array.from(allCategories).map((category) => {
-                                const row = [category];
-                                docs.forEach((doc) => {
-                                    const scores = Object.values(doc.partB)
-                                        .filter((q) => q.category?.trim() === category)
-                                        .map((q) => parseFloat(q.score || 0));
-                                    const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
-                                    row.push(Math.round((avg / 10) * 100));
-                                });
-                                return row;
-                            });
-
-                            const chartData = google.visualization.arrayToDataTable([header, ...rows]);
-
-                            const options = {
-                                title: "Well-Being Scores Across Recent Assessments",
-                                hAxis: { title: "Category" },
-                                vAxis: { title: "Score (%)", minValue: 0, maxValue: 100 },
-                                bar: { groupWidth: "70%" },
-                                legend: { position: "top" },
-                                chartArea: { width: "80%", height: "65%" },
-                                colors: ["#4CAF50", "#FFC107", "#2196F3"],
-                            };
-
-                            const container = document.getElementById("progressComparisonChart");
-                            if (!container) {
-                                console.error("Chart container #progressComparisonChart not found.");
-                                return;
-                            }
-
-                            const chart = new google.visualization.ColumnChart(container);
-                            chart.draw(chartData, options);
-                        })
-                        .catch((error) => {
-                            console.error("Error fetching assessments:", error);
-                        });
-                }
-            });
-        </script>
     </body>
 </html>
