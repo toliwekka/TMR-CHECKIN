@@ -1474,8 +1474,12 @@
             snapshot.forEach((doc) => {
                 const data = doc.data();
                 const dateObj = new Date(data.chk_003_meta_assessment_date);
-                const label = dateObj.toLocaleDateString("en-US", {
-                    year: "numeric", month: "short", day: "numeric"
+                const label = dateObj.toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
                 });
 
                 if (data.chk_006_meta_score_part_a) {
@@ -1500,7 +1504,7 @@
                 new Set([...dataA, ...dataB].map(r => r.label))
             ).sort((a, b) => new Date(a) - new Date(b));
 
-            // Map scores to labels, using null if a date has no entry (for line continuity)
+            // Align scores with labels
             const scoresA = allLabels.map(label => {
                 const found = dataA.find(r => r.label === label);
                 return found ? found.score : null;
@@ -1529,6 +1533,8 @@
                             data: scoresA,
                             borderColor: "#1f6aa5",
                             backgroundColor: "rgba(31, 106, 165, 0.1)",
+                            pointBackgroundColor: "#1f6aa5",
+                            pointBorderColor: "#1f6aa5",
                             borderWidth: 2,
                             pointRadius: 4,
                             tension: 0.3
@@ -1536,8 +1542,10 @@
                         {
                             label: "Functional Well-Being (% of 240)",
                             data: scoresB,
-                            borderColor: "#ffc107",
-                            backgroundColor: "rgba(255, 193, 7, 0.1)",
+                            borderColor: "#28a745",
+                            backgroundColor: "rgba(40, 167, 69, 0.1)",
+                            pointBackgroundColor: "#28a745",
+                            pointBorderColor: "#28a745",
                             borderWidth: 2,
                             pointRadius: 4,
                             tension: 0.3
@@ -1547,7 +1555,10 @@
                 options: {
                     responsive: true,
                     plugins: {
-                        legend: { position: "top" },
+                        legend: {
+                            display: true,
+                            position: "top"
+                        },
                         tooltip: {
                             mode: "index",
                             intersect: false,
@@ -1565,7 +1576,12 @@
                     },
                     scales: {
                         x: {
-                            title: { display: true, text: "Assessment Date" }
+                            title: { display: true, text: "Assessment Date & Time" },
+                            ticks: {
+                                autoSkip: true,
+                                maxRotation: 45,
+                                minRotation: 30
+                            }
                         },
                         y: {
                             beginAtZero: true,
@@ -1580,6 +1596,8 @@
         });
     });
 </script>
+
+
 
 
         <script>
