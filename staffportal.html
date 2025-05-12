@@ -24,6 +24,9 @@
         <!-- Firebase Firestore -->
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
+<!-- Include Google Charts -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
         <style>
             :root {
                 --tmr-primary: #0f2f5f;
@@ -855,6 +858,10 @@
                     <!-- Progress Tracking Section -->
                     <div id="progress-tracking" class="tab-content-section">
                         <h3 class="mb-4"><i class="fas fa-stream text-primary me-2"></i> Progress Tracking</h3>
+
+                        <div class="card card-custom p-3">
+                            <canvas id="progressChart"></canvas>
+                        </div>
                         <div class="card card-custom p-3">
                             <canvas id="wellBeingRadarChart"></canvas>
                         </div>
@@ -1560,6 +1567,74 @@
     });
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
+    if (!staffId) {
+        alert("Missing staff ID.");
+        return;
+    }
+
+    // Load Google Charts
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(fetchAndRenderChart);
+
+    function fetchAndRenderChart() {
+        db.collection("tmrCheckpoints")
+            .where("chk_001_meta_client_id", "==", staffId)
+            .orderBy("chk_003_meta_assessment_date", "desc")
+            .limit(1)
+            .get()
+            .then((snapshot) => {
+                if (snapshot.empty) {
+                    alert("No assessment data found.");
+                    return;
+                }
+
+                const doc = snapshot.docs[0].data();
+                const partB = doc.chk_005_meta_questions_part_b || {};
+
+                const sectionScores = {};
+                Object.values(partB).forEach(item => {
+                    const section = item.category?.trim() || "Other";
+                    const score = parseFloat(item.score || 0);
+                    if (!sectionScores[section]) {
+                        sectionScores[section] = [];
+                    }
+                    sectionScores[section].push(score);
+                });
+
+                const data = [["Category", "Average Score (%)", { role: "style" }]];
+                const colors = ["#4CAF50", "#2196F3", "#FFC107", "#FF5722", "#9C27B0", "#3F51B5", "#00BCD4"];
+
+                let colorIndex = 0;
+                for (const [section, scores] of Object.entries(sectionScores)) {
+                    const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+                    const percent = Math.round((avg / 10) * 100);
+                    const color = colors[colorIndex++ % colors.length];
+                    data.push([section, percent, color]);
+                }
+
+                const chartData = google.visualization.arrayToDataTable(data);
+
+                const options = {
+                    title: "Staff Well-Being Progress by Category",
+                    legend: { position: "none" },
+                    vAxis: { minValue: 0, maxValue: 100, title: "Score (%)" },
+                    hAxis: { title: "Well-Being Dimension" },
+                    tooltip: { isHtml: true },
+                    chartArea: { width: "80%", height: "70%" },
+                };
+
+                const chart = new google.visualization.ColumnChart(document.getElementById("progressChart"));
+                chart.draw(chartData, options);
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+            });
+    }
+});
+</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
