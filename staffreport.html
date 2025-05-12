@@ -3,60 +3,51 @@
     <head>
         <meta charset="UTF-8" />
         <title>TMR International | Staff T-Check Portal</title>
-        <link rel="icon" type="image/png" href="./logo.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+        <!-- Bootstrap 5 -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- Font Awesome -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+        <!-- Google Fonts: Poppins -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+        <!-- Custom Themes -->
         <link rel="stylesheet" href="themes.css" />
+
         <style>
             body {
-                margin: 0;
                 font-family: "Poppins", sans-serif;
-                background-color: var(--primary-dark); /* Deep navy background */
+                background-color: var(--primary-dark);
                 color: var(--text-color-dark);
-                padding: 40px 0;
+                padding-top: 80px;
             }
 
-            .theme-switcher {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                z-index: 1000;
-            }
-
-            .theme-switcher select {
-                padding: 6px 12px;
-                border-radius: 8px;
+            .navbar {
                 background-color: var(--card-bg-dark);
-                color: var(--text-color-dark);
-                border: 1px solid var(--secondary-dark);
+                box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
             }
 
-            .hero-section {
-                text-align: center;
-                padding: 2rem 1rem;
-                background: var(--card-bg-dark);
-                backdrop-filter: blur(10px);
-                margin-bottom: 20px;
+            .navbar-brand img {
+                height: 40px;
+                margin-right: 12px;
+            }
+
+            .theme-dropdown .dropdown-menu {
+                background-color: var(--card-bg-dark);
+            }
+
+            .hero-section,
+            .hero-sectionII {
                 border-radius: 20px;
-                color: var(--text-color-dark);
-                box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
-                background-image: linear-gradient(145deg, rgba(0, 31, 77, 0.9), rgba(0, 119, 182, 0.3));
-            }
-
-            .hero-text {
-                font-size: 1.5rem;
-                font-weight: 600;
-                max-width: 900px;
-                margin: 0 auto;
-                color: var(--text-color-dark);
+                padding: 2rem;
+                margin-bottom: 30px;
+                background-image: linear-gradient(145deg, rgba(0, 31, 77, 0.85), rgba(0, 119, 182, 0.4));
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
             }
 
             .masonry-layout {
                 column-count: 2;
                 column-gap: 2rem;
-                padding: 2rem;
             }
 
             @media (max-width: 900px) {
@@ -68,218 +59,132 @@
             .masonry-item {
                 break-inside: avoid;
                 margin-bottom: 2rem;
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
             }
 
-            .masonry-item:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 15px 35px rgba(90, 200, 250, 0.2);
-            }
-
-            .card,
-            .score-card {
-                background: var(--card-bg-dark);
+            .score-card,
+            .card {
+                background-color: var(--card-bg-dark);
                 border-radius: 16px;
                 padding: 1.5rem;
-                backdrop-filter: blur(8px);
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
                 color: var(--text-color-dark);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
             }
 
-            .chart-title {
-                font-size: 1.2rem;
-                margin-bottom: 1rem;
+            footer {
+                margin-top: 60px;
+                padding: 20px 0;
                 text-align: center;
-                font-weight: bold;
-                color: var(--accent-2);
-            }
-
-            .score-card-header {
-                display: flex;
-                align-items: center;
-                margin-bottom: 16px;
-            }
-
-            .icon-title {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                font-size: 1.2rem;
-                font-weight: 600;
-                color: var(--secondary);
-            }
-
-            .score-card-body {
-                padding-top: 10px;
-            }
-
-            @keyframes fadeSlideUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(12px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            .hero-sectionII {
                 background-color: var(--secondary-dark);
                 color: var(--text-color-dark);
-                padding: 40px 20px;
-                border-radius: 16px;
-                margin-bottom: 40px;
-                text-align: center;
-                position: relative;
-                overflow: hidden;
-            }
-
-            .hero-description-dynamic {
-                font-size: 1.5rem;
-                font-weight: 500;
-                transition: opacity 0.5s ease-in-out;
-                min-height: 60px;
-                color: var(--accent-2);
-            }
-
-            .hero-description {
-                font-size: 1.5rem;
-                font-weight: 700;
-                background-color: var(--highlight-bg);
-                padding: 1.2rem 1.5rem;
-                border-radius: 12px;
-                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
-                max-width: 100vw;
-                margin: 2rem auto;
-                text-align: center;
-                line-height: 1.6;
-                letter-spacing: 0.4px;
-                color: var(--highlight-text-color);
-            }
-
-            .fullscreen-iframe {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                display: none;
-                background: var(--primary-dark);
-                z-index: 9999;
-            }
-
-            .fullscreen-iframe iframe {
-                width: 100%;
-                height: 100%;
-                border: none;
-            }
-
-            .close-btn {
-                position: absolute;
-                top: 20px;
-                right: 30px;
-                background: var(--highlight-bg);
-                color: #fff;
-                border: none;
-                padding: 10px 18px;
-                font-size: 1rem;
-                border-radius: 8px;
-                cursor: pointer;
-                z-index: 10000;
+                font-size: 0.9rem;
             }
         </style>
     </head>
     <body>
-        <div class="theme-switcher">
-            <select id="themeSelect" class="form-select">
-                <option value="default" selected> <img src="ogo.png" alt="TMR Fresh Logo" style="width: 20px; vertical-align: middle; margin-right: 8px; display: inline-block;" /> TMR </option>
-                <option value="fieryRed">🔥 Fiery Red</option>
-                <option value="blushRose">🌸 Blush Rose</option>
-                <option value="midnightDark">🌚 Midnight Dark</option>
-                <option value="sereneLavender">💜 Serene Lavender</option>
-                <option value="oceanBreeze">🌊 Ocean Breeze</option>
-                <option value="goldenSunset">🌅 Golden Sunset</option>
-                <option value="softStone">🪶 Soft Stone</option>
-                <option value="softBlush">💖 Soft Blush</option>
-            </select>
-        </div>
-
-        <div id="introPage" class="container">
-            <div class="hero-section">
-                <h1 id="resultsTitle" class="text-center mb-4" style="color: var(--primary); font-weight: 700;">
-                    <span id="userName">Your</span> your T|Check report offers a clear and thoughtful perspective on your present mental well-being.
-                </h1>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <img src="logo.png" alt="TMR Logo" />
+                    <span class="fw-bold text-light">TMR T-Check Portal</span>
+                </a>
+                <div class="d-flex ms-auto align-items-center">
+                    <div class="dropdown theme-dropdown me-3">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown"><i class="fas fa-palette"></i> Theme</button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#" onclick="switchTheme('default')">🌐 TMR Default</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="switchTheme('fieryRed')">🔥 Fiery Red</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="switchTheme('midnightDark')">🌚 Midnight</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="switchTheme('sereneLavender')">💜 Lavender</a></li>
+                        </ul>
+                    </div>
+                    <a href="userlandingpage.html" class="btn btn-primary"> <i class="fas fa-home"></i> Home </a>
+                </div>
             </div>
-        </div>
-        <div class="hero-sectionII">
+        </nav>
+
+        <!-- Hero -->
+        <div class="container">
+            <div class="hero-section text-center">
+                <h1 class="fw-bold text-primary"><span id="userName">Your</span> T|Check report offers a clear and thoughtful perspective on your present mental well-being.</h1>
+            </div>
+
+            <div class="hero-sectionII text-center">
             <div id="heroText" class="hero-text">
                 Welcome to your T|Check report. Each chart explains your unique well-being snapshot.
             </div>
-        </div>
+            </div>
 
-        <div class="masonry-layout">
-            <div class="score-card masonry-item">
-                <div class="score-summary" id="partA-summary">
-                    <h2>Part A: 14-Item Emotional and Psychological State Snapshot</h2>
+            <div class="masonry-layout">
+                <div class="score-card masonry-item">
+                    <h4><i class="fas fa-heartbeat text-danger"></i> Part A: Emotional & Psychological State</h4>
                     <p><strong>Raw Score:</strong> <span id="partA-raw"></span> / 70</p>
                     <p><strong>Percentage:</strong> <span id="partA-percent"></span></p>
                     <p><strong>Status:</strong> <span id="partA-status"></span></p>
                     <p><em id="partA-comment"></em></p>
                 </div>
-            </div>
 
-            <div class="score-card masonry-item">
-                <div class="score-summary" id="partB-summary">
-                    <h2>Part B: 24-Prompt Behavioral and Functional State Evaluation</h2>
+                <div class="score-card masonry-item">
+                    <h4><i class="fas fa-brain text-info"></i> Part B: Behavioral & Functional Evaluation</h4>
                     <p><strong>Raw Score:</strong> <span id="partB-raw"></span> / 240</p>
                     <p><strong>Percentage:</strong> <span id="partB-percent"></span></p>
                     <p><strong>Status:</strong> <span id="partB-status"></span></p>
                     <p><em id="partB-comment"></em></p>
                 </div>
-            </div>
 
-            <div class="score-card masonry-item">
-                <div class="score-card-header">
-                    <div class="icon-title">🧠 Part A – Emotional and Psychological State - Score Gauge:</div>
+                <div class="score-card masonry-item">
+                    <h5 class="text-center"><i class="fas fa-gauge"></i> Part A – Score Gauge</h5>
+                    <div id="gaugeA"></div>
                 </div>
-                <div class="score-card-body"><div id="gaugeA"></div></div>
-            </div>
 
-            <div class="score-card masonry-item">
-                <div class="score-card-header">
-                    <div class="icon-title">🎯 Part B – Behavioral and Functional State - Percentage Score:</div>
+                <div class="score-card masonry-item">
+                    <h5 class="text-center"><i class="fas fa-chart-pie"></i> Part B – Percentage Gauge</h5>
+                    <div id="gaugeB"></div>
                 </div>
-                <div class="score-card-body"><div id="gaugeB"></div></div>
-            </div>
 
-            <div class="card masonry-item">
-                <div class="chart-title">Behavioral Trends Overview</div>
-                <div id="barChartApex"></div>
-            </div>
+                <div class="card masonry-item">
+                    <h5 class="text-center"><i class="fas fa-chart-bar"></i> Behavioral Trends Overview</h5>
+                    <div id="barChartApex"></div>
+                </div>
 
-            <div disabled class="card masonry-item">
-                <div class="chart-title">🧠📊 Your Emotional & Functional Balance</div>
-                <canvas id="donutChart"></canvas>
+                <div class="card masonry-item">
+                    <h5 class="text-center"><i class="fas fa-circle-notch"></i> Emotional & Functional Balance</h5>
+                    <canvas id="donutChart"></canvas>
+                </div>
             </div>
         </div>
 
-        <!-- Firebase SDKs (compat mode for HTML) -->
+        <!-- Footer -->
+        <footer>
+            &copy; 2025 TMR International Hospital | Mental Health Department
+        </footer>
+
+        <!-- JS Libraries -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script>
+            function switchTheme(themeName) {
+                document.getElementById("themeSelect")?.value = themeName;
+                document.body.setAttribute("data-theme", themeName);
+            }
+        </script>
+
+        <!-- Firebase -->
         <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
         <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
         <script>
-            // Firebase configuration
             const firebaseConfig = {
                 apiKey: "AIzaSyDeDsOiA6QP4qbedd_JmQ9na1hM3sf4y3Q",
                 authDomain: "mentalhealthtracker-15563.firebaseapp.com",
                 projectId: "mentalhealthtracker-15563",
             };
-
-            console.log("Initializing Firebase...");
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
+        </script>
 
+        <script>
             // Fetch user info from localStorage
             const first = localStorage.getItem("form_005_first-name")?.trim();
             const last = localStorage.getItem("form_006_surname")?.trim();
@@ -798,7 +703,7 @@
             }
         </script>
 
-        <script src="themes.js"></script>
+        <script src="ReportThemes.js"></script>
 
         <script>
             // Force default theme to midnightDark on report load

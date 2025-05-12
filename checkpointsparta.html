@@ -308,7 +308,6 @@ musicToggle.onclick = () => {
             }
 
             function selectAnswer(opt, cardEl) {
-                soundSelect.play();
                 cardEl.classList.add("selected");
                 feedback.innerText = `You selected: "${opt.label}"`;
 
