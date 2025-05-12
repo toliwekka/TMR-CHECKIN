@@ -2549,118 +2549,121 @@ function loadProgressTrackingBarChart() {
 
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
-        if (!staffId) {
-            alert("Missing staff ID.");
-            return;
-        }
+document.addEventListener("DOMContentLoaded", function () {
+    const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
+    if (!staffId) {
+        alert("Missing staff ID.");
+        return;
+    }
 
-        // Fetch the latest data for Part B
-        db.collection("tmrCheckpoints")
-            .where("chk_001_meta_client_id", "==", staffId)
-            .orderBy("chk_003_meta_assessment_date", "desc")
-            .limit(1)
-            .get()
-            .then((snapshot) => {
-                if (snapshot.empty) {
-                    alert("No assessment data found.");
-                    return;
+    // Fetch the latest data for Part B
+    db.collection("tmrCheckpoints")
+        .where("chk_001_meta_client_id", "==", staffId)
+        .orderBy("chk_003_meta_assessment_date", "desc")
+        .limit(1)
+        .get()
+        .then((snapshot) => {
+            if (snapshot.empty) {
+                alert("No assessment data found.");
+                return;
+            }
+
+            const doc = snapshot.docs[0].data();
+            const partB = doc.chk_005_meta_questions_part_b || {};
+
+            const sectionScores = {};
+            Object.values(partB).forEach(item => {
+                const section = item.category?.trim() || "Other";
+                const score = parseFloat(item.score || 0);
+                if (!sectionScores[section]) {
+                    sectionScores[section] = [];
                 }
-
-                const doc = snapshot.docs[0].data();
-                const partB = doc.chk_005_meta_questions_part_b || [];
-                
-                // Prepare the Progress Chart (Bar Chart)
-                const sectionScores = {};
-                partB.forEach(item => {
-                    const section = item.section?.trim() || "Other";
-                    const score = parseFloat(item.s || 0);
-                    if (!sectionScores[section]) {
-                        sectionScores[section] = [];
-                    }
-                    sectionScores[section].push(score);
-                });
-
-                const labels = [];
-                const data = [];
-
-                for (const [section, scores] of Object.entries(sectionScores)) {
-                    const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
-                    const normalized = Math.round(avg * 10); // Assuming scores are 0-10
-                    labels.push(section);
-                    data.push(normalized);
-                }
-
-                // Render Bar Chart
-                const barChartOptions = {
-                    chart: {
-                        type: "bar",
-                        height: 300,
-                    },
-                    series: [
-                        {
-                            name: "Progress",
-                            data: data,
-                        },
-                    ],
-                    xaxis: {
-                        categories: labels,
-                        title: {
-                            text: "Well-Being Dimensions",
-                        },
-                    },
-                    yaxis: {
-                        title: {
-                            text: "Score (%)",
-                        },
-                        min: 0,
-                        max: 100,
-                    },
-                };
-                new ApexCharts(document.querySelector("#barChartContainer"), barChartOptions).render();
-
-                // Prepare the Timeline Chart (Line Chart)
-                const weeklyScores = [
-                    [10, 20, 30, 40], // Week 1
-                    [15, 25, 35, 45], // Week 2
-                    [20, 30, 40, 50], // Week 3
-                    [25, 35, 45, 55], // Week 4
-                ];
-
-                const timelineChartOptions = {
-                    chart: {
-                        type: "line",
-                        height: 300,
-                    },
-                    series: [
-                        {
-                            name: "Weekly Progress",
-                            data: weeklyScores.flat(),
-                        },
-                    ],
-                    xaxis: {
-                        categories: ["Week 1", "Week 2", "Week 3", "Week 4"],
-                        title: {
-                            text: "Weeks",
-                        },
-                    },
-                    yaxis: {
-                        title: {
-                            text: "Progress (%)",
-                        },
-                        min: 0,
-                        max: 100,
-                    },
-                };
-
-                new ApexCharts(document.querySelector("#timelineChartContainer"), timelineChartOptions).render();
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
+                sectionScores[section].push(score);
             });
-    });
+
+            const labels = [];
+            const data = [];
+
+            for (const [section, scores] of Object.entries(sectionScores)) {
+                const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+                const normalized = Math.round((avg / 10) * 100); // Convert 0–10 to 0–100%
+                labels.push(section);
+                data.push(normalized);
+            }
+
+            // Render Bar Chart
+            const barChartOptions = {
+                chart: {
+                    type: "bar",
+                    height: 300,
+                },
+                series: [
+                    {
+                        name: "Well-Being (%)",
+                        data: data,
+                    },
+                ],
+                xaxis: {
+                    categories: labels,
+                    title: {
+                        text: "Well-Being Dimensions",
+                    },
+                },
+                yaxis: {
+                    title: {
+                        text: "Score (%)",
+                    },
+                    min: 0,
+                    max: 100,
+                },
+            };
+            const barCanvas = document.querySelector("#barChartContainer");
+            if (barCanvas) {
+                new ApexCharts(barCanvas, barChartOptions).render();
+            } else {
+                console.error("Error: barChartContainer not found in DOM.");
+            }
+
+            // Optional: Timeline chart placeholder
+            const timelineChartOptions = {
+                chart: {
+                    type: "line",
+                    height: 300,
+                },
+                series: [
+                    {
+                        name: "Weekly Progress",
+                        data: [60, 68, 72, 80], // Dummy data or replace with dynamic if available
+                    },
+                ],
+                xaxis: {
+                    categories: ["Week 1", "Week 2", "Week 3", "Week 4"],
+                    title: {
+                        text: "Weeks",
+                    },
+                },
+                yaxis: {
+                    title: {
+                        text: "Progress (%)",
+                    },
+                    min: 0,
+                    max: 100,
+                },
+            };
+
+            const timelineCanvas = document.querySelector("#timelineChartContainer");
+            if (timelineCanvas) {
+                new ApexCharts(timelineCanvas, timelineChartOptions).render();
+            } else {
+                console.error("Error: timelineChartContainer not found in DOM.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error fetching data:", error);
+        });
+});
 </script>
+
 
 
         <script>
