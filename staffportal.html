@@ -1868,7 +1868,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
 
-function loadProgressTrackingChart() {
+function loadWellBeingRadarChart() {
     const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
     if (!staffId) {
         alert("Missing staff ID.");
@@ -1895,36 +1895,37 @@ function loadProgressTrackingChart() {
             }
 
             const categories = {};
+            const maxScore = 10; // Assuming scores are out of 10 for simplicity
 
-            // Loop over the map using Object.entries
+            // Organize data by category and calculate average scores
             Object.entries(partB).forEach(([key, { category, score }]) => {
                 const numericScore = parseFloat(score);
                 if (!category || isNaN(numericScore)) return;
 
-                // Group scores by category
                 if (!categories[category]) categories[category] = [];
                 categories[category].push(numericScore);
             });
 
+            // Prepare the labels (categories) and values (average scores)
             const labels = [];
             const data = [];
 
             Object.entries(categories).forEach(([category, scores]) => {
-                const avg = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10); // scale 0–100
+                const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
                 labels.push(category);
-                data.push(avg);
+                data.push((avg / maxScore) * 100); // Convert to percentage
             });
 
-            const canvas = document.getElementById("progressTrackingChart");
+            const canvas = document.getElementById("wellBeingRadarChart");
             if (!canvas) return;
 
-            destroyChartIfExists(window.progressChartInstance);
-            window.progressChartInstance = new Chart(canvas.getContext("2d"), {
-                type: "bar",
+            destroyChartIfExists(window.radarChartInstance);
+            window.radarChartInstance = new Chart(canvas.getContext("2d"), {
+                type: "radar",
                 data: {
                     labels,
                     datasets: [{
-                        label: "Assessment Progress (%)",
+                        label: "Mental Well-Being",
                         data,
                         backgroundColor: "rgba(153, 102, 255, 0.2)",
                         borderColor: "rgba(153, 102, 255, 1)",
@@ -1934,13 +1935,15 @@ function loadProgressTrackingChart() {
                 options: {
                     responsive: true,
                     scales: {
-                        y: {
-                            beginAtZero: true,
+                        r: {
+                            min: 0,
                             max: 100,
-                            title: { display: true, text: "Score (%)" }
-                        },
-                        x: {
-                            title: { display: true, text: "Well-Being Categories" }
+                            ticks: {
+                                stepSize: 20
+                            },
+                            angleLines: {
+                                display: true
+                            }
                         }
                     }
                 }
@@ -2252,7 +2255,7 @@ function loadProgressTrackingChart() {
                 }
 
                 // Create and load progress tracking chart
-function loadProgressTrackingChart() {
+function loadWellBeingRadarChart() {
     const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
     if (!staffId) {
         alert("Missing staff ID.");
@@ -2279,36 +2282,37 @@ function loadProgressTrackingChart() {
             }
 
             const categories = {};
+            const maxScore = 10; // Assuming scores are out of 10 for simplicity
 
-            // Loop over the map using Object.entries
+            // Organize data by category and calculate average scores
             Object.entries(partB).forEach(([key, { category, score }]) => {
                 const numericScore = parseFloat(score);
                 if (!category || isNaN(numericScore)) return;
 
-                // Group scores by category
                 if (!categories[category]) categories[category] = [];
                 categories[category].push(numericScore);
             });
 
+            // Prepare the labels (categories) and values (average scores)
             const labels = [];
             const data = [];
 
             Object.entries(categories).forEach(([category, scores]) => {
-                const avg = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10); // scale 0–100
+                const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
                 labels.push(category);
-                data.push(avg);
+                data.push((avg / maxScore) * 100); // Convert to percentage
             });
 
-            const canvas = document.getElementById("progressTrackingChart");
+            const canvas = document.getElementById("wellBeingRadarChart");
             if (!canvas) return;
 
-            destroyChartIfExists(window.progressChartInstance);
-            window.progressChartInstance = new Chart(canvas.getContext("2d"), {
-                type: "bar",
+            destroyChartIfExists(window.radarChartInstance);
+            window.radarChartInstance = new Chart(canvas.getContext("2d"), {
+                type: "radar",
                 data: {
                     labels,
                     datasets: [{
-                        label: "Assessment Progress (%)",
+                        label: "Mental Well-Being",
                         data,
                         backgroundColor: "rgba(153, 102, 255, 0.2)",
                         borderColor: "rgba(153, 102, 255, 1)",
@@ -2318,13 +2322,15 @@ function loadProgressTrackingChart() {
                 options: {
                     responsive: true,
                     scales: {
-                        y: {
-                            beginAtZero: true,
+                        r: {
+                            min: 0,
                             max: 100,
-                            title: { display: true, text: "Score (%)" }
-                        },
-                        x: {
-                            title: { display: true, text: "Well-Being Categories" }
+                            ticks: {
+                                stepSize: 20
+                            },
+                            angleLines: {
+                                display: true
+                            }
                         }
                     }
                 }
@@ -2334,6 +2340,7 @@ function loadProgressTrackingChart() {
             console.error("Error fetching data:", error);
         });
 }
+
 
 
 
