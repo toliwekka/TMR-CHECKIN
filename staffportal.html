@@ -1452,60 +1452,138 @@
 </script>
 
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
+        if (!staffId) {
+            alert("Missing staff ID in localStorage.");
+            return;
+        }
+
+        const userQuery = db.collection("tmrCheckpoints").where("chk_001_meta_client_id", "==", staffId);
+
+        userQuery.get().then((snapshot) => {
+            if (snapshot.empty) {
+                alert("No checkpoint data found for this staff ID.");
+                return;
+            }
+
+            const dataA = [];
+            const dataB = [];
+
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                const dateObj = new Date(data.chk_003_meta_assessment_date);
+                const label = dateObj.toLocaleDateString("en-US", {
+                    year: "numeric", month: "short", day: "numeric"
+                });
+
+                if (data.chk_006_meta_score_part_a) {
+                    const rawA = parseFloat(data.chk_006_meta_score_part_a);
+                    const percentA = Math.round((rawA / 70) * 100);
+                    dataA.push({ label, time: dateObj, score: percentA });
+                }
+
+                if (data.chk_007_meta_score_part_b) {
+                    const rawB = parseFloat(data.chk_007_meta_score_part_b);
+                    const percentB = Math.round((rawB / 240) * 100);
+                    dataB.push({ label, time: dateObj, score: percentB });
+                }
+            });
+
+            // Sort both arrays by time
+            dataA.sort((a, b) => a.time - b.time);
+            dataB.sort((a, b) => a.time - b.time);
+
+            // Merge labels in chronological order
+            const allLabels = Array.from(
+                new Set([...dataA, ...dataB].map(r => r.label))
+            ).sort((a, b) => new Date(a) - new Date(b));
+
+            // Map scores to labels, using null if a date has no entry (for line continuity)
+            const scoresA = allLabels.map(label => {
+                const found = dataA.find(r => r.label === label);
+                return found ? found.score : null;
+            });
+
+            const scoresB = allLabels.map(label => {
+                const found = dataB.find(r => r.label === label);
+                return found ? found.score : null;
+            });
+
+            // Draw the chart
+            const canvas = document.getElementById("timelineChart");
+            if (!canvas) return;
+
+            if (window.timelineChartInstance) {
+                window.timelineChartInstance.destroy();
+            }
+
+            window.timelineChartInstance = new Chart(canvas.getContext("2d"), {
+                type: "line",
+                data: {
+                    labels: allLabels,
+                    datasets: [
+                        {
+                            label: "Affective Well-Being (% of 70)",
+                            data: scoresA,
+                            borderColor: "#1f6aa5",
+                            backgroundColor: "rgba(31, 106, 165, 0.1)",
+                            borderWidth: 2,
+                            pointRadius: 4,
+                            tension: 0.3
+                        },
+                        {
+                            label: "Functional Well-Being (% of 240)",
+                            data: scoresB,
+                            borderColor: "#ffc107",
+                            backgroundColor: "rgba(255, 193, 7, 0.1)",
+                            borderWidth: 2,
+                            pointRadius: 4,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: "top" },
+                        tooltip: {
+                            mode: "index",
+                            intersect: false,
+                            callbacks: {
+                                label: function (context) {
+                                    return `${context.dataset.label}: ${context.formattedValue}%`;
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: "nearest",
+                        axis: "x",
+                        intersect: false
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: "Assessment Date" }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: { display: true, text: "Score (%)" }
+                        }
+                    }
+                }
+            });
+        }).catch((error) => {
+            console.error("Error fetching data for timeline chart:", error);
+        });
+    });
+</script>
 
 
         <script>
-            // Wait for the DOM content to be fully loaded before executing the script
-            document.addEventListener("DOMContentLoaded", function () {
-                // Helper function to destroy an existing chart instance if it exists
-                function destroyChartIfExists(chartInstance) {
-                    if (chartInstance) {
-                        chartInstance.destroy();
-                    }
-                }
 
-                // Timeline Chart
-                const timelineCanvas = document.getElementById("timelineChart");
-
-                // Check if there's an existing timeline chart and destroy it
-                if (timelineCanvas && window.timelineChartInstance) {
-                    destroyChartIfExists(window.timelineChartInstance); // Destroy the previous timeline chart instance
-                }
-
-                // Clear the canvas context to ensure it's ready for a new chart
-                if (timelineCanvas) {
-                    timelineCanvas.width = timelineCanvas.width; // Resetting canvas width clears the canvas
-                    timelineCanvas.height = timelineCanvas.height; // Ensure the height is also reset
-                }
-
-                // Create a new Timeline chart
-                window.timelineChartInstance = new Chart(timelineCanvas.getContext("2d"), {
-                    type: "line", // Line chart type
-                    data: {
-                        labels: ["Week 1", "Week 2", "Week 3", "Week 4"], // X-axis labels
-                        datasets: [
-                            {
-                                label: "Progress (%)",
-                                data: [10, 25, 40, 55], // Data points
-                                backgroundColor: "rgba(54, 162, 235, 0.2)", // Background color under the line
-                                borderColor: "rgba(54, 162, 235, 1)", // Line color
-                                borderWidth: 2, // Line width
-                                pointRadius: 5, // Point size
-                                pointBackgroundColor: "rgba(54, 162, 235, 1)", // Point color
-                            },
-                        ],
-                    },
-                    options: {
-                        responsive: true, // Make the chart responsive
-                        plugins: {
-                            legend: { display: true, position: "top" }, // Display legend at the top
-                        },
-                        scales: {
-                            x: { title: { display: true, text: "Timeline (Weeks)" } }, // X-axis title
-                            y: { title: { display: true, text: "Progress (%)" } }, // Y-axis title
-                        },
-                    },
-                });
 
                 // Placeholder for additional charts (e.g., Goals Chart)
                 const goalsCanvas = document.getElementById("goalsChart");
