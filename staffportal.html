@@ -1863,44 +1863,29 @@ function loadProgressTrackingChart() {
             }
 
             const doc = snapshot.docs[0].data();
-            const questions = doc.chk_004_meta_questions_part_a || [];
+            const partB = doc.chk_005_meta_questions_part_b || [];
 
-            // Map to meaningful categories if needed
-            const categories = {
-                "Decision Making": [],
-                "Self Confidence": [],
-                "Calmness": [],
-                "Energy Levels": [],
-            };
+            const sectionScores = {};
 
-            questions.forEach(item => {
-                const question = item.q?.toLowerCase();
-                const score = item.s || 0;
-
-                if (question.includes("make up my own mind")) {
-                    categories["Decision Making"].push(score);
-                } else if (question.includes("confident") || question.includes("cope")) {
-                    categories["Self Confidence"].push(score);
-                } else if (question.includes("relaxed") || question.includes("stressed")) {
-                    categories["Calmness"].push(score);
-                } else if (question.includes("energy") || question.includes("enthusiasm")) {
-                    categories["Energy Levels"].push(score);
+            partB.forEach(item => {
+                const section = item.section?.trim() || "Other";
+                const score = parseFloat(item.s || 0);
+                if (!sectionScores[section]) {
+                    sectionScores[section] = [];
                 }
+                sectionScores[section].push(score);
             });
 
-            // Prepare labels and average scores
             const labels = [];
             const data = [];
 
-            Object.entries(categories).forEach(([label, scores]) => {
-                if (scores.length > 0) {
-                    const avg = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 20); // scale to %
-                    labels.push(label);
-                    data.push(avg);
-                }
-            });
+            for (const [section, scores] of Object.entries(sectionScores)) {
+                const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+                const normalized = Math.round(avg * 10); // Assuming scores are 0-10
+                labels.push(section);
+                data.push(normalized);
+            }
 
-            // Draw chart
             const canvas = document.getElementById("progressTrackingChart");
             if (!canvas) return;
 
@@ -1910,23 +1895,35 @@ function loadProgressTrackingChart() {
                 data: {
                     labels,
                     datasets: [{
-                        label: "Assessment Progress (%)",
+                        label: "Well-Being Progress (%)",
                         data,
-                        backgroundColor: "rgba(54, 162, 235, 0.2)",
-                        borderColor: "rgba(54, 162, 235, 1)",
+                        backgroundColor: "rgba(75, 192, 192, 0.3)",
+                        borderColor: "rgba(75, 192, 192, 1)",
                         borderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "Well-Being Assessment by Domain"
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,
                             max: 100,
-                            title: { display: true, text: "Score (%)" }
+                            title: {
+                                display: true,
+                                text: "Score (%)"
+                            }
                         },
                         x: {
-                            title: { display: true, text: "Mental Well-Being Domains" }
+                            title: {
+                                display: true,
+                                text: "Well-Being Dimensions"
+                            }
                         }
                     }
                 }
@@ -1936,6 +1933,7 @@ function loadProgressTrackingChart() {
             console.error("Error building chart:", error);
         });
 }
+
 
                 loadReports();
                 loadKpiChart();
