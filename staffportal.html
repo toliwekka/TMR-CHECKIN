@@ -1284,25 +1284,34 @@
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
 
-    <!-- Your Firebase initialization script -->
-    <script>
 
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDeDsOiA6QP4qbedd_JmQ9na1hM3sf4y3Q",
-            authDomain: "mentalhealthtracker-15563.firebaseapp.com",
-            projectId: "mentalhealthtracker-15563",
-        };
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
+<!-- Firebase App (the core Firebase SDK) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 
-        // Initialize Firestore
-        const db = getFirestore(app);
-        
-        // You can now use `db` globally in other scripts
-        console.log(db);
-    </script>
+<!-- Firebase Firestore SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDeDsOiA6QP4qbedd_JmQ9na1hM3sf4y3Q",
+        authDomain: "mentalhealthtracker-15563.firebaseapp.com",
+        projectId: "mentalhealthtracker-15563",
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Initialize Firestore
+    const db = firebase.firestore();
+
+    // Make globally accessible
+    window.db = db;
+    window.firebaseConfig = firebaseConfig;
+</script>
+
+
 
        <script>
             // Fetch user information from localStorage
