@@ -2947,7 +2947,7 @@ document.addEventListener("DOMContentLoaded", function () {
     db.collection("tmrCheckpoints")
         .where("chk_001_meta_client_id", "==", staffId)
         .orderBy("chk_003_meta_assessment_date", "desc")
-        .limit(3) // You can increase this number to compare more assessments
+        .limit(3)
         .get()
         .then(snapshot => {
             if (snapshot.empty) {
@@ -2957,12 +2957,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const docs = snapshot.docs.map(doc => doc.data());
 
-            const assessments = docs.map(doc => ({
-                date: new Date(doc.chk_003_meta_assessment_date.seconds * 1000).toLocaleDateString(),
-                partB: doc.chk_005_meta_questions_part_b || {},
-            }));
+            const assessments = docs
+                .map(doc => {
+                    const timestamp = doc.chk_003_meta_assessment_date;
+                    let dateLabel = "Unknown Date";
 
-            // Step 1: Collect all categories
+                    if (timestamp && typeof timestamp.seconds === "number") {
+                        const dateObj = new Date(timestamp.seconds * 1000);
+                        // Format: May 10, 2025
+                        dateLabel = dateObj.toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric"
+                        });
+                    }
+
+                    return {
+                        date: dateLabel,
+                        partB: doc.chk_005_meta_questions_part_b || {}
+                    };
+                })
+                .filter(ass => ass.date !== "Unknown Date");
+
+            if (assessments.length === 0) {
+                alert("No valid assessment dates found.");
+                return;
+            }
+
             const allCategories = new Set();
             assessments.forEach(ass => {
                 Object.values(ass.partB).forEach(q => {
@@ -2970,7 +2991,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
 
-            // Step 2: Create datasets for Chart.js
             const labels = Array.from(allCategories);
             const datasets = assessments.map(ass => {
                 const scoresByCategory = {};
@@ -2988,13 +3008,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 return {
-                    label: `Assessment on ${ass.date}`,
+                    label: `Assessment: ${ass.date}`,
                     data: avgScores,
                     backgroundColor: `rgba(${Math.floor(Math.random()*255)}, ${Math.floor(Math.random()*200)}, ${Math.floor(Math.random()*150)}, 0.7)`
                 };
             });
 
-            // Step 3: Create the chart
             new Chart(ctx, {
                 type: "bar",
                 data: {
