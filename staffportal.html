@@ -2252,63 +2252,51 @@ function loadProgressTrackingChart() {
             }
 
             const doc = snapshot.docs[0].data();
-            const partB = doc.chk_005_meta_questions_part_b;
+            const partB = doc.chk_004_meta_questions_part_b;
 
-            if (!Array.isArray(partB)) {
+            if (!partB || typeof partB !== "object") {
                 console.error("Invalid or missing Part B data:", partB);
+                alert("Assessment data is not in expected format.");
                 return;
             }
 
-            // Define valid categories
-            const categories = {
-                "Life Satisfaction and Life Evaluation": [],
-                "Physical Health, Mental Health, and Physical Function": [],
-                "Meaning and Purpose": [],
-                "Character and Caring": [],
-                "Relationships": [],
-                "Community and Social Support": [],
-                "Financial Evaluation and Stability": [],
-                "Affect": [],
-            };
+            const categoryMap = {};
 
-            // Map scores to categories
-            partB.forEach((item) => {
-                const cat = item.category?.trim();
-                const score = parseFloat(item.score || "0");
+            Object.values(partB).forEach((entry) => {
+                const category = entry.category || "Uncategorized";
+                const score = parseFloat(entry.score);
 
-                if (categories.hasOwnProperty(cat)) {
-                    categories[cat].push(score);
-                } else {
-                    console.warn("Unrecognized category:", cat);
+                if (!isNaN(score)) {
+                    if (!categoryMap[category]) {
+                        categoryMap[category] = [];
+                    }
+                    categoryMap[category].push(score);
                 }
             });
 
-            // Prepare chart data
+            // Aggregate averages for chart
             const labels = [];
             const data = [];
 
-            for (const [category, scores] of Object.entries(categories)) {
-                if (scores.length > 0) {
-                    const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length * 10); // Scale to 100%
-                    labels.push(category);
-                    data.push(avg);
-                }
-            }
+            Object.entries(categoryMap).forEach(([category, scores]) => {
+                const average = scores.reduce((sum, s) => sum + s, 0) / scores.length;
+                labels.push(category);
+                data.push(Math.round(average * 10)); // scale to % (assuming scores out of 10)
+            });
 
             // Draw chart
             const canvas = document.getElementById("progressTrackingChart");
             if (!canvas) return;
 
             destroyChartIfExists(window.progressChartInstance);
-
             window.progressChartInstance = new Chart(canvas.getContext("2d"), {
                 type: "bar",
                 data: {
                     labels,
                     datasets: [{
-                        label: "Well-Being Assessment Score (%)",
+                        label: "Assessment Progress (%)",
                         data,
-                        backgroundColor: "rgba(54, 162, 235, 0.3)",
+                        backgroundColor: "rgba(54, 162, 235, 0.2)",
                         borderColor: "rgba(54, 162, 235, 1)",
                         borderWidth: 2
                     }]
@@ -2319,10 +2307,10 @@ function loadProgressTrackingChart() {
                         y: {
                             beginAtZero: true,
                             max: 100,
-                            title: { display: true, text: "Average Score (%)" }
+                            title: { display: true, text: "Score (%)" }
                         },
                         x: {
-                            title: { display: true, text: "Well-Being Categories" }
+                            title: { display: true, text: "Mental Well-Being Domains" }
                         }
                     }
                 }
