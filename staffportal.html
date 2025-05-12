@@ -401,6 +401,15 @@
 
             // Example: Re-run this function after a theme switch or content update
             // adjustTextColors();
+
+<style>
+  .disabled-link {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+</style>
+
         </script>
     </head>
     <body class="light-theme">
@@ -446,18 +455,27 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('scheduler')"><i class="fas fa-calendar-check me-2"></i>Daily Scheduler</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('timelines')"><i class="fas fa-stream me-2"></i>Progress Timelines</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('journaling')"><i class="fas fa-book me-2"></i>Mood Journaling</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('wellness-goals')"><i class="fas fa-bullseye me-2"></i>Wellness Goals Tracker</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('reflection-time')"><i class="fas fa-hourglass-half me-2"></i>Reflection & Downtime</a>
-                                </li>
+
+<li class="nav-item mb-2">
+  <a class="nav-link text-white disabled" href="#" style="opacity: 0.5; pointer-events: none;">
+    <i class="fas fa-stream me-2"></i>Progress Timelines
+  </a>
+</li>
+<li class="nav-item mb-2">
+  <a class="nav-link text-white disabled" href="#" style="opacity: 0.5; pointer-events: none;">
+    <i class="fas fa-book me-2"></i>Mood Journaling
+  </a>
+</li>
+<li class="nav-item mb-2">
+  <a class="nav-link text-white disabled" href="#" style="opacity: 0.5; pointer-events: none;">
+    <i class="fas fa-bullseye me-2"></i>Wellness Goals Tracker
+  </a>
+</li>
+<li class="nav-item mb-2">
+  <a class="nav-link text-white disabled" href="#" style="opacity: 0.5; pointer-events: none;">
+    <i class="fas fa-hourglass-half me-2"></i>Reflection & Downtime
+  </a>
+</li>
                             </ul>
                         </li>
                         <li class="nav-item">

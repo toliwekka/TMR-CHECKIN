@@ -122,9 +122,6 @@
         </style>
     </head>
     <body id="body" class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen flex flex-col items-center justify-center text-white p-4 relative touch-none">
-        <audio id="soundSelect" src="Aaliyah - At Your Best (You Are Love) Instrumental.m4a"></audio>
-        <audio id="soundFinish" src="https://assets.mixkit.co/sfx/preview/mixkit-game-level-completed-2059.mp3"></audio>
-        <audio id="soundBG" src="Mariah Carey - Touch My Body Instrumental.m4a" loop></audio>
 
         <div class="absolute top-4 right-4 flex items-center gap-4">
             <select id="themeSelector" class="bg-white text-black px-3 py-1 rounded shadow">
@@ -229,15 +226,20 @@
             const soundBG = document.getElementById("soundBG");
             const musicToggle = document.getElementById("musicToggle");
 
-            musicToggle.onclick = () => {
-                if (soundBG.paused) {
-                    soundBG.play();
-                    musicToggle.textContent = "🔊 Music";
-                } else {
-                    soundBG.pause();
-                    musicToggle.textContent = "🔈 Music";
-                }
-            };
+musicToggle.onclick = () => {
+    if (soundBG.paused) {
+        soundBG.play().then(() => {
+            musicToggle.textContent = "🔊 Music";
+        }).catch((e) => {
+            console.warn("Autoplay blocked or failed:", e);
+        });
+    } else {
+        soundBG.pause();
+        musicToggle.textContent = "🔈 Music";
+    }
+};
+
+
 
             function updateAvatar(score) {
                 avatar.textContent = score < 20 ? "😞" : score < 35 ? "😐" : score < 50 ? "🙂" : "😄";
@@ -366,6 +368,8 @@
             });
 
             renderQuestion(currentIndex);
+
+
         </script>
     </body>
 </html>
