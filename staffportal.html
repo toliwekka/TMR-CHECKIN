@@ -1889,38 +1889,32 @@ function loadProgressTrackingChart() {
             const doc = snapshot.docs[0].data();
             const partB = doc.chk_005_meta_questions_part_b;
 
-            if (!partB || typeof partB !== "object") {
+            if (!partB || typeof partB !== 'object') {
                 console.error("Invalid or missing Part B data:", partB);
                 return;
             }
 
-            // Step 1: Aggregate scores by category
             const categories = {};
 
-            Object.values(partB).forEach(entry => {
-                const category = entry.category;
-                const score = parseFloat(entry.score);
-                if (!category || isNaN(score)) return;
+            // Loop over the map using Object.entries
+            Object.entries(partB).forEach(([key, { category, score }]) => {
+                const numericScore = parseFloat(score);
+                if (!category || isNaN(numericScore)) return;
 
-                if (!categories[category]) {
-                    categories[category] = [];
-                }
-                categories[category].push(score);
+                // Group scores by category
+                if (!categories[category]) categories[category] = [];
+                categories[category].push(numericScore);
             });
 
-            // Step 2: Prepare chart data
             const labels = [];
             const data = [];
 
             Object.entries(categories).forEach(([category, scores]) => {
-                if (scores.length > 0) {
-                    const avg = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10); // scale to %
-                    labels.push(category);
-                    data.push(avg);
-                }
+                const avg = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10); // scale 0–100
+                labels.push(category);
+                data.push(avg);
             });
 
-            // Step 3: Draw chart
             const canvas = document.getElementById("progressTrackingChart");
             if (!canvas) return;
 
@@ -1932,8 +1926,8 @@ function loadProgressTrackingChart() {
                     datasets: [{
                         label: "Assessment Progress (%)",
                         data,
-                        backgroundColor: "rgba(75, 192, 192, 0.2)",
-                        borderColor: "rgba(75, 192, 192, 1)",
+                        backgroundColor: "rgba(153, 102, 255, 0.2)",
+                        borderColor: "rgba(153, 102, 255, 1)",
                         borderWidth: 2
                     }]
                 },
@@ -1946,7 +1940,7 @@ function loadProgressTrackingChart() {
                             title: { display: true, text: "Score (%)" }
                         },
                         x: {
-                            title: { display: true, text: "Well-Being Domains" }
+                            title: { display: true, text: "Well-Being Categories" }
                         }
                     }
                 }
@@ -1956,6 +1950,7 @@ function loadProgressTrackingChart() {
             console.error("Error fetching data:", error);
         });
 }
+
 
 
 
@@ -2278,38 +2273,32 @@ function loadProgressTrackingChart() {
             const doc = snapshot.docs[0].data();
             const partB = doc.chk_005_meta_questions_part_b;
 
-            if (!partB || typeof partB !== "object") {
+            if (!partB || typeof partB !== 'object') {
                 console.error("Invalid or missing Part B data:", partB);
                 return;
             }
 
-            // Step 1: Aggregate scores by category
             const categories = {};
 
-            Object.values(partB).forEach(entry => {
-                const category = entry.category;
-                const score = parseFloat(entry.score);
-                if (!category || isNaN(score)) return;
+            // Loop over the map using Object.entries
+            Object.entries(partB).forEach(([key, { category, score }]) => {
+                const numericScore = parseFloat(score);
+                if (!category || isNaN(numericScore)) return;
 
-                if (!categories[category]) {
-                    categories[category] = [];
-                }
-                categories[category].push(score);
+                // Group scores by category
+                if (!categories[category]) categories[category] = [];
+                categories[category].push(numericScore);
             });
 
-            // Step 2: Prepare chart data
             const labels = [];
             const data = [];
 
             Object.entries(categories).forEach(([category, scores]) => {
-                if (scores.length > 0) {
-                    const avg = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10); // scale to %
-                    labels.push(category);
-                    data.push(avg);
-                }
+                const avg = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10); // scale 0–100
+                labels.push(category);
+                data.push(avg);
             });
 
-            // Step 3: Draw chart
             const canvas = document.getElementById("progressTrackingChart");
             if (!canvas) return;
 
@@ -2321,8 +2310,8 @@ function loadProgressTrackingChart() {
                     datasets: [{
                         label: "Assessment Progress (%)",
                         data,
-                        backgroundColor: "rgba(75, 192, 192, 0.2)",
-                        borderColor: "rgba(75, 192, 192, 1)",
+                        backgroundColor: "rgba(153, 102, 255, 0.2)",
+                        borderColor: "rgba(153, 102, 255, 1)",
                         borderWidth: 2
                     }]
                 },
@@ -2335,7 +2324,7 @@ function loadProgressTrackingChart() {
                             title: { display: true, text: "Score (%)" }
                         },
                         x: {
-                            title: { display: true, text: "Well-Being Domains" }
+                            title: { display: true, text: "Well-Being Categories" }
                         }
                     }
                 }
