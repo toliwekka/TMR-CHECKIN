@@ -859,9 +859,8 @@
                     <!-- Progress Tracking Section -->
                     <div id="progress-tracking" class="tab-content-section">
                         <h3 class="mb-4"><i class="fas fa-stream text-primary me-2"></i> Progress Tracking</h3>
-
                         <div class="card card-custom p-3">
-                            <canvas id="progressChart"></canvas>
+                            <canvas id="groupedBarChart"></canvas>
                         </div>
                         <div class="card card-custom p-3">
                             <canvas id="wellBeingRadarChart"></canvas>
@@ -2935,5 +2934,112 @@ document.addEventListener("DOMContentLoaded", function () {
             // Initialize goals on page load
             document.addEventListener("DOMContentLoaded", loadGoals);
         </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
+    if (!staffId) {
+        alert("Missing staff ID.");
+        return;
+    }
+
+    const ctx = document.getElementById("groupedBarChart").getContext("2d");
+
+    db.collection("tmrCheckpoints")
+        .where("chk_001_meta_client_id", "==", staffId)
+        .orderBy("chk_003_meta_assessment_date", "desc")
+        .limit(3) // You can increase this number to compare more assessments
+        .get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                alert("No assessments found.");
+                return;
+            }
+
+            const docs = snapshot.docs.map(doc => doc.data());
+
+            const assessments = docs.map(doc => ({
+                date: new Date(doc.chk_003_meta_assessment_date.seconds * 1000).toLocaleDateString(),
+                partB: doc.chk_005_meta_questions_part_b || {},
+            }));
+
+            // Step 1: Collect all categories
+            const allCategories = new Set();
+            assessments.forEach(ass => {
+                Object.values(ass.partB).forEach(q => {
+                    allCategories.add(q.category?.trim() || "Other");
+                });
+            });
+
+            // Step 2: Create datasets for Chart.js
+            const labels = Array.from(allCategories);
+            const datasets = assessments.map(ass => {
+                const scoresByCategory = {};
+                Object.values(ass.partB).forEach(q => {
+                    const category = q.category?.trim() || "Other";
+                    const score = parseFloat(q.score || 0);
+                    if (!scoresByCategory[category]) scoresByCategory[category] = [];
+                    scoresByCategory[category].push(score);
+                });
+
+                const avgScores = labels.map(cat => {
+                    const scores = scoresByCategory[cat] || [];
+                    const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+                    return Math.round((avg / 10) * 100); // normalize to 100%
+                });
+
+                return {
+                    label: `Assessment on ${ass.date}`,
+                    data: avgScores,
+                    backgroundColor: `rgba(${Math.floor(Math.random()*255)}, ${Math.floor(Math.random()*200)}, ${Math.floor(Math.random()*150)}, 0.7)`
+                };
+            });
+
+            // Step 3: Create the chart
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels,
+                    datasets,
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "Well-Being Category Comparison (Grouped by Assessment)"
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: "Score (%)"
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Well-Being Categories"
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching assessments:", error);
+        });
+});
+</script>
+
     </body>
 </html>
