@@ -2234,12 +2234,6 @@ function loadProgressTrackingChart() {
 
                 // Create and load progress tracking chart
 function loadProgressTrackingChart() {
-    const progressCanvas = document.getElementById("progressTrackingChart");
-    if (!progressCanvas) {
-        console.error("Canvas element not found.");
-        return;
-    }
-
     const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
     if (!staffId) {
         alert("Missing staff ID.");
@@ -2258,9 +2252,14 @@ function loadProgressTrackingChart() {
             }
 
             const doc = snapshot.docs[0].data();
-            const partB = doc.chk_005_meta_questions_part_b || [];
+            const partB = doc.chk_005_meta_questions_part_b;
 
-            // Prepare the categories and their corresponding scores
+            if (!Array.isArray(partB)) {
+                console.error("Invalid or missing Part B data:", partB);
+                return;
+            }
+
+            // Define valid categories
             const categories = {
                 "Life Satisfaction and Life Evaluation": [],
                 "Physical Health, Mental Health, and Physical Function": [],
@@ -2272,72 +2271,68 @@ function loadProgressTrackingChart() {
                 "Affect": [],
             };
 
-            partB.forEach(item => {
-                const section = item.section?.trim() || "Other";
-                const score = parseFloat(item.s || 0);
-                if (categories[section]) {
-                    categories[section].push(score);
+            // Map scores to categories
+            partB.forEach((item) => {
+                const cat = item.category?.trim();
+                const score = parseFloat(item.score || "0");
+
+                if (categories.hasOwnProperty(cat)) {
+                    categories[cat].push(score);
+                } else {
+                    console.warn("Unrecognized category:", cat);
                 }
             });
 
-            // Prepare the labels and average progress data for the line chart
+            // Prepare chart data
             const labels = [];
             const data = [];
 
-            for (const [section, scores] of Object.entries(categories)) {
+            for (const [category, scores] of Object.entries(categories)) {
                 if (scores.length > 0) {
-                    const avgScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
-                    labels.push(section);
-                    data.push(avgScore);
+                    const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length * 10); // Scale to 100%
+                    labels.push(category);
+                    data.push(avg);
                 }
             }
 
-            // Initialize chart if it exists
-            if (window.progressChartInstance) {
-                window.progressChartInstance.destroy();
-            }
+            // Draw chart
+            const canvas = document.getElementById("progressTrackingChart");
+            if (!canvas) return;
 
-            window.progressChartInstance = new Chart(progressCanvas.getContext("2d"), {
-                type: "line",
+            destroyChartIfExists(window.progressChartInstance);
+
+            window.progressChartInstance = new Chart(canvas.getContext("2d"), {
+                type: "bar",
                 data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: "Progress (%)",
-                            data: data,
-                            backgroundColor: "rgba(255, 159, 64, 0.2)",
-                            borderColor: "rgba(255, 159, 64, 1)",
-                            borderWidth: 2,
-                            fill: true,
-                            pointRadius: 5,
-                            pointBackgroundColor: "rgba(255, 159, 64, 1)",
-                        },
-                    ],
+                    labels,
+                    datasets: [{
+                        label: "Well-Being Assessment Score (%)",
+                        data,
+                        backgroundColor: "rgba(54, 162, 235, 0.3)",
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        borderWidth: 2
+                    }]
                 },
                 options: {
                     responsive: true,
                     scales: {
-                        x: {
-                            title: { display: true, text: "Well-Being Domains" },
-                        },
                         y: {
-                            title: { display: true, text: "Progress (%)" },
-                            min: 0,
+                            beginAtZero: true,
                             max: 100,
+                            title: { display: true, text: "Average Score (%)" }
                         },
-                    },
-                    elements: {
-                        line: {
-                            tension: 0.4, // smooth curve
-                        },
-                    },
-                },
+                        x: {
+                            title: { display: true, text: "Well-Being Categories" }
+                        }
+                    }
+                }
             });
         })
         .catch((error) => {
-            console.error("Error fetching data:", error);
+            console.error("Error building chart:", error);
         });
 }
+
 
 
                 // Function to switch tabs dynamically
