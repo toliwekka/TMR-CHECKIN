@@ -1707,49 +1707,73 @@
 
 
         <script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Placeholder for additional charts (e.g., Goals Chart)
+    const goalsCanvas = document.getElementById("goalsChart");
 
+    if (goalsCanvas) {
+        console.debug("Goals chart canvas found.");
 
-                // Placeholder for additional charts (e.g., Goals Chart)
-                const goalsCanvas = document.getElementById("goalsChart");
+        // Destroy the previous chart instance if it exists
+        if (window.goalsChartInstance) {
+            console.debug("Destroying existing goals chart instance.");
+            window.goalsChartInstance.destroy();
+        }
 
-                if (goalsCanvas) {
-                    // If the canvas for the goals chart exists, initialize or destroy the previous chart if needed
-                    if (window.goalsChartInstance) {
-                        destroyChartIfExists(window.goalsChartInstance); // Destroy previous instance if it exists
-                    }
-
-                    // Clear the canvas context to ensure it's ready for a new chart
-                    goalsCanvas.width = goalsCanvas.width; // Clear the canvas
-                    goalsCanvas.height = goalsCanvas.height;
-
-                    // Create a new Goals chart (Bar chart example)
-                    window.goalsChartInstance = new Chart(goalsCanvas.getContext("2d"), {
-                        type: "bar", // Bar chart type
-                        data: {
-                            labels: ["Task 1", "Task 2", "Task 3"], // X-axis labels (tasks)
-                            datasets: [
-                                {
-                                    label: "Completion (%)",
-                                    data: [70, 50, 90], // Data points for completion
-                                    backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 99, 132, 0.2)"], // Colors for the bars
-                                    borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 159, 64, 1)", "rgba(255, 99, 132, 1)"], // Border colors
-                                    borderWidth: 1, // Border width
-                                },
-                            ],
+        // Create a new Goals chart (Bar chart example)
+        console.debug("Creating a new goals chart instance.");
+        window.goalsChartInstance = new Chart(goalsCanvas.getContext("2d"), {
+            type: "bar", // Bar chart type
+            data: {
+                labels: ["Task 1", "Task 2", "Task 3"], // X-axis labels (tasks)
+                datasets: [
+                    {
+                        label: "Completion (%)",
+                        data: [70, 50, 90], // Data points for completion
+                        backgroundColor: [
+                            "rgba(75, 192, 192, 0.2)",
+                            "rgba(255, 159, 64, 0.2)",
+                            "rgba(255, 99, 132, 0.2)",
+                        ], // Colors for the bars
+                        borderColor: [
+                            "rgba(75, 192, 192, 1)",
+                            "rgba(255, 159, 64, 1)",
+                            "rgba(255, 99, 132, 1)",
+                        ], // Border colors
+                        borderWidth: 1, // Border width
+                    },
+                ],
+            },
+            options: {
+                responsive: true, // Make the chart responsive
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: "top", // Display legend at the top
+                    },
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Tasks", // X-axis title
                         },
-                        options: {
-                            responsive: true, // Make the chart responsive
-                            plugins: {
-                                legend: { display: true, position: "top" }, // Display legend at the top
-                            },
-                            scales: {
-                                x: { title: { display: true, text: "Tasks" } }, // X-axis title
-                                y: { title: { display: true, text: "Completion (%)" }, max: 100 }, // Y-axis title and max value
-                            },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: "Completion (%)", // Y-axis title
                         },
-                    });
-                }
-            });
+                        max: 100, // Y-axis max value
+                        beginAtZero: true, // Ensure Y-axis starts from zero
+                    },
+                },
+            },
+        });
+    } else {
+        console.error("Error: Goals chart canvas not found.");
+    }
+});
         </script>
 
         <style>
@@ -1863,29 +1887,40 @@ function loadProgressTrackingChart() {
             }
 
             const doc = snapshot.docs[0].data();
-            const partB = doc.chk_005_meta_questions_part_b || [];
+            const partB = doc.chk_005_meta_questions_part_b;
 
-            const sectionScores = {};
+            if (!partB || typeof partB !== "object") {
+                console.error("Invalid or missing Part B data:", partB);
+                return;
+            }
 
-            partB.forEach(item => {
-                const section = item.section?.trim() || "Other";
-                const score = parseFloat(item.s || 0);
-                if (!sectionScores[section]) {
-                    sectionScores[section] = [];
+            // Step 1: Aggregate scores by category
+            const categories = {};
+
+            Object.values(partB).forEach(entry => {
+                const category = entry.category;
+                const score = parseFloat(entry.score);
+                if (!category || isNaN(score)) return;
+
+                if (!categories[category]) {
+                    categories[category] = [];
                 }
-                sectionScores[section].push(score);
+                categories[category].push(score);
             });
 
+            // Step 2: Prepare chart data
             const labels = [];
             const data = [];
 
-            for (const [section, scores] of Object.entries(sectionScores)) {
-                const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
-                const normalized = Math.round(avg * 10); // Assuming scores are 0-10
-                labels.push(section);
-                data.push(normalized);
-            }
+            Object.entries(categories).forEach(([category, scores]) => {
+                if (scores.length > 0) {
+                    const avg = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10); // scale to %
+                    labels.push(category);
+                    data.push(avg);
+                }
+            });
 
+            // Step 3: Draw chart
             const canvas = document.getElementById("progressTrackingChart");
             if (!canvas) return;
 
@@ -1895,44 +1930,33 @@ function loadProgressTrackingChart() {
                 data: {
                     labels,
                     datasets: [{
-                        label: "Well-Being Progress (%)",
+                        label: "Assessment Progress (%)",
                         data,
-                        backgroundColor: "rgba(75, 192, 192, 0.3)",
+                        backgroundColor: "rgba(75, 192, 192, 0.2)",
                         borderColor: "rgba(75, 192, 192, 1)",
                         borderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: "Well-Being Assessment by Domain"
-                        }
-                    },
                     scales: {
                         y: {
                             beginAtZero: true,
                             max: 100,
-                            title: {
-                                display: true,
-                                text: "Score (%)"
-                            }
+                            title: { display: true, text: "Score (%)" }
                         },
                         x: {
-                            title: {
-                                display: true,
-                                text: "Well-Being Dimensions"
-                            }
+                            title: { display: true, text: "Well-Being Domains" }
                         }
                     }
                 }
             });
         })
         .catch((error) => {
-            console.error("Error building chart:", error);
+            console.error("Error fetching data:", error);
         });
 }
+
 
 
                 loadReports();
@@ -2252,39 +2276,40 @@ function loadProgressTrackingChart() {
             }
 
             const doc = snapshot.docs[0].data();
-            const partB = doc.chk_004_meta_questions_part_b;
+            const partB = doc.chk_005_meta_questions_part_b;
 
             if (!partB || typeof partB !== "object") {
                 console.error("Invalid or missing Part B data:", partB);
-                alert("Assessment data is not in expected format.");
                 return;
             }
 
-            const categoryMap = {};
+            // Step 1: Aggregate scores by category
+            const categories = {};
 
-            Object.values(partB).forEach((entry) => {
-                const category = entry.category || "Uncategorized";
+            Object.values(partB).forEach(entry => {
+                const category = entry.category;
                 const score = parseFloat(entry.score);
+                if (!category || isNaN(score)) return;
 
-                if (!isNaN(score)) {
-                    if (!categoryMap[category]) {
-                        categoryMap[category] = [];
-                    }
-                    categoryMap[category].push(score);
+                if (!categories[category]) {
+                    categories[category] = [];
                 }
+                categories[category].push(score);
             });
 
-            // Aggregate averages for chart
+            // Step 2: Prepare chart data
             const labels = [];
             const data = [];
 
-            Object.entries(categoryMap).forEach(([category, scores]) => {
-                const average = scores.reduce((sum, s) => sum + s, 0) / scores.length;
-                labels.push(category);
-                data.push(Math.round(average * 10)); // scale to % (assuming scores out of 10)
+            Object.entries(categories).forEach(([category, scores]) => {
+                if (scores.length > 0) {
+                    const avg = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10); // scale to %
+                    labels.push(category);
+                    data.push(avg);
+                }
             });
 
-            // Draw chart
+            // Step 3: Draw chart
             const canvas = document.getElementById("progressTrackingChart");
             if (!canvas) return;
 
@@ -2296,8 +2321,8 @@ function loadProgressTrackingChart() {
                     datasets: [{
                         label: "Assessment Progress (%)",
                         data,
-                        backgroundColor: "rgba(54, 162, 235, 0.2)",
-                        borderColor: "rgba(54, 162, 235, 1)",
+                        backgroundColor: "rgba(75, 192, 192, 0.2)",
+                        borderColor: "rgba(75, 192, 192, 1)",
                         borderWidth: 2
                     }]
                 },
@@ -2310,16 +2335,17 @@ function loadProgressTrackingChart() {
                             title: { display: true, text: "Score (%)" }
                         },
                         x: {
-                            title: { display: true, text: "Mental Well-Being Domains" }
+                            title: { display: true, text: "Well-Being Domains" }
                         }
                     }
                 }
             });
         })
         .catch((error) => {
-            console.error("Error building chart:", error);
+            console.error("Error fetching data:", error);
         });
 }
+
 
 
 
