@@ -12,7 +12,6 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
 
-
         <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
         <!-- Firebase App (the core Firebase SDK) -->
@@ -838,52 +837,36 @@
 
                     <!-- Progress Tracking Section -->
                     <div id="progress-tracking" class="tab-content-section">
-                        <h3 class="mb-4"><i class="fas fa-stream text-primary me-2"></i> Progress Tracking</h3>
-                        <!-- Progress Tracking Section -->
-                        <div id="progress-tracking" class="tab-content-section">
-                            <h3 class="mb-4">
-                                <i class="fas fa-stream text-primary me-2"></i>
-                                Progress Tracking
-                            </h3>
-                        <div class="card card-custom p-3">
+                        <h3 class="mb-4">
+                            <i class="fas fa-stream text-primary me-2"></i>
+                            Progress Tracking
+                        </h3>
+
+                        <div class="card card-custom p-3 mb-4">
+                            <h5 class="mb-3">
+                                <i class="fas fa-chart-bar text-primary me-2"></i>
+                                Well-Being Trends by Category
+                                <span data-bs-toggle="tooltip" title="Shows your performance trend across well-being categories from the last 3 assessments.">
+                                    <i class="fas fa-circle-info text-muted ms-1"></i>
+                                </span>
+                            </h5>
                             <canvas id="groupedBarChart"></canvas>
-
                         </div>
 
-                            <div class="row g-4 mb-4">
-                                <!-- Grouped Bar Chart -->
-                                <div class="col-md-6">
-                                    <div class="card card-custom p-3 h-100">
-                                        <h5 class="mb-3">
-                                            <i class="fas fa-chart-bar text-primary me-2"></i>
-                                            Well-Being Trends by Category
-                                            <span data-bs-toggle="tooltip" title="Shows your performance trend across well-being categories from the last 3 assessments.">
-                                                <i class="fas fa-circle-info text-muted ms-1"></i>
-                                            </span>
-                                        </h5>
-                                        <canvas id="groupedBarChart"></canvas>
-                                    </div>
-                                </div>
-
-                                <!-- Radar Chart -->
-                                <div class="col-md-6">
-                                    <div class="card card-custom p-3 h-100">
-                                        <h5 class="mb-3">
-                                            <i class="fas fa-heartbeat text-danger me-2"></i>
-                                            Your Current Well-Being Snapshot
-                                            <span data-bs-toggle="tooltip" title="A radar view of your latest well-being assessment across all categories.">
-                                                <i class="fas fa-circle-info text-muted ms-1"></i>
-                                            </span>
-                                        </h5>
-                                        <canvas id="wellBeingRadarChart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <p class="mt-3 text-muted">
-                                This section provides a visual summary of your recent well-being assessments, including category trends and a personal performance snapshot.
-                            </p>
+                        <div class="card card-custom p-3 mb-4">
+                            <h5 class="mb-3">
+                                <i class="fas fa-heartbeat text-danger me-2"></i>
+                                Your Current Well-Being Snapshot
+                                <span data-bs-toggle="tooltip" title="A radar view of your latest well-being assessment across all categories.">
+                                    <i class="fas fa-circle-info text-muted ms-1"></i>
+                                </span>
+                            </h5>
+                            <canvas id="wellBeingRadarChart"></canvas>
                         </div>
+
+                        <p class="mt-3 text-muted">
+                            This section provides a visual summary of your recent well-being assessments, including category trends and a personal performance snapshot.
+                        </p>
                     </div>
 
                     <!-- Daily Scheduler Section -->
