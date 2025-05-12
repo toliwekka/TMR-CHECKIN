@@ -422,9 +422,11 @@
                             <a class="nav-link text-white" onclick="switchTab('dashboard')"><i class="fas fa-home me-2"></i>Dashboard</a>
                         </li>
                         <!-- Navigation Item -->
-                        <li class="nav-item mb-2">
-                            <a class="nav-link text-white" href="#" onclick="loadCheckinSection('https://toliwekka.github.io/TMR-CHECKIN/assessmentintroa.html')"> <i class="fas fa-pencil-alt me-2"></i>Start Check-In </a>
-                        </li>
+<li class="nav-item mb-2">
+    <a class="nav-link text-white" href="#" onclick="window.location.href = 'userlandingpage.html';">
+        <i class="fas fa-pencil-alt me-2"></i>Start Check-In
+    </a>
+</li>
                         <li class="nav-item">
                             <a class="nav-link text-white d-flex align-items-center" onclick="toggleSubmenu(this)"><i class="fas fa-chart-bar me-2"></i>Performance Analytics<i class="fas fa-chevron-down ms-auto chevron"></i></a>
                             <ul class="submenu">
@@ -434,12 +436,16 @@
                                 <li class="nav-item mb-2">
                                     <a class="nav-link text-white" onclick="switchTab('goals')"><i class="fas fa-bullseye me-2"></i>SMART Goals</a>
                                 </li>
-                                <li class="nav-item mb-2">
-                                    <a class="nav-link text-white" onclick="switchTab('reports')"><i class="fas fa-magnifying-glass-chart me-2"></i>Reports</a>
-                                </li>
-                                <li class="nav-item mb-2">
-                                    <a class="nav-link text-white" onclick="switchTab('kpis')"><i class="fas fa-tachometer-alt me-2"></i>Key Performance Indicators</a>
-                                </li>
+<li class="nav-item mb-2">
+    <a class="nav-link text-white disabled" href="#" style="opacity: 0.5; pointer-events: none;">
+        <i class="fas fa-magnifying-glass-chart me-2"></i>Reports
+    </a>
+</li>
+<li class="nav-item mb-2">
+    <a class="nav-link text-white disabled" href="#" style="opacity: 0.5; pointer-events: none;">
+        <i class="fas fa-tachometer-alt me-2"></i>Key Performance Indicators
+    </a>
+</li>
                                 <li class="nav-item mb-2">
                                     <a class="nav-link text-white" onclick="switchTab('progress-tracking')"><i class="fas fa-stream me-2"></i>Progress Tracking</a>
                                 </li>
@@ -450,9 +456,6 @@
                             <ul class="submenu">
                                 <li class="nav-item">
                                     <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('scheduler')"><i class="fas fa-calendar-check me-2"></i>Daily Scheduler</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('kanban')"><i class="fas fa-columns me-2"></i>Task Kanban Board</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-white d-flex align-items-center" onclick="switchTab('timelines')"><i class="fas fa-stream me-2"></i>Progress Timelines</a>
@@ -488,10 +491,11 @@
                         <li class="nav-item mb-2">
                             <a class="nav-link text-white" href="#" onclick="toggleTheme()"><i class="fas fa-adjust me-2"></i>Toggle Theme</a>
                         </li>
-                        <li class="nav-item mt-4">
-                            <a class="nav-link text-white" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
-                        </li>
-                    </ul>
+<li class="nav-item mt-4">
+    <a class="nav-link text-white" href="#" onclick="logoutUser();">
+        <i class="fas fa-sign-out-alt me-2"></i>Logout
+    </a>
+</li>                    </ul>
                 </nav>
 
                 <!-- Main Content -->
@@ -502,9 +506,11 @@
                             <h2 id="textContent" class="header-highlight">Welcome, Dr. Grace Namakula | Pediatrics Department</h2>
                             <p class="text-muted">Your personalized dashboard for tracking well-being, goals, and progress.</p>
                         </div>
-                        <div>
-                            <button class="btn btn-outline-primary"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                        </div>
+<div>
+    <button class="btn btn-outline-primary" onclick="logoutUser()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+</div>
                     </div>
 
                     <!-- Tab Content Sections -->
@@ -528,30 +534,140 @@
 
                         <!-- Mood Timeline Carousel -->
                         <h3 class="mb-4"><i class="fas fa-calendar-alt text-primary me-2"></i> Mood Timeline</h3>
-                        <div class="card card-custom p-4 mb-4">
-                            <div id="moodCarousel" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active text-center">
-                                        <i class="fas fa-smile fa-2x text-success"></i>
-                                        <p>Monday - Happy</p>
-                                    </div>
-                                    <div class="carousel-item text-center">
-                                        <i class="fas fa-meh fa-2x text-warning"></i>
-                                        <p>Tuesday - Neutral</p>
-                                    </div>
-                                    <div class="carousel-item text-center">
-                                        <i class="fas fa-frown fa-2x text-danger"></i>
-                                        <p>Wednesday - Sad</p>
-                                    </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#moodCarousel" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon"></span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#moodCarousel" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon"></span>
-                                </button>
-                            </div>
-                        </div>
+
+<style>
+    .carousel-item {
+        padding: 30px 20px;
+        background-color: transparent;
+        text-align: center;
+    }
+
+    .carousel-item i {
+        font-size: 2.5rem;
+        color: #6c757d;
+        margin-bottom: 10px;
+    }
+
+    .carousel-item p {
+        font-size: 1.2rem;
+        color: #333;
+        font-weight: 400;
+        margin: 0;
+    }
+
+    .carousel {
+        background: transparent;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: #ced4da;
+        border-radius: 50%;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        filter: grayscale(1);
+        opacity: 0.5;
+        transition: opacity 0.3s ease;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 0.8;
+    }
+</style>
+
+<style>
+    .card.card-custom {
+        padding: 0.65rem 1rem; /* Reduced padding */
+        margin-bottom: 1rem;
+        border: none;
+    }
+
+    .carousel-item {
+        padding: 15px 10px; /* Smaller vertical space */
+        text-align: center;
+    }
+
+    .carousel-item i {
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+        color: #6c757d;
+    }
+
+    .carousel-item p {
+        font-size: 1rem;
+        margin: 0;
+        line-height: 1.0;
+        color: #333;
+    }
+</style>
+
+
+<div class="card card-custom p-4 mb-4">
+    <div id="moodCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="10000">
+
+        <div class="carousel-inner">
+            <!-- Monday - Motivated -->
+            <div class="carousel-item active">
+                <i class="fas fa-sun fa-3x text-warning"></i>
+                <p>"Rise and shine! Let's make today amazing!"</p>
+            </div>
+
+            <!-- Tuesday - Grateful -->
+            <div class="carousel-item">
+                <i class="fas fa-hands-helping fa-3x text-success"></i>
+                <p>"Gratitude turns what we have into enough. Be thankful!"</p>
+            </div>
+
+            <!-- Wednesday - Inspired -->
+            <div class="carousel-item">
+                <i class="fas fa-lightbulb fa-3x text-primary"></i>
+                <p>"Your ideas matter. Stay curious and keep learning!"</p>
+            </div>
+
+            <!-- Thursday - Empowered -->
+            <div class="carousel-item">
+                <i class="fas fa-bolt fa-3x text-danger"></i>
+                <p>"You are stronger than you think. Keep pushing forward!"</p>
+            </div>
+
+            <!-- Friday - Joyful -->
+            <div class="carousel-item">
+                <i class="fas fa-laugh fa-3x text-info"></i>
+                <p>"Laughter is the best medicine. Let joy fill your day!"</p>
+            </div>
+
+            <!-- Saturday - Relaxed -->
+            <div class="carousel-item">
+                <i class="fas fa-spa fa-3x text-muted"></i>
+                <p>"Take a breath, relax, and recharge. You deserve it!"</p>
+            </div>
+
+            <!-- Sunday - Hopeful -->
+            <div class="carousel-item">
+                <i class="fas fa-heart fa-3x text-danger"></i>
+                <p>"Hope is the anchor of the soul. Let's look ahead with optimism!"</p>
+            </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#moodCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#moodCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+</div>
+
+<style>
+
+    .carousel-item p {
+        color: black; /* Change text color to dark */
+    }
+</style>
 
                         <!-- Notifications Section -->
                         <h3 class="mb-4"><i class="fas fa-bell text-primary me-2"></i> Notifications</h3>
@@ -767,30 +883,6 @@
                         </div>
                     </div>
 
-                    <!-- Task Kanban Board Section -->
-                    <div id="kanban" class="tab-content-section">
-                        <h3 class="mb-4"><i class="fas fa-columns text-primary me-2"></i> Task Kanban Board</h3>
-                        <div class="kanban-board">
-                            <div class="kanban-column">
-                                <h5>To Do</h5>
-                                <ul class="list-group">
-                                    <li class="list-group-item">Example Task 1</li>
-                                </ul>
-                            </div>
-                            <div class="kanban-column">
-                                <h5>In Progress</h5>
-                                <ul class="list-group">
-                                    <li class="list-group-item">Example Task 2</li>
-                                </ul>
-                            </div>
-                            <div class="kanban-column">
-                                <h5>Done</h5>
-                                <ul class="list-group">
-                                    <li class="list-group-item">Example Task 3</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Progress Timelines Section -->
                     <div id="timelines" class="tab-content-section">
@@ -1249,6 +1341,20 @@
                     });
             }
         </script>
+
+<script>
+    function logoutUser() {
+        // Clear all local storage items (this clears everything in localStorage)
+        localStorage.clear(); // You can also use specific keys if needed like localStorage.removeItem("key")
+
+        // Optional: You can also clear cookies if your application uses them
+        // document.cookie = "cookie_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+        // Redirect to the login page or landing page after logout
+        window.location.href = "stafflogin.html"; // Ensure this is the correct path to the login page
+    }
+</script>
+
 
         <script>
             function toggleSubmenu(element) {
@@ -1738,39 +1844,98 @@
                     }
                 }
 
-                function loadProgressTrackingChart() {
-                    const progressCanvas = document.getElementById("progressTrackingChart");
-                    if (progressCanvas) {
-                        destroyChartIfExists(window.progressChartInstance);
-                        window.progressChartInstance = new Chart(progressCanvas.getContext("2d"), {
-                            type: "line",
-                            data: {
-                                labels: ["Task 1", "Task 2", "Task 3"],
-                                datasets: [
-                                    {
-                                        label: "Progress (%)",
-                                        data: [60, 75, 85],
-                                        backgroundColor: "rgba(255, 159, 64, 0.2)",
-                                        borderColor: "rgba(255, 159, 64, 1)",
-                                        borderWidth: 2,
-                                        pointRadius: 5,
-                                        pointBackgroundColor: "rgba(255, 159, 64, 1)",
-                                    },
-                                ],
-                            },
-                            options: {
-                                responsive: true,
-                                scales: {
-                                    x: { title: { display: true, text: "Tasks" } },
-                                    y: {
-                                        title: { display: true, text: "Progress (%)" },
-                                        max: 100,
-                                    },
-                                },
-                            },
-                        });
+function loadProgressTrackingChart() {
+    const staffId = localStorage.getItem("form_000_00_StaffID")?.trim();
+    if (!staffId) {
+        alert("Missing staff ID.");
+        return;
+    }
+
+    db.collection("tmrCheckpoints")
+        .where("chk_001_meta_client_id", "==", staffId)
+        .orderBy("chk_003_meta_assessment_date", "desc")
+        .limit(1)
+        .get()
+        .then((snapshot) => {
+            if (snapshot.empty) {
+                alert("No assessment data found.");
+                return;
+            }
+
+            const doc = snapshot.docs[0].data();
+            const questions = doc.chk_004_meta_questions_part_a || [];
+
+            // Map to meaningful categories if needed
+            const categories = {
+                "Decision Making": [],
+                "Self Confidence": [],
+                "Calmness": [],
+                "Energy Levels": [],
+            };
+
+            questions.forEach(item => {
+                const question = item.q?.toLowerCase();
+                const score = item.s || 0;
+
+                if (question.includes("make up my own mind")) {
+                    categories["Decision Making"].push(score);
+                } else if (question.includes("confident") || question.includes("cope")) {
+                    categories["Self Confidence"].push(score);
+                } else if (question.includes("relaxed") || question.includes("stressed")) {
+                    categories["Calmness"].push(score);
+                } else if (question.includes("energy") || question.includes("enthusiasm")) {
+                    categories["Energy Levels"].push(score);
+                }
+            });
+
+            // Prepare labels and average scores
+            const labels = [];
+            const data = [];
+
+            Object.entries(categories).forEach(([label, scores]) => {
+                if (scores.length > 0) {
+                    const avg = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 20); // scale to %
+                    labels.push(label);
+                    data.push(avg);
+                }
+            });
+
+            // Draw chart
+            const canvas = document.getElementById("progressTrackingChart");
+            if (!canvas) return;
+
+            destroyChartIfExists(window.progressChartInstance);
+            window.progressChartInstance = new Chart(canvas.getContext("2d"), {
+                type: "bar",
+                data: {
+                    labels,
+                    datasets: [{
+                        label: "Assessment Progress (%)",
+                        data,
+                        backgroundColor: "rgba(54, 162, 235, 0.2)",
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: { display: true, text: "Score (%)" }
+                        },
+                        x: {
+                            title: { display: true, text: "Mental Well-Being Domains" }
+                        }
                     }
                 }
+            });
+        })
+        .catch((error) => {
+            console.error("Error building chart:", error);
+        });
+}
 
                 loadReports();
                 loadKpiChart();
